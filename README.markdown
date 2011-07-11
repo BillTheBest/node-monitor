@@ -6,15 +6,15 @@ This is a monitoring application built on today's technologies centered around C
 Screenshots
 -----------------------------------
 
-![Alt text](images/cloud-monitor-1.png)
-![Alt text](images/cloud-monitor-2.png)
-![Alt text](images/cloud-monitor-3.png)
-![Alt text](images/cloud-monitor-4.png)
-![Alt text](images/cloud-monitor-5.png)
-![Alt text](images/cloud-monitor-6.png)
-![Alt text](images/cloud-monitor-7.png)
-![Alt text](images/cloud-monitor-8.png)
-![Alt text](images/cloud-monitor-9.png)
+![Alt text](/images/cloud-monitor-1.png)
+![Alt text](/images/cloud-monitor-2.png)
+![Alt text](/images/cloud-monitor-3.png)
+![Alt text](/images/cloud-monitor-4.png)
+![Alt text](/images/cloud-monitor-5.png)
+![Alt text](/images/cloud-monitor-6.png)
+![Alt text](/images/cloud-monitor-7.png)
+![Alt text](/images/cloud-monitor-8.png)
+![Alt text](/images/cloud-monitor-9.png)
 
 General
 -----------------------------------
