@@ -1,0 +1,43 @@
+div#simpleModal {
+width: 560px;
+position: absolute; top: 40px; left: 170px;
+padding: 20px;
+border: solid 1px #bbb;
+background: #fff;
+-webkit-box-shadow: 0px 3px 6px rgba(0,0,0,0.25);
+-webkit-transition: -opacity 1.0s ease-out;
+}
+
+div.modal a.button { float: right; overflow: hidden; }
+
+div#simpleModal.show { opacity: 1.0; z-index: 100; -webkit-transition-duration: 0.25s; }
+
+.selected {
+		font-weight: bold;
+	font-size: 18px;
+}
+
+.circle-not-active {
+	display: block;
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: #ae432e;
+	-moz-border-radius: 40px;
+	-webkit-border-radius: 40px;
+	border: 1px dashed black;
+}
+
+.circle-active {
+	padding: 1px;
+	border: 1px dashed black;
+	display: block;
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: #6a9912;
+	-moz-border-radius: 40px;
+	-webkit-border-radius: 40px;
+}
+
+

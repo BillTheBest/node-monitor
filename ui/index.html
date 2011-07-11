@@ -1,0 +1,402 @@
+<!doctype html>
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+
+<!-- TODO -->
+<!-- remove dev css from layout -->
+<head>
+	<title>Cloud Monitor</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+	
+	<!-- standard css -->
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/colors.css">
+		<link rel="stylesheet" href="css/jquery.tipsy.css">
+		<link rel="stylesheet" href="css/jquery.wysiwyg.css">
+		<link rel="stylesheet" href="css/jquery.datatables.css">
+		<link rel="stylesheet" href="css/jquery.facebox.css">
+		<link rel="stylesheet" href="css/jquery.datepicker.css">
+		<link rel="stylesheet" href="css/jquery.fileinput.css">
+		<link rel="stylesheet" href="css/jquery.fullcalendar.css">
+		<link rel="stylesheet" href="css/jquery.visualize.css">
+	
+	<!-- node-monitor css -->
+		<link rel="stylesheet" href="css/node-monitor.css">
+
+	<!-- google fonts -->
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
+	
+	<!-- load realtime ape client -->
+    		<script type="text/javaScript" src="http://isidoreyrtdev.net/Build/yuiCompressor/isidoreyrt.js"></script>
+	
+	<!-- html5 -->
+	<script src="js/libs/modernizr-1.7.min.js"></script>
+</head>
+<body>
+
+	<a href="https://github.com/franklovecchio/node-monitor"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 3; -webkit-transform: rotate(-90deg); " src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
+
+	<!-- cloud Monitor -->
+	<script src="js/cloud-monitor-constants.js"></script>
+	<script src="js/cloud-monitor-mapreduce.js"></script>
+	<script src="js/cloud-monitor-ui.js"></script>
+	<script src="js/cloud-monitor-utils.js"></script>
+	<script src="js/cloud-monitor.js"></script>
+	<script src="js/cloud-monitor-api.js"></script>
+	<script src="js/cloud-monitor-visual.js"></script>
+	
+	<section role="navigation">
+		<!--
+		<header>
+			<a href="#" title="Back to Dashboard"></a>
+			<h1>Cloud Monitor</h1>
+		</header>
+		-->
+		<section id="user-info" style="margin-top: 30px;">
+			<img src="http://graph.facebook.com/franklovecchio/picture" alt="Sample User Avatar">
+			<div>
+				<!-- https://graph.facebook.com/franklovecchio -->
+				<a href="" title="Account Settings and Profile Page">Frank LoVecchio</a>
+				<em>Administrator</em>
+				<ul>
+					<li><a class="button-link" href="#" title="From Facebook" rel="tooltip">view website</a></li>
+					<li><a class="button-link" href="#" title="And this is Sparta!" rel="tooltip">logout</a></li>
+				</ul>
+			</div>
+		</section>
+		<nav id="main-nav">
+			<ul>
+				<li>
+					<a href="" title="" class="dashboard">Servers</a>
+					<span id="servers-count" title="Active Servers"></span>
+					<ul id="server">
+						<!-- insert server info here dynamically -->
+					</ul>
+				</li>
+				<li class="current">
+					<a href="" title="" class="products current">Clients</a>
+					<span id="clients-count" title="Active Clients"></span>
+					<ul id="clients">
+						<!-- insert clients here dynamically -->
+					</ul>
+				</li>
+				<li>
+					<a href="" title="" class="events">Users</a>
+					<span id="users-count" title="Active Users"></span>
+					<ul id="users">
+						<!-- insert users here dynamically -->
+					</ul>
+				</li>
+				<li id="logs-container">
+					<a href="" title="" class="articles">Logs</a>
+					<span id="logs-count" title="Active Logs"></span>
+					<ul id="logs">
+						<!-- insert logs here dynamically -->
+					</ul>
+				</li>
+				<li id="plugins-container">
+					<a href="" title="" class="events">Plugins</a>
+					<span id="plugins-count" title="Active Plugins"></span>
+					<ul id="plugins">
+						<!-- insert plugins here dynamically -->
+					</ul>
+				</li>
+				<!--<li><a href="" title="" class="settings">Configuration</a></li>
+				<li><a href="" title="" class="settings">Alerts</a></li>-->
+			</ul>
+		</nav>
+	</section>
+	<section role="main">
+		<div id="alerts">
+			<!-- insert alerts here dynamically -->
+		</div>
+		<ul id="breadcrumbs">
+			<!-- insert breadcrumbs here dynamically -->
+		</ul>
+		<article class="full-block clearfix">
+			<div class="article-container">
+				<header>
+					<div id="header-title-container">
+						<!-- add title here dynamically -->
+					</div>
+					<nav>
+						<ul class="tab-switch">
+							<li id="dashboard-tab-link-container">
+								<a id="dashboard-tab-link" class="default-tab" href="#tab0" rel="tooltip" title="Dashboard" onclick="addBreadcrumbs(['Home', 'Dashboard'])">Dashboard</a>
+							</li>
+							<li id="server-tab-link-container">
+								<a href="#tab1" rel="tooltip" title="View active servers" onclick="addBreadcrumbs(['Home', 'Servers'])">Servers</a>
+							</li>
+							<li id="client-tab-link-container">
+								<a id="client-tab-link" href="#tab2" rel="tooltip" title="View active clients" onclick="addBreadcrumbs(['Home', 'Client'])">Client</a>
+							</li>
+							<li>
+								<a href="#tab3" rel="tooltip" title="View active users" onclick="addBreadcrumbs(['Home', 'Users'])">Users</a>
+							</li>
+							<li>
+								<a href="#tab4" rel="tooltip" title="Deploy to EC2 instances" onclick="addBreadcrumbs(['Home', 'EC2'])">EC2</a>
+							</li>
+							<!--
+							<li>
+								<a href="#tab5" rel="tooltip" title="Change monitoring options" onclick="addBreadcrumbs(['Home', 'Config'])">Config</a>
+							</li>
+							-->
+							<li id="log-tab-link-container">
+								<a id="log-tab-link" href="#tab6" rel="tooltip" title="Interact with logs" onclick="addBreadcrumbs(['Home', 'Logs'])">Logs</a>
+							</li>
+							<li id="plugin-tab-link-container">
+								<a id="plugin-tab-link" href="#tab7" rel="tooltip" title="Interact with plugins" onclick="addBreadcrumbs(['Home', 'Plugins'])">Plugins</a>
+							</li>
+						</ul>
+					</nav>
+				</header>
+				<section>
+					<div class="tab default-tab" id="tab0">
+						<div id="clients-count-chart">
+						</div>
+						<div id="down-client-chart-container-1">
+							<!-- insert chart here dynamically -->
+						</div>
+						<div id="clients-down">
+							<!-- insert clients down down here dynamically -->
+						</div>
+						<div id="down-client-chart-container">
+							<!-- insert chart here dynamically -->
+						</div>
+						<div id="recent-alerts-count">
+							<!-- insert recent alerts count here dynamically -->
+							<ul class="stats-summary"><li><strong class="stats-count">0</strong><p>Recent Alarms</p></li>
+							</ul>
+						</div>
+						<ul class="logs" id="recent-alerts" style="overflow: auto; height: 700px;">
+							<!-- add recent alerts here dynamically -->
+							<ul class="list-style-cross"><li>There are no alerts for today, you lucky dog, you.</li>
+							</ul>
+						</ul>
+					</div>
+					<div class="tab" id="tab1">
+					</div>
+					<div class="tab" id="tab2">
+						<section> 
+							<div class="sidetabs" style="height: 800px;"> 
+								<nav class="sidetab-switch"> 
+									<ul> 
+										<li><a href="#client-tab-1" class="default-sidetab">Tag</a></li> 
+										<li><a href="#client-tab-2">Realtime</a></li> 
+										<li><a href="#client-tab-3">Configuration</a></li>
+									</ul> 
+									<p>Select a menu option.</p> 
+								</nav> 
+								<div class="sidetab default-sidetab" id="client-tab-1">
+									<fieldset>
+										<legend><h2 style="font-size: 20px; margin: 0 auto; margin-bottom: 10px;">[Tag]</h2></legend>
+										<form>
+										<dl>
+											<dt><label>New Tag</label>
+										</dt>
+											<dd>
+												<input type="text" id="client-tag-input" class="small"><p>Make associations easier on the eyes</p><button type="submit" onClick="setClientTag()">Submit</button>
+											</dd>
+										</dl>
+										</form>
+									</fieldset>
+								</div>
+								<div class="sidetab" id="client-tab-2">
+									<fieldset>
+										<legend><h2 style="font-size: 20px; margin: 0 auto; margin-bottom: 10px;">[Realtime]</h2></legend>
+											<a href="#" class="button" onClick="stopStartMessages()"> Pause/Start </a>
+											<div id="incoming-realtime-count">
+											</div>
+											<div id="realtime-clients" style="overflow: auto; height: 650px; width: 1050px;">
+												<!-- insert websocket information here dynamically -->
+											</div>
+									</fieldset>
+								</div>
+								<div class="sidetab" id="client-tab-3">
+									<fieldset>
+										<legend><h2 style="font-size: 20px; margin: 0 auto; margin-bottom: 10px;">[Configuration]</h2></legend>
+											<div id="plugin-list">
+											<!-- insert plugin information here dynamically -->
+											</div>
+											<div id="log-list">
+											<!-- insert log information here dynamically -->
+											</div>
+									</fieldset>
+								</div>
+							</div>
+						</section>
+					</div>
+					<div class="tab" id="tab3">
+					</div>
+					<div class="tab" id="tab4">
+						<div id="ec2-table-container">
+							<div id="ec2-instances-count">
+								<!-- add instance count here dynamically -->
+							</div>
+							<form class="table-form">
+								<table id="ec2-table" style="width: 100%">
+									<thead>
+										<tr>
+											<th>Instance ID</th>
+											<th>Instance Name</th>
+											<th>Security Group</th>
+											<th>Security Groupd ID</th>
+											<th>Monitoring</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody id="ec2-table">
+										<!-- add table rows dynamically -->
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+					<div class="tab" id="tab5">
+					</div>
+					<div class="tab" id="tab6">
+						<!-- Article Content --> 
+						<section> 
+							<div class="sidetabs"> 
+								<nav class="sidetab-switch"> 
+									<ul> 
+										<li><a class="default-sidetab" href="#log-tab-1">Realtime</a></li> 
+										<li><a href="#log-tab-2">Historical</a></li> 
+										<li><a href="#log-tab-3">Aggregate</a></li> 
+										<li><a href="#log-tab-4">Custom</a></li> 
+									</ul> 
+									<p>Select a menu option.</p> 
+								</nav> 
+								<div class="sidetab default-sidetab" id="log-tab-1"> 
+									<fieldset>
+										<legend><h2 style="font-size: 20px; margin: 0 auto; margin-bottom: 10px;">[Realtime]</h2></legend>
+											<a href="#" class="button" onClick="stopStartLogs()"> Pause/Start </a>
+											<div id="incoming-realtime-log-count">
+											</div>
+											<div id="realtime-logs" style="overflow: auto; height: 650px; width: 1050px;">
+												<!-- insert websocket information here dynamically -->
+											</div>
+									</fieldset>
+								</div>
+								<div class="sidetab" id="log-tab-2"> 
+									<fieldset>
+										<legend><h2 style="font-size: 20px; margin: 0 auto; margin-bottom: 10px;">[Historical]</h2></legend>
+											<nav>
+												<ul class="button-switch">
+													<a href="#" class="button" onClick="updateLogsByDate('-1')"> ◄ </a>
+													<a href="#" class="button" onClick="updateLogsByDate('1')"> ► </a>								
+													<a href="#" class="button gray" onClick="updateLogsByDate(0)">Today</a><h2 id="log-date" style="display: inline; font-size: 20px; margin-left: 30px; margin-top: 5px; margin-bottom: 10px;"></h2>
+												</ul>
+											</nav>
+											<br/>
+											<br/>
+											<div id="log-table-container">
+											</div>
+									</fieldset>
+									<nav>
+										<ul class="button-switch" style="float: right">
+											<a href="#" class="button" onClick="previousLogSet()"> ◄ </a>
+											<a href="#" class="button" onClick="nextLogSet()"> ► </a>								
+										</ul>
+									</nav>
+								</div>
+								<div class="sidetab" id="log-tab-3" style="height: 100%;"> 
+									<fieldset>
+										<legend><h2 style="font-size: 20px; margin: 0 auto; margin-bottom: 10px;">[Aggregate]</h2></legend>
+										<form>
+											<dl>
+												<dt><label>Text to find</label>
+											</dt>
+												<dd>
+													<input type="text" id="log-mapreduce-text" class="small"><p>Search for entries in past <span style="display: inline;" id="map-reduce-period">month</span> that contain this text</p>
+													<nav>
+														<ul class="button-switch">
+															<a href="#" class="button gray" onClick="updateMapReducePeriod('day')">Day</a>
+															<a href="#" class="button" onClick="updateMapReducePeriod('week')">Week</a>								
+															<a href="#" class="button" onClick="updateMapReducePeriod('month')">Month</a>	
+														</ul>
+													</nav>
+												</dd>
+											</dl>
+											<button type="submit" onClick="submitMapReduceJobSet()">Submit</button>
+										</form>
+									</fieldset>
+									<section id="widgets-container">
+											<!-- insert widgets here dynamically -->
+									</section>
+								</div>
+							</div>
+						</section>
+					</div>
+					<div class="tab" id="tab7">
+						<h2 id="plugin-chart-title-div" style="font-size: 26px; text-align: center; margin: 0 auto;"></h2>
+						<article class="full-block">
+							<div id="plugin-entry-count">
+								<!-- insert count here dynamically -->
+							</div>
+							<nav>
+								<ul class="button-switch">
+									<a href="#" class="button" onClick="updatePluginsByDate('-1')"> ◄ </a>
+									<a href="#" class="button" onClick="updatePluginsByDate('1')"> ► </a>								
+									<a href="#" class="button gray" onClick="updatePluginsByDate(0)">Today</a>	
+								</ul>
+							</nav>
+							<br/>
+							<br/>
+							<div id="plugin-charts-container" style="text-align: center; margin: 0 auto; width: 1200px; height: 700px">
+								<!-- insert charts here -->
+							</div>
+						</article>
+					</div>
+				</section>
+				<footer style="height: 800px;">
+					<p>Fork this project on <a href="https://github.com/franklovecchio/node-monitor" rel="modal">github</a>!</p>
+				</footer>
+			</div>			
+		</article>	
+		<div class="clearfix">
+		</div>	
+	</section>
+	
+	<!-- most js libs at the end for faster loading -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/jquery/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
+	<script src="js/libs/selectivizr.js"></script>
+	<script src="js/jquery/jquery.facebox.js"></script>
+	<script src="js/jquery/jquery.tipsy.js"></script>
+	<script src="js/jquery/jquery.wysiwyg.js"></script>
+	<script src="js/jquery/jquery.datatables.js"></script>
+	<script src="js/jquery/jquery.datepicker.js"></script>
+	<script src="js/jquery/jquery.fileinput.js"></script>
+	<script src="js/jquery/jquery.fullcalendar.min.js"></script>
+	<script src="js/jquery/excanvas.js"></script>
+	<script src="js/jquery/jquery.visualize.js"></script>
+	<script src="js/cloud-monitor-uiscript.js"></script>
+	
+	<script type="text/javascript" src="highcharts/js/highcharts.js"></script>
+	<script type="text/javascript" src="highcharts/js/modules/exporting.js"></script>
+		
+	<!-- start the monitor websocket interaction -->
+	<script type="text/javascript">
+		$(document).ready(
+			function() {
+		    	initCloudMonitor();
+	 		}
+	 	);
+ 	</script>
+	
+	<!-- open cloudsandra realtime channel for live alerts -->
+	<script type="text/javascript">
+		openRealtimeAlertChannel(TOKEN + '/' + CFLONGTYPE + '/' + ALERTS + keyDate);
+	</script>
+	
+</body>
+</html>
