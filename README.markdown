@@ -3,12 +3,13 @@ node-monitor
 
 This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX), and keep credentials on the server side.
 
-Screenshots
------------------------------------
 
 ![Alt text]([1])
 	
 	[1]: https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-1.png
+
+Screenshots
+-----------------------------------
 
 ![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-2.png screenshot)
 ![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-3.png screenshot)
