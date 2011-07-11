@@ -6,7 +6,10 @@ This is a monitoring application built on today's technologies centered around C
 Screenshots
 -----------------------------------
 
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-1.png screenshot)
+![Alt text]([1])
+	
+	[1]: https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-1.png
+
 ![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-2.png screenshot)
 ![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-3.png screenshot)
 ![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-4.png screenshot)
