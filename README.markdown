@@ -17,7 +17,6 @@ Screenshots
 ![SS11](http://dev.isidorey.net/docs/screenshots/cloud-monitor-11.png)
 ![SS12](http://dev.isidorey.net/docs/screenshots/cloud-monitor-12.png)
 ![SS14](http://dev.isidorey.net/docs/screenshots/cloud-monitor-14.png)
-![SS15](http://dev.isidorey.net/docs/screenshots/cloud-monitor-15.png)
 	
 General
 -----------------------------------
