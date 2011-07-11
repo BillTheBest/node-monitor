@@ -14,7 +14,10 @@ Screenshots
 ![SS6](http://dev.isidorey.net/docs/screenshots/cloud-monitor-6.png)
 ![SS7](http://dev.isidorey.net/docs/screenshots/cloud-monitor-7.png)
 ![SS8](http://dev.isidorey.net/docs/screenshots/cloud-monitor-8.png)
-![SS9](http://dev.isidorey.net/docs/screenshots/cloud-monitor-9.png)
+![SS11](http://dev.isidorey.net/docs/screenshots/cloud-monitor-11.png)
+![SS12](http://dev.isidorey.net/docs/screenshots/cloud-monitor-12.png)
+![SS14](http://dev.isidorey.net/docs/screenshots/cloud-monitor-14.png)
+![SS15](http://dev.isidorey.net/docs/screenshots/cloud-monitor-15.png)
 	
 General
 -----------------------------------
