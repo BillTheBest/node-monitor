@@ -6,18 +6,18 @@ This is a monitoring application built on today's technologies centered around C
 Screenshots
 -----------------------------------
 
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-1.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-2.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-3.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-4.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-5.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-6.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-7.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-8.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-9.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-10.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-11.png)
-![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-12.png)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-1.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-2.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-3.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-4.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-5.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-6.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-7.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-8.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-9.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-10.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-11.png screenshot)
+![Alt text](https://github.com/isidorey/node-monitor/blob/master/images/cloud-monitor-12.png screenshot)
 
 General
 -----------------------------------
