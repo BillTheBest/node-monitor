@@ -3,8 +3,8 @@
 */
 
 // Your credentials
-var token = ''; // Token
-var accountId = ''; // AccountId
+var token = 'FiAywji7ra'; // Token
+var accountId = 'f4d0d4a3-1d0a-4e1b-ac43-a509022dd4be'; // AccountId
 
 var sys = require('sys'),
 		querystring = require('querystring'),

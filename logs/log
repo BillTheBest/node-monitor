@@ -87,3 +87,230 @@ Mon Jul 11 2011 11:59:39 GMT-0600 (MDT) INFO Type: get
 Mon Jul 11 2011 11:59:39 GMT-0600 (MDT) INFO Request: plugin-live
 Mon Jul 11 2011 11:59:39 GMT-0600 (MDT) INFO Message: 10.202.65.22:plugins:free:2011:6:11
 Mon Jul 11 2011 11:59:39 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Listening for websocket connections on: 8001
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Opened connection on websocket: 1089606741
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"clients","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Request: clients
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"servers","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-tags","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Request: client-tags
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-external","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Request: client-external
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"users","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Request: users
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"alerts-live","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Request: alerts-live
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"instances","data":"","subRequest":null}
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Request: instances
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:35:59 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:01 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:36:01 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Listening for websocket connections on: 8001
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Opened connection on websocket: 1089607092
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: clients
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"servers","data":"","subRequest":null}
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: servers
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-tags","data":"","subRequest":null}
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: client-tags
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-external","data":"","subRequest":null}
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: client-external
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"users","data":"","subRequest":null}
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: users
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"alerts-live","data":"","subRequest":null}
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: alerts-live
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"instances","data":"","subRequest":null}
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Request: instances
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:36:15 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:17 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:36:17 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:36:17 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"logs","data":"10.202.215.212","subRequest":null}
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Request: logs
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Message: 10.202.215.212
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"plugins","data":"10.202.215.212","subRequest":null}
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Request: plugins
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Message: 10.202.215.212
+Mon Jul 11 2011 12:36:20 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Listening for websocket connections on: 8001
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Opened connection on websocket: 1089608213
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"clients","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Request: clients
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"servers","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-tags","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Request: client-tags
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-external","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Request: client-external
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"users","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Request: users
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"alerts-live","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Request: alerts-live
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"instances","data":"","subRequest":null}
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Request: instances
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 12:38:22 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 12:38:24 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:38:24 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:38:24 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 12:38:24 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Listening for websocket connections on: 8001
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Opened connection on websocket: 1089611634
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"clients","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: clients
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"servers","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: servers
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-tags","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: client-tags
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"client-external","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: client-external
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"users","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: users
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"alerts-live","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: alerts-live
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling websocket request
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Handling Websocket API request: {"type":"get","request":"instances","data":"","subRequest":null}
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO JSON checks out
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Type: get
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Request: instances
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Message: 
+Mon Jul 11 2011 13:16:45 GMT-0600 (MDT) INFO Undefined Sub Request
+Mon Jul 11 2011 13:16:47 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 13:16:47 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 13:16:47 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 13:16:47 GMT-0600 (MDT) INFO Closing connection
+Mon Jul 11 2011 13:16:47 GMT-0600 (MDT) INFO Closing connection
