@@ -1,14 +1,27 @@
 node-monitor
 =====
 
-This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX), and keep credentials on the server side.  I just found this, and it's $149 a month!  http://www.loggly.com/product/
+This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX) UI, and keep credentials on the server side.
+
+Products I Admire
+-----------------------------------
+
+http://www.loggly.com/product/
+
+http://www.splunk.com
 
 Screenshots
 -----------------------------------
 
+The main dashboard shows the amount of clients (boxes) being monitored.  It shows any clients that are down, and how long.  We also have a COMET channel open to listen for alerts coming in, as well as grabbing alerts for today (based on plugin criterion).
+
 ![SS1](http://dev.isidorey.net/docs/screenshots/cloud-monitor-1.png)
 ![SS2](http://dev.isidorey.net/docs/screenshots/cloud-monitor-2.png)
+
+
 ![SS3](http://dev.isidorey.net/docs/screenshots/cloud-monitor-3.png)
+
+
 ![SS4](http://dev.isidorey.net/docs/screenshots/cloud-monitor-4.png)
 ![SS5](http://dev.isidorey.net/docs/screenshots/cloud-monitor-5.png)
 ![SS6](http://dev.isidorey.net/docs/screenshots/cloud-monitor-6.png)
@@ -21,11 +34,16 @@ Screenshots
 General
 -----------------------------------
 	
-Set ulimits HIGH
+Set ulimits HIGH (4000 at least)
+
 Make sure ports are open on both client and server - (client) 9997/8002 (server) 9997/8001/8002
+
 Make sure IPs are correctly set in configs
+
 Make sure you edit plugin configs and logs to monitor
+
 Move monitor start script to /monitoring, add amazon creds to command line
+
 Make sure permissions for all node folders are for user (ubuntu/ec2-user), especially after git clone
 
 Usage/Installation
@@ -47,26 +65,29 @@ Architecture
 -----------------------------------
 
 All clients post monitoring/log data to CloudSandra
-Client1 => REST => CloudSandra
-Client2 => REST => CloudSandra 
+
+	Client1 => REST => CloudSandra
+	Client2 => REST => CloudSandra 
 
 2 websocket connections are open, one for all REST requests from the UI 
-UI => Websocket => Server => REST => CloudSandra
-UI <= Websocket <= Server 
 
-UI <= Websocket <= Client
+	UI => Websocket => Server => REST => CloudSandra
+	UI <= Websocket <= Server 
+
+	UI <= Websocket <= Client
 
 We also have a connection open between the server and client which allows us to handle changes on the client, from the UI, securely (this is currently turned off, I'm getting the dreade ECONNREFUSED)
-Server => Client
-Server <= Client
+
+	Server => Client
+	Server <= Client
                          
 The UI handles realtime (APE) connections from CloudSandra.  We open up realtime connections for today's graphs, as well as internal alerts that we post (whenever SEVERE is logged in a plugin or on the client/server)                     
-UI <= Realtime (APE) <= CloudSandra
+
+	UI <= COMET (APE) <= CloudSandra
 	
 		
 Data Model
 -----------------------------------
-	
 	
 There are two column families in CloudSandra.  1 has a UTF8Type comparator for self-indexing, the other has a LongType comparator for storing time-sorted data.  I delimit by day, as I can paginate if necessary
 
@@ -163,30 +184,62 @@ In place, but not for lookup data, runs every 2 minutes, the option to make ever
 Map/Reduce use case
 If I want to use data sets other than a single day and counts have determined that +1 days of data sets are too large to render, we can map/reduce this - not in place yet
 
-
-
-To Do
+Errors to Fix
 -----------------------------------
+
+	Uncaught TypeError: Cannot read property 'rowkeys' of undefined
+	    at Object.readFile (/monitoring/node-monitor/modules/failsafe.js:126:103)
+	    at Object.purge (/monitoring/node-monitor/modules/failsafe.js:40:7)
+	    at Timer.<anonymous> (/monitoring/node-monitor/modules/bulk-load-manager.js:41:13)
+	----------------------------------------
+	    at Object.setInterval
+	    at [object Object].bulkPost (/monitoring/node-monitor/modules/bulk-load-manager.js:38:43)
+	    at new <anonymous> (/monitoring/node-monitor/modules/bulk-load-manager.js:31:9)
+	    at Object.onStart (/monitoring/node-monitor/run/client.js:82:20)
+	    at Object.start (/monitoring/node-monitor/run/client.js:64:7)
+	    at Object.<anonymous> (/monitoring/node-monitor/run/client.js:306:13)
+	    at Module._compile (module.js:407:26)
+	    at Object..js (module.js:413:10)
+	    at Module.load (module.js:339:31)
 	
-Tailing a file in which we are also checking service ... maybe ignore processes in PID list
+	/monitoring/node-monitor/lib/long-stack-traces/lib/long-stack-traces.js:80
+	                    throw ""; // TODO: throw the original error, or undefined?
+
+
+Features to Add
+-----------------------------------
+
+Get server working (make sustained connections with clients)
+
+Add command line manager for UI -> Server -> Client
+
+Add word count, and auto indexing, for a log entry (come up with good use cases for better filtering with 100K entries) - algorithm almost there, need bulk counters in CloudSandra
+
+Make UI portion of log information for indexes
+	
+Get PID of child processes and store instead of killing through a script?
+
+Add Twilio library in for alerting
+
+Add log-based text alerts
+
+Write up a detailed use-case on alerting (pluses and minuses of CloudWatch vs. Twilio)
 
 Tailing...ignore \n !
 
-Kill all tailing on stop, possibly log PIDS to file..is there a built in way to do this?
+Fix initial bulk load failure check
 
-UI jQuery datatables appears to search through every table ever
-
-Add failure to bulk load check?  Size Check?  
+Add multiple disks to check in plugin
 
 Add CloudWatch metrics to instance list for ease
 
 Make CloudSandra credentials apparent
 
-Add deletes for boxes
+Make a deploy/undeploy solution
 
 Fix EC2 groups (don't match?)
 
-Log Table Formatting
+Log table formatting
 
 One bulk load request fails on initial post (lookup?)
 
@@ -198,43 +251,43 @@ Add universal import for dependencies
 
 Add counts to bulk posting
 
-Need to add logger to dao
+Find a better way to integrate dependencies across the board
 
-Add redundancy to bulk post 400 status (DNS error or something)
+DAO logging
+
+Add redundancy to post 400 status (DNS error or something)
 
 Need to handle null alerts for today better
 
-Document storage
+Hook into s3 for config files?
 
-Hook into s3 for config files
-
-EC2 Deployer/Removal/Start
-
-Make S3 files pullable for above
-
-Add option to use AWS notifications based on log files
-
-Push async log tailing to filehandler and re-use
+Use command-manager as log tailing for new files
 
 Add ability to view/edit config files on server using management port
 
 Implmenet TLS websockets, though I thought they were by default - http://bravenewmethod.wordpress.com/2011/02/21/node-js-tls-client-example/
 
-Ipmlement this to allow for a deployable solution to all boxes - https://github.com/codeinthehole/node-multi-scp
+Deployable? https://github.com/codeinthehole/node-multi-scp
 
-Add removal of child process for log tailing when config is updated
+Add better UI functionality for alerts (based on Twilio API and the CloudSandra API / CloudWatch)
 
 Put back updated checks for handling gui requests (new log files to monitor, alerts t/f)
 
 Add ability to monitor all logs in directory
-
-Add Alerts capablity for sms
 
 Fix broken plugins - almost there
 
 Add file streaming to grab remote files and check for errors?  Any other useful ideas?
 
 Add chart configuration inside plugin
+
+Troubleshooting
+-----------------------------------
+
+Ulimits!
+
+Change timeToPost from 120 to 60 if you have massive and many logs being tailed
+
 
 Coding on the Shoulders of Giants
 -----------------------------------

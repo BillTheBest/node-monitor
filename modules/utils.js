@@ -208,6 +208,45 @@ UtilsModule.prototype.formatAlertKey = function(date) {
 }
 
 /**
+* This feature requires Bulk Counter Posting
+*
+* Log Entry key: epoc / Log Entry valeu: word1 word2 word2 word3
+*
+* We'll index words based on rowkey, e.g:
+*
+	// Helps visualize WTF is going on
+		
+	{
+    "rowkeys": [
+        {
+            "rowkey": "127.0.1:logs:_var_log_messages:2011:08:1",
+
+            "columns": [
+                {
+                    "columnname": "word1",
+                    "increment" : 1
+                },
+                {
+                   "columnname": "word2",
+                    "increment" : 2
+                },
+                {
+                   "columnname": "word3",
+                    "increment" : 1
+                }
+            ]
+        }
+    ]
+	}
+*
+*/
+UtilsModule.prototype.wordIndex = function(string) {
+	var logEntryIndexArray = string.replace(/[^\w\s]|_/g, function ($1) { 
+		return ' ' + $1 + ' ';
+	}).replace(/[ ]+/g, ' ').split(' ');
+};
+
+/**
 * Items read from commit_log were already checked, so we can just parse
 * them into a bulk load request
 */
