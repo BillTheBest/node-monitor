@@ -50,7 +50,7 @@ FilehandlerModule.prototype.empty = function(fileName) {
 	});
 };
 
-FilehandlerModule.prototype.readDirectory = function(path, callback) {
+FilehandlerModule.prototype.readDirectory = function (path, callback) {
 	var self = this;
 	var fileObjectArray = [];
   	fs.readdir(path, function(err, files) {

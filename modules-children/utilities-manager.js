@@ -1,42 +1,42 @@
 /** 
- * Utils Module
+ * utilities-manager.js module
  */
  
-// Includes
-var stack = require('../lib/long-stack-traces');
- 
-// Constants
-var constantsModule = require('./constants');
-var constants = new constantsModule.ConstantsModule();
+var fs = require('fs');
 
-// Config
-var config = require('../config/config');
+var Module;
 
-// UUID
-var uuid = require('../lib/node-uuid');
+UtilitiesManagerModule = function () {
 
-UtilsModule = function() {
-
+	Module = this;
+	
 };
 
-UtilsModule.prototype.fromJSON = function(jsonMessage) {
+UtilitiesManagerModule.prototype.fromJSON = function (jsonMessage) {
+
   	var jsonObject;
  	if (jsonMessage != undefined) {
  		try {
  			jsonObject = eval('(' + jsonMessage + ')');
  		} catch (Exception) {
- 			
+ 			/**
+ 			* Write this to log
+ 			*/
  		}
 	}
 		
 	return jsonObject;
+	
 };
 
-UtilsModule.prototype.isEven = function(number) {
+UtilitiesManagerModule.prototype.isEven = function (number) {
+
     return (number%2 == 0) ? true : false;
+    
 };
 
-UtilsModule.prototype.trim = function(data) {
+UtilitiesManagerModule.prototype.trim = function (data) {
+
 	data = data.replace(/^\s+/, '');
 	for (var i = data.length - 1; i >= 0; i--) {
 		if (/\S/.test(data.charAt(i))) {
@@ -44,28 +44,29 @@ UtilsModule.prototype.trim = function(data) {
 			break;
 		}
 	}
+	
 	return data;
+	
 };
 
-UtilsModule.prototype.generateGuid = function() {
-	var S4 = function() {
-       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-    };
-    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-};
+UtilitiesManagerModule.prototype.generateEpocTime = function() {
 
-UtilsModule.prototype.generateEpocTime = function() {
 	var date = new Date();
 	return date.getTime();
+	
 };
 
-UtilsModule.prototype.generateFormattedDate = function() {
+UtilitiesManagerModule.prototype.generateFormattedDate = function() {
+
 	var date = new Date();
 	date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
+	
 	return date;
+	
 };
 
-UtilsModule.prototype.formatBroadcastData = function(name, key, date, data, origin) {
+UtilitiesManagerModule.prototype.formatBroadcastData = function (name, key, date, data, origin) {
+
 	var broadcastData = JSON.stringify({
 		'name': name, 
 		'key': key,
@@ -73,10 +74,13 @@ UtilsModule.prototype.formatBroadcastData = function(name, key, date, data, orig
 		'data': data,
 		'origin': origin
 	});
+	
  	return broadcastData;
+ 	
 };
 
-UtilsModule.prototype.formatLookupBroadcastData = function(key, date, data, origin) {
+UtilitiesManagerModule.prototype.formatLookupBroadcastData = function(key, date, data, origin) {
+
 	var broadcastData = JSON.stringify({
 		'name': constants.api.LOOKUP, 
 		'key': key,
@@ -84,33 +88,42 @@ UtilsModule.prototype.formatLookupBroadcastData = function(key, date, data, orig
 		'data': data,
 		'origin': origin
 	});
+	
  	return broadcastData;
+ 	
 };
 
-UtilsModule.prototype.formatWebsocketApiData = function(type, request, data, origin) {
+UtilitiesManagerModule.prototype.formatWebsocketApiData = function (type, request, data, origin) {
+
 	var broadcastData = JSON.stringify({
 		'type': type, 
 		'request': request,
 		'data': data,
 		'origin': origin
 	});
+	
  	return broadcastData;
+ 	
 };
 
-UtilsModule.prototype.safeEncodeKey = function(key) {
+UtilitiesManagerModule.prototype.safeEncodeKey = function (key) {
+
 	var encodedKey = key.replace(/\//g, '_');
 	return encodedKey;
+	
 };
 
-UtilsModule.prototype.safeDecodeKey = function(key) {
+UtilitiesManagerModule.prototype.safeDecodeKey = function (key) {
+
 	key = key.replace(/_/g, '/');
 	return key;
+	
 };
 
 /**
 * Check for bad data and format
 */
-UtilsModule.prototype.dataChecker = function(data) {
+UtilitiesManagerModule.prototype.dataChecker = function (data) {
 
 	var assertObject = {
 	
@@ -175,29 +188,29 @@ UtilsModule.prototype.dataChecker = function(data) {
 	}	
 };
 
-UtilsModule.prototype.formatPluginKey = function(ip, plugin) {
+UtilitiesManagerModule.prototype.formatPluginKey = function(ip, plugin) {
 	var date = new Date();
 	var key = ip + ':' + constants.api.PLUGINS + ':' + plugin + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	return key;
 };
 
-UtilsModule.prototype.formatLookupPluginKey = function(ip) {
+UtilitiesManagerModule.prototype.formatLookupPluginKey = function(ip) {
 	var key = ip + ':' + constants.api.PLUGINS;
 	return key;
 };
 
-UtilsModule.prototype.formatLogKey = function(ip, log) {
+UtilitiesManagerModule.prototype.formatLogKey = function(ip, log) {
 	var date = new Date();
 	var key = ip + ':' + constants.api.LOGS + ':' + log + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	return key;
 };
 
-UtilsModule.prototype.formatLookupLogKey = function(ip) {
+UtilitiesManagerModule.prototype.formatLookupLogKey = function(ip) {
 	var key = ip + ':' + constants.api.LOGS;
 	return key;
 };
 
-UtilsModule.prototype.formatAlertKey = function(date) {
+UtilitiesManagerModule.prototype.formatAlertKey = function(date) {
 	var key;
 	if (date != undefined) {
 		key = constants.api.ALERTS + ':' + date;
@@ -241,7 +254,7 @@ UtilsModule.prototype.formatAlertKey = function(date) {
 	}
 *
 */
-UtilsModule.prototype.wordIndex = function(string) {
+UtilitiesManagerModule.prototype.wordIndex = function(string) {
 	var logEntryIndexArray = string.replace(/[^\w\s]|_/g, function ($1) { 
 		return ' ' + $1 + ' ';
 	}).replace(/[ ]+/g, ' ').split(' ');
@@ -251,7 +264,7 @@ UtilsModule.prototype.wordIndex = function(string) {
 * Items read from commit_log were already checked, so we can just parse
 * them into a bulk load request
 */
-UtilsModule.prototype.formatBulkPostData = function(bulkLoadLookupRequest, bulkLoadRequest, jsonString) {
+UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupRequest, bulkLoadRequest, jsonString) {
 		
 	var json = this.fromJSON(jsonString);	
 	
@@ -393,7 +406,7 @@ UtilsModule.prototype.formatBulkPostData = function(bulkLoadLookupRequest, bulkL
 };
 
 /*
-UtilsModule.prototype.aggregateCounters = function(bulkLoadRequest) {
+UtilitiesManagerModule.prototype.aggregateCounters = function(bulkLoadRequest) {
 
 	var counterObject = {
 		rowkeys: []
@@ -430,7 +443,7 @@ UtilsModule.prototype.aggregateCounters = function(bulkLoadRequest) {
 };
 */
 
-UtilsModule.prototype.format = function(command, data) {
+UtilitiesManagerModule.prototype.format = function(command, data) {
 	var splitBuffer = [];
 	switch (command) {
 		case constants.api.LOGS:
@@ -445,4 +458,4 @@ UtilsModule.prototype.format = function(command, data) {
 	}
 };
 
-exports.UtilsModule = UtilsModule;
+exports.UtilitiesManagerModule = UtilitiesManagerModule;

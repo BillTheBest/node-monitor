@@ -281,6 +281,8 @@ Add file streaming to grab remote files and check for errors?  Any other useful 
 
 Add chart configuration inside plugin
 
+Add better module configuration
+
 Troubleshooting
 -----------------------------------
 

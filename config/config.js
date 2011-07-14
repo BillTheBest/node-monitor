@@ -4,7 +4,7 @@
 
 	this.clientIP = '127.0.0.1';
 	this.externalIP = '127.0.0.1';
-	this.onEC2 = true;
+	this.onEC2 = false;
 	this.instanceId = '';
 	this.drive = 'sda1';
 	
@@ -18,14 +18,16 @@
 	this.daemonConfigFile = '../config/daemon_config';
 	this.processConfigFile = '../config/process_config';
 	this.filesizeConfigFile = '../config/filesize_config';
+	this.commitLogFile = '../logs/commit_log';
 	this.pluginDirectory = '../plugins/';
 
 	this.monitorDirectories = true;
 	this.directoryList = '/var/log';
 	
 	
-	this.timeToWait = 1000 * 30;
-	this.timeToPost = 1000 * 120;
+	this.timeToWait = 1000 * 30; // 30 seconds
+	this.timeToPost = 1000 * 60 * 2; // 2 minutes
+	this.keepAliveInterval = 1000 * 60 * 5; // 5 minutes
 
 /**
 * Server Config

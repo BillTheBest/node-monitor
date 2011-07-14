@@ -1,19 +1,27 @@
 /**
- * command-manager.js module
+ * my-manager.js module (Template for creating your own modules)
  */
  
 var fs = require('fs');
 
-var modules = {
+var dependencies = {
+	
+	stack: '../lib/long-stack-traces'
 
-	loggingManager: '../modules/logging-manager.js'
+};
+
+var modules = {
 
 };
 
 var Module;
 var NodeMonitorObject;
 
-CommandManagerModule = function (nodeMonitor, childDeps) {
+MyManagerModule = function (nodeMonitor, childDeps) {
+
+	for (var name in dependencies) {
+		eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
+	}
 
 	for (var name in modules) {
 		eval('var ' + name + '= require(\'' + modules[name] + '\')');
@@ -25,17 +33,14 @@ CommandManagerModule = function (nodeMonitor, childDeps) {
 	
 	var utilities = new utilitiesManager.UtilitiesManagerModule();
 	var constants = new constantsManager.ConstantsManagerModule();
-	var logger = new loggingManager.LoggingManagerModule(nodeMonitor, childDeps);
-
+	
 	NodeMonitorObject = nodeMonitor;
 	Module = this;
 	
 };
 
-CommandManagerModule.prototype.executeCommand = function (command) {
-
-	console.log('my command ' + command);
+MyManagerModule.prototype.foo = function () {
 	
-};	
+};
 
-exports.CommandManagerModule = CommandManagerModule;
+exports.MyManagerModule = MyManagerModule;
