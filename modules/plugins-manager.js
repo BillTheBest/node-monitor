@@ -34,10 +34,12 @@ PluginsManagerModule = function (nodeMonitor, childDeps) {
 	Module.constants = constants;
 	Module.logger = logger;
 	Module.config = config;
+	
+	Module.childDeps = childDeps;
 		
 }; 
 
-PluginsManagerModule.prototype.getPlugins = function() {
+PluginsManagerModule.prototype.start = function() {
 
 	var pluginCount = 0;
 	var plugins = fs.readdirSync(Module.config.pluginDirectory);
@@ -70,24 +72,21 @@ PluginsManagerModule.prototype.executePlugins = function() {
 			
 				Module.logger.write(Module.constants.levels.INFO, 'Running plugin: ' + plugin);
 				
-				NodeMonitorObject.plugins[plugin].poll(
-					function (pluginName, key, data) {
+				NodeMonitorObject.plugins[plugin].poll(Module.childDeps, function (pluginName, key, data) {
 						
 						Module.logger.write(Module.constants.levels.INFO, 'Plugin returning: ' + pluginName);
 						
 						if (key) {
 					
-							var lookupKey = Module.utilities.formatLookupPluginKey(NodeMonitorObject.Module.config.clientIP);
+							var lookupKey = Module.utilities.formatLookupPluginKey(Module.config.clientIP);
 							NodeMonitorObject.sendDataLookup(lookupKey, pluginName);
 							
-							var dataKey = Module.utilities.formatPluginKey(NodeMonitorObject.Module.config.clientIP, pluginName);
+							var dataKey = Module.utilities.formatPluginKey(Module.config.clientIP, pluginName);
 							NodeMonitorObject.sendData(Module.constants.api.PLUGINS, dataKey, data);
 							
 							
 						} else {
-						
 							Module.logger.write(Module.constants.levels.INFO, 'The plugin returned a bad response');
-							
 						}	
 					}
 				);

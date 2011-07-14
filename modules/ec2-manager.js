@@ -42,7 +42,6 @@ EC2ManagerModule = function (childDeps) {
 
 	Module = this;
 	
-	
 	Module.constants = constants;
 	Module.logger = logger;
 	Module.client = client;

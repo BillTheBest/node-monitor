@@ -6,10 +6,15 @@ case "$1" in
 		NODE_MONITOR=`ps -ef | grep -v grep | grep client.js | awk '{print $2'}`
 		kill -9 $NODE_MONITOR
 		sleep 3
-		cd /monitoring/node-monitor/run
-		export AWS_ACCESS_KEY_ID=;
-		export AWS_SECRET_ACCESS_KEY=;
-		node client.js > /dev/null 2>&1 &
+		cd ../run
+		export AWS_ACCESS_KEY_ID=1;
+		export AWS_SECRET_ACCESS_KEY=1;
+		export TWILIO_SID=1;
+		export TWILIO_TOKEN=1;
+		export CLOUDSANDRA_TOKEN=1;
+		export CLOUDSANDRA_ACCOUNT=1;
+		#node client.js > /dev/null 2>&1 &
+		node client-v0.5.js
 		;;
 	'stop')
 		echo "Stopping node-monitor"

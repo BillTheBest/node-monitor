@@ -8,6 +8,8 @@
 	this.instanceId = '';
 	this.drive = 'sda1';
 	
+	this.debug = true;
+	
 	/**
 	* Never need to touch these
 	*/
@@ -28,6 +30,7 @@
 	this.timeToWait = 1000 * 30; // 30 seconds
 	this.timeToPost = 1000 * 60 * 2; // 2 minutes
 	this.keepAliveInterval = 1000 * 60 * 5; // 5 minutes
+	this.serverReconnectTime = 1000 * 20 // 20 seconds
 
 /**
 * Server Config
@@ -74,7 +77,7 @@
 	/**
 	* Turn logging to console off when deploying, otherwise use nohup
 	*/
-	this.logToConsole = false;
+	this.logToConsole = true;
 	
 	/**
 	* CloudWatch namespace

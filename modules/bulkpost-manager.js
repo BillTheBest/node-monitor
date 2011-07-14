@@ -23,7 +23,7 @@ BulkpostManagerModule = function (nodeMonitor, childDeps) {
 		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
 	}
 	
-	var filehandler = new filehandlerManager.FilehandlerManagerModule(nodeMonitor, childDeps);
+	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 
 	NodeMonitorObject = nodeMonitor;
 	Module = this;
@@ -33,12 +33,12 @@ BulkpostManagerModule = function (nodeMonitor, childDeps) {
 				
 }; 
 
-BulkpostManagerModule.prototype.bulkPost = function() {
+BulkpostManagerModule.prototype.start = function() {
 
-	if (config.bulkInterval)
+	if (Module.config.bulkInterval)
 		clearInterval(config.bulkInterval);
 	
-	config.bulkInterval = setInterval(
+	Module.config.bulkInterval = setInterval(
 		function() {
 			Module.filehandler.purgeCommitLog(NodeMonitorObject);
 		}, 

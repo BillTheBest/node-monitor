@@ -129,7 +129,7 @@ function test() {
 
 	// testBulkpostManager();
 	
-	testCredentialManager();
+	// testCredentialManager();
 
 	// testCommandManager();
 	

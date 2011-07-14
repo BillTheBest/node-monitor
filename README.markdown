@@ -209,6 +209,16 @@ Errors to Fix
 Features to Add
 -----------------------------------
 
+Add ec2 metadata auto populate config
+
+Automated restarts
+
+Command and control of boxes through Twilio
+
+Plugins need to be reformatted for new dependency model
+
+Plugins need to check if command exists (/usr/sbin/lsof | wc -l instead of lsof)
+
 Get server working (make sustained connections with clients)
 
 Add command line manager for UI -> Server -> Client

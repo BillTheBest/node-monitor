@@ -4,11 +4,23 @@
  
 var fs = require('fs');
 
+var childDeps = {
+
+	constants: './constants-manager.js'
+	
+};
+
 var Module;
 
 UtilitiesManagerModule = function () {
 
+	for (var name in childDeps) {
+		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+	}
+
 	Module = this;
+	
+	Module.constants = constants;
 	
 };
 
@@ -82,7 +94,7 @@ UtilitiesManagerModule.prototype.formatBroadcastData = function (name, key, date
 UtilitiesManagerModule.prototype.formatLookupBroadcastData = function(key, date, data, origin) {
 
 	var broadcastData = JSON.stringify({
-		'name': constants.api.LOOKUP, 
+		'name': Module.constants.api.LOOKUP, 
 		'key': key,
 		'date': date,
 		'data': data,
@@ -190,33 +202,33 @@ UtilitiesManagerModule.prototype.dataChecker = function (data) {
 
 UtilitiesManagerModule.prototype.formatPluginKey = function(ip, plugin) {
 	var date = new Date();
-	var key = ip + ':' + constants.api.PLUGINS + ':' + plugin + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
+	var key = ip + ':' + Module.constants.api.PLUGINS + ':' + plugin + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	return key;
 };
 
 UtilitiesManagerModule.prototype.formatLookupPluginKey = function(ip) {
-	var key = ip + ':' + constants.api.PLUGINS;
+	var key = ip + ':' + Module.constants.api.PLUGINS;
 	return key;
 };
 
 UtilitiesManagerModule.prototype.formatLogKey = function(ip, log) {
 	var date = new Date();
-	var key = ip + ':' + constants.api.LOGS + ':' + log + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
+	var key = ip + ':' + Module.constants.api.LOGS + ':' + log + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	return key;
 };
 
 UtilitiesManagerModule.prototype.formatLookupLogKey = function(ip) {
-	var key = ip + ':' + constants.api.LOGS;
+	var key = ip + ':' + Module.constants.api.LOGS;
 	return key;
 };
 
 UtilitiesManagerModule.prototype.formatAlertKey = function(date) {
 	var key;
 	if (date != undefined) {
-		key = constants.api.ALERTS + ':' + date;
+		key = Module.constants.api.ALERTS + ':' + date;
 	} else {
 		var date = new Date();
-		key = constants.api.ALERTS + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
+		key = Module.constants.api.ALERTS + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	}
 	return key;
 }
@@ -269,7 +281,7 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 	var json = this.fromJSON(jsonString);	
 	
 	if (json != undefined) {
-		if (json.name == constants.api.LOOKUP) {
+		if (json.name == Module.constants.api.LOOKUP) {
 					
 			// Work backwords, check for duplicate keys and duplicate columns
 			
@@ -446,7 +458,7 @@ UtilitiesManagerModule.prototype.aggregateCounters = function(bulkLoadRequest) {
 UtilitiesManagerModule.prototype.format = function(command, data) {
 	var splitBuffer = [];
 	switch (command) {
-		case constants.api.LOGS:
+		case Module.constants.api.LOGS:
 			data.trim();
 			data.replace('\n', '');
 			output_hash = {

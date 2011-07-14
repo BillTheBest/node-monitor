@@ -28,7 +28,28 @@ DaoManagerModule = function (childDeps) {
 	
 };
 
+DaoManagerModule.prototype.debugMode = function() {
+
+	if (Module.config.debug)
+		return true;
+
+	return false;	
+		
+};
+
+DaoManagerModule.prototype.cloudwatchAlerts = function() {
+
+	if (Module.config.cloudwatchEnabled)
+		return true;
+
+	return false;	
+		
+};
+
 DaoManagerModule.prototype.storeSelf = function (type, internalIP, externalIP) {
+
+	if (this.debugMode())
+		return;
 
 	var date = new Date();
 
@@ -48,7 +69,13 @@ DaoManagerModule.prototype.storeSelf = function (type, internalIP, externalIP) {
 	
 };
 
-DaoManagerModule.prototype.postCloudwatch = function(metricName, unit, value) {
+DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
+
+	if (this.debugMode())
+		return;
+		
+	if (this.cloudwatchAlerts())
+		return;
 	
 	params = {};
 	
@@ -70,6 +97,9 @@ DaoManagerModule.prototype.postCloudwatch = function(metricName, unit, value) {
 };
 
 DaoManagerModule.prototype.handleDataStorage = function (assertObject) {
+
+	if (this.debugMode())
+		return;
 		
 	var postParams1 = {};
 	postParams1[assertObject.origin] = Module.utilities.generateFormattedDate();
@@ -100,6 +130,9 @@ DaoManagerModule.prototype.handleDataStorage = function (assertObject) {
 
 DaoManagerModule.prototype.createColumnFamily = function (cfName, cfType) {
 
+	if (this.debugMode())
+		return;
+	
 	Module.cloudsandraApi.createColumnFamily(cfName, cfType, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
 	});
@@ -107,6 +140,9 @@ DaoManagerModule.prototype.createColumnFamily = function (cfName, cfType) {
 };
 
 DaoManagerModule.prototype.postDataUTF8Type = function (key, postParams) {	
+
+	if (this.debugMode())
+		return;
 
 	Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.utilities.safeEncodeKey(key), postParams, null, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
@@ -116,6 +152,9 @@ DaoManagerModule.prototype.postDataUTF8Type = function (key, postParams) {
 
 DaoManagerModule.prototype.postDataLongType = function (key, postParams) {	
 
+	if (this.debugMode())
+		return;
+
 	Module.cloudsandraApi.postData(Module.constants.values.CFLongType, Module.utilities.safeEncodeKey(key), postParams, null, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
 	});
@@ -123,6 +162,9 @@ DaoManagerModule.prototype.postDataLongType = function (key, postParams) {
 };
 
 DaoManagerModule.prototype.deleteUTF8Type = function (key, column) {
+
+	if (this.debugMode())
+		return;
 
 	Module.cloudsandraApi.deleteDataFromRow(Module.constants.values.CFUTF8Type, Module.utilities.safeEncodeKey(key), column, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
@@ -132,6 +174,9 @@ DaoManagerModule.prototype.deleteUTF8Type = function (key, column) {
 
 DaoManagerModule.prototype.getRow = function (cfName, key, callback) {
 
+	if (this.debugMode())
+		return;
+
 	Module.cloudsandraApi.getRow(cfName, Module.utilities.safeEncodeKey(key), function (response) {
 		callback(response);
 	});
@@ -139,6 +184,9 @@ DaoManagerModule.prototype.getRow = function (cfName, key, callback) {
 };
 
 DaoManagerModule.prototype.paginateRow = function (cfName, key, fromKey, limit, callback) {
+
+	if (this.debugMode())
+		return;
 
 	Module.cloudsandraApi.paginateRow(cfName, Module.utilities.safeEncodeKey(key), fromKey, limit, function (response) {
 		callback(response);
@@ -148,6 +196,9 @@ DaoManagerModule.prototype.paginateRow = function (cfName, key, fromKey, limit, 
 
 DaoManagerModule.prototype.incrementCount = function (key, cName, value) {
 
+	if (this.debugMode())
+		return;
+
 	Module.cloudsandraApi.incrementCount(key, cName, value, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
 	});
@@ -155,6 +206,9 @@ DaoManagerModule.prototype.incrementCount = function (key, cName, value) {
 };
 
 DaoManagerModule.prototype.decrementCount = function (key, cName, value) {
+
+	if (this.debugMode())
+		return;
 
 	Module.cloudsandraApi.decrementCount(key, cName, value, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
@@ -164,6 +218,9 @@ DaoManagerModule.prototype.decrementCount = function (key, cName, value) {
 
 DaoManagerModule.prototype.mapReduceTable = function (key, postParams) {
 
+	if (this.debugMode())
+		return;
+
 	Module.cloudsandraApi.mapReduceTable(key, postParams, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
 	});
@@ -171,6 +228,9 @@ DaoManagerModule.prototype.mapReduceTable = function (key, postParams) {
 };
 
 DaoManagerModule.prototype.mapReduceJob = function (postParams) {
+
+	if (this.debugMode())
+		return;
 
 	Module.cloudsandraApi.mapReduceTable(jsonObject.data, postParams, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
@@ -180,6 +240,9 @@ DaoManagerModule.prototype.mapReduceJob = function (postParams) {
 
 DaoManagerModule.prototype.bulkPost = function (cfName, bulkLoadRequest) {
 
+	if (this.debugMode())
+		return;
+
 	Module.cloudsandraApi.postBulkData(cfName, JSON.stringify(bulkLoadRequest), function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);
 	});	
@@ -187,6 +250,9 @@ DaoManagerModule.prototype.bulkPost = function (cfName, bulkLoadRequest) {
 };
 
 DaoManagerModule.prototype.deleteDataFromRow = function (cfName, rowKey, cName) {
+
+	if (this.debugMode())
+		return;
 
 	Module.cloudsandraApi.deleteDataFromRow(cfName, rowKey, cName, function (response) {
 		Module.cloudsandraApi.parseForDisplay(response);

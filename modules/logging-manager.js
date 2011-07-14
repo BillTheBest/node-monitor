@@ -38,7 +38,7 @@ LoggingManagerModule.prototype.write = function (level, message) {
 	var date = new Date();
 	message = date + ' ' + level + ' ' + message + '\n';
 
-	if (enabled)
+	if (Module.config.logToConsole)
 		console.log(message);
 	
 	if (level == Module.constants.levels.SEVERE) {

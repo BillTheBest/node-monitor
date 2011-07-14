@@ -63,7 +63,7 @@ Plugin.cloudwatchCriteria = function(response, fileName) {
 		});
 	}
 	
-	logger.write(constants.levels.SEVERE, JSON.stringify(params));
+	// logger.write(constants.levels.SEVERE, JSON.stringify(params));
 	
 };
 

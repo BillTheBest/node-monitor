@@ -123,21 +123,34 @@ this.readFile = function(bufferSize, NodeMonitor) {
 	*/
 	// utils.aggregateCounters(returnedBulkRequestObject);
 	
-	logger.write(constants.levels.INFO, 'Lookup Bulk Load Request # Keys: ' + returnedLookupRequestObject.rowkeys.length);	
-	logger.write(constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + JSON.stringify(returnedLookupRequestObject));
+	var failsafeCheck;
 	
-	dao.bulkPost(constants.values.CFUTF8Type, returnedLookupRequestObject);
+	failsafeCheck = returnedLookupRequestObject.rowkeys;
 	
-	logger.write(constants.levels.INFO, 'Bulk Load Request # Keys: ' + returnedBulkRequestObject.rowkeys.length);	
-	logger.write(constants.levels.INFO, 'Bulk Load Request JSON: ' + JSON.stringify(returnedBulkRequestObject));
+	if (failsafeCheck == undefined)	 {
+		logger.write(constants.levels.INFO, 'We have an issue with the bulk post, empyting for now');
+		fs.writeFile(fileName, '', function(error){
+			if (error)
+				logger.write(constants.levels.SEVERE, 'Error cleaning up commit_log');
+					
+		});
+	} else {
+		logger.write(constants.levels.INFO, 'Lookup Bulk Load Request # Keys: ' + returnedLookupRequestObject.rowkeys.length);	
+		logger.write(constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + JSON.stringify(returnedLookupRequestObject));
+		
+		dao.bulkPost(constants.values.CFUTF8Type, returnedLookupRequestObject);
+		
+		logger.write(constants.levels.INFO, 'Bulk Load Request # Keys: ' + returnedBulkRequestObject.rowkeys.length);	
+		logger.write(constants.levels.INFO, 'Bulk Load Request JSON: ' + JSON.stringify(returnedBulkRequestObject));
+		
+		dao.bulkPost(constants.values.CFLongType, returnedBulkRequestObject);
 	
-	dao.bulkPost(constants.values.CFLongType, returnedBulkRequestObject);
-
-	logger.write(constants.levels.INFO, 'Done purging commit_log');
-	
-	fs.writeFile(fileName, '', function(error){
-		if (error)
-			logger.write(constants.levels.SEVERE, 'Error cleaning up commit_log');
-				
-	});
+		logger.write(constants.levels.INFO, 'Done purging commit_log');
+		
+		fs.writeFile(fileName, '', function(error){
+			if (error)
+				logger.write(constants.levels.SEVERE, 'Error cleaning up commit_log');
+					
+		});
+	}
 };

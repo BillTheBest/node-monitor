@@ -33,7 +33,7 @@ WellnessManagerModule = function (childDeps) {
 	
 }; 
  
-WellnessManagerModule.prototype.keepAlive = function() {
+WellnessManagerModule.prototype.start = function() {
 
 	if (Module.config.wellnessInterval)
 		clearInterval(Module.config.wellnessInterval);

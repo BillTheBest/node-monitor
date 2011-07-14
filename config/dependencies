@@ -4,3 +4,5 @@ npm
 	querystring
 	crytpo
 	ec2
+	tls
+	websocket-server

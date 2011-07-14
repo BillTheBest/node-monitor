@@ -20,7 +20,6 @@ var modules = {
 	wellnessManager: '../modules/wellness-manager.js',
 	bulkpostManager: '../modules/bulkpost-manager.js',
 	pluginsManager: '../modules/plugins-manager.js',
-	// logmonitoringManager: '../modules/logmonitoring-manager.js',
 	credentialManager: '../modules/credential-manager.js'
 	
 };
@@ -57,6 +56,7 @@ var credentials = new credentialManager.CredentialManagerModule(childDeps);
 
 var NodeMonitor = {
 
+	init: false,
 	serverConnection: false,
 	plugins: {},
 	logsToMonitor: [],
@@ -85,78 +85,82 @@ NodeMonitor.start = function() {
 		logger.write(constants.levels.WARNING, 'Error emptying nohup.out file: ' + Exception);
 	}			
 	
-	this.onStart();
+	// dao.storeSelf(constants.api.CLIENTS, config.clientIP, config.externalIP);
+	
+	NodeMonitor.startPolling();
 	
 	try {
-		this.serverConnect();
+		NodeMonitor.serverConnect();
 	} catch (Exception) {
 		logger.write(constants.levels.WARNING, 'Error connection to Monitoring Server: ' + Exception);
 	}
 	
 	if (config.websocket)
-		this.openWebsocket();
+		NodeMonitor.openWebsocket();
 		
 };
 
-NodeMonitor.onStart = function() {	
+NodeMonitor.startPolling = function() {	
 
-	dao.storeSelf(constants.api.CLIENTS, config.clientIP, config.externalIP);
+	var keepalive = new wellnessManager.WellnessManagerModule(childDeps);
+	var bulkpost = new bulkpostManager.BulkpostManagerModule(NodeMonitor, childDeps);
+	var plugins = new pluginsManager.PluginsManagerModule(NodeMonitor, childDeps);
 
-	// Keep-alive Manager
-	var keepAliveModule = require('../modules/keepalive-manager');
-	new keepAliveModule.KeepAliveModule(this);
+	keepalive.start();
+	bulkpost.start();
+	plugins.start();
+			
+	//var logMonitorModule = require('../modules/log-manager');
+	//new logMonitorModule.LogMonitorModule(this);
 	
-	//var bulkpostManager = require('../modules/bulkpost-manager');
-	//var bulkpost = new bulkpostManager.BulkpostManagerModule(NodeMonitor, childDeps);
-	
-	// Bulk Post Manager
-	var bulkLoadModule = require('../modules/bulk-load-manager');
-	new bulkLoadModule.BulkLoadModule(this);
-	
-	// Plugins Manager
-	var pluginModule = require('../modules/plugin-manager');
-	new pluginModule.PluginModule(this);
-	
-	// Log Monitoring
-	var logMonitorModule = require('../modules/log-manager');
-	new logMonitorModule.LogMonitorModule(this);
 };
 
-NodeMonitor.onInit = function() {	
+NodeMonitor.setInit = function() {
+	
 	NodeMonitor.init = true;
+	
+	logger.write(constants.levels.INFO, 'We have initialized the connection to the Monitoring Server');
+	
 };
 
-NodeMonitor.onConnect = function(serverAddress) {
-	NodeMonitor.serverConnection.connected = true
+NodeMonitor.onConnect = function (serverAddress) {
+
+	NodeMonitor.serverConnection.connected = true;
 	NodeMonitor.serverConnection.setEncoding('utf-8');
 	
-	logger.write(constants.levels.INFO, 'Connected to Monitoring Server at ' + serverAddress + ':' + NodeMonitor.config.clientToServerPort);
+	logger.write(constants.levels.INFO, 'Connected to Monitoring Server at ' + serverAddress + ':' + config.clientToServerPort);
 		
-	if (NodeMonitor.reconnecting) {
+	if (NodeMonitor.reconnecting)
 		NodeMonitor.reconnecting = false;
-	}
 	
 	if (NodeMonitor.init == false) {
-		this.onInit();
+		NodeMonitor.setInit();
 	} else {
-		logger.write(constants.levels.INFO, 'Skipping initial actions on re-connect');
+		logger.write(constants.levels.INFO, 'Skipping polling actions on re-connect, they are already established');
 	}
+	
 };
 
 NodeMonitor.serverReconnect = function() {	
+
 	NodeMonitor.reconnecting = true;
-	logger.write(constants.levels.INFO, 'Attempting reconnect to server in 20 seconds');
+	
+	logger.write(constants.levels.INFO, 'Attempting reconnect to server in ' + config.serverReconnectTime + ' seconds');
+	
 	setTimeout(
 		function() {
 			logger.write(constants.levels.WARNING, 'Tried to reconnect');
 			NodeMonitor.serverConnect();
 		}, 
-		1000 * 20
+		config.serverReconnectTime
 	);
+	
 };
 
-NodeMonitor.handleConnectionError = function(exception) {
+NodeMonitor.handleConnectionError = function (exception) {
+
 	logger.write(constants.levels.SEVERE, 'A connection issue has arisen: ' + exception.message);
+	
 	if (!NodeMonitor.init)
 		logger.write(constants.levels.WARNING, 'Error on initial connection to server, load plugins anyway and write server requests to commit_log locally');
 
@@ -164,7 +168,9 @@ NodeMonitor.handleConnectionError = function(exception) {
 };
 
 NodeMonitor.handleTimeoutError = function() {
-	logger.write(constants.levels.SEVERE, 'A connection to server timed out');
+
+	logger.write(constants.levels.SEVERE, 'A connection to the Monitoring Server timed out');
+	
 	if (!NodeMonitor.reconnecting)
 		NodeMonitor.serverReconnect();
 		
@@ -191,7 +197,7 @@ NodeMonitor.serverConnect = function() {
 			ca: caPem 
 		};
 		
-		this.serverConnection = tls.connect(config.clientToServerPort, serverAddress, options, function() {			
+		NodeMonitor.serverConnection = tls.connect(config.clientToServerPort, serverAddress, options, function() {			
 			if (NodeMonitor.serverConnection.authorizationError) {
 			   	logger.write(constants.levels.WARNING, 'Authorization Error: ' + NodeMonitor.serverConnection.authorizationError);
 			} else {
@@ -200,7 +206,7 @@ NodeMonitor.serverConnect = function() {
 			}
 		});
 		
-		this.serverConnection.on('data', 
+		NodeMonitor.serverConnection.on('data', 
 			function() {
 				logger.write(constants.levels.INFO, 'Received a message from the server: ' + data);
 				clientApi.handleDataRequest(data);
@@ -209,29 +215,26 @@ NodeMonitor.serverConnect = function() {
 	} else {
 		logger.write(constants.levels.INFO, 'No SSL support, trying connection on: ' + serverAddress);
 		
-		this.serverConnection = net.createConnection(config.clientToServerPort, serverAddress);	
+		NodeMonitor.serverConnection = net.createConnection(config.clientToServerPort, serverAddress);	
 		
-		this.serverConnection.on('connect', 
+		NodeMonitor.serverConnection.on('connect', 
 			function() {
 			 	NodeMonitor.onConnect(serverAddress);
 			}
 		);	
 	}
 	
-	this.serverConnection.on('error', 
+	NodeMonitor.serverConnection.on('error', 
 		function(exception) {
 			NodeMonitor.handleConnectionError(exception);
 		}
 	);
 	
-	this.serverConnection.on('timeout', 
+	NodeMonitor.serverConnection.on('timeout', 
 		function() {
 			NodeMonitor.handleTimeoutError();
 		}
 	);
-};
-
-NodeMonitor.handleAlerts = function(plugin_name, key, date, data, alertCriteria) {
 	
 };
 
@@ -240,12 +243,14 @@ NodeMonitor.handleAlerts = function(plugin_name, key, date, data, alertCriteria)
 * Handle simple key, column value data being stored.
 * CFUTF8Type ['rowKey'][IP] = '{data}'
 */
-NodeMonitor.sendDataLookup = function(key, data) {
+NodeMonitor.sendDataLookup = function (key, data) {
+
 	var jsonString = utilities.formatLookupBroadcastData(key, utilities.generateEpocTime(), data, config.clientIP);
 	
 	logger.write(constants.levels.INFO, 'Data string being sent for lookup: ' + jsonString);
 	
-	this.storeData(jsonString);
+	NodeMonitor.storeData(jsonString);
+	
 };
 
 /**
@@ -253,12 +258,14 @@ NodeMonitor.sendDataLookup = function(key, data) {
 * Handle time based data being stored.
 * CFLongType ['rowKey:YYYY:MM:DD'][EPOC] = '{data}'
 */
-NodeMonitor.sendData = function(name, key, data) {	
+NodeMonitor.sendData = function (name, key, data) {	
+
 	var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), data, config.clientIP);
 	
 	logger.write(constants.levels.INFO, 'Data string being sent for date queries: ' + jsonString);
 	
-	this.storeData(jsonString);
+	NodeMonitor.storeData(jsonString);
+	
 };
 
 /**
@@ -266,8 +273,8 @@ NodeMonitor.sendData = function(name, key, data) {
 * Handle how often data is stored, e.g. always bulk post for heavy nodes,
 * or post in realtime for better alerting on lighter, but important, nodes
 */
-NodeMonitor.storeData = function(jsonString) {
-	// Check for bad data
+NodeMonitor.storeData = function (jsonString) {
+
 	var assertObject = utilities.dataChecker(jsonString);
 	
 	if (assertObject.assert) { 	
@@ -275,22 +282,22 @@ NodeMonitor.storeData = function(jsonString) {
 		logger.write(constants.levels.INFO, 'Assert returned true, storing this data');
 		
 		if (config.realtime) {
-			// Store in CloudSandra
 			dao.handleDataStorage(assertObject);
 		} else {
-			// Store in file
 			failsafe.commit(jsonString);
-			this.websocketServer.broadcast(jsonString);
+			NodeMonitor.websocketServer.broadcast(jsonString);
 		}
 	} else {
 		logger.write(constants.levels.WARNING, 'Assert failed, not storing this data');
 	}	
+	
 };
 
 /**
 * Handle requests/changes from server
 */
 NodeMonitor.messageHandler = function() {
+
 	/*
 	if (this.serverConnection.readyState != 'open' && this.serverConnection.readyState != 'writeOnly') {
 		logger.write(constants.levels.INFO, 'Error: socket not ready, skipping transmission and writing to commit_log');
@@ -305,13 +312,15 @@ NodeMonitor.messageHandler = function() {
 
 	this.serverConnection.write(config.startDelimiter + jsonString + config.endDelimiter, 'utf8');
 	*/
+	
 };
 
-/* 
+/** 
  * Push all data to UI if requested, TLS by default
  */
 NodeMonitor.openWebsocket = function() {
-	this.websocketServer.addListener('connection', function(conn) {
+
+	NodeMonitor.websocketServer.addListener('connection', function(conn) {
 	
 		logger.write(constants.levels.INFO, 'Listening for websocket connections on: ' + NodeMonitor.config.websocketRealtimePort);
 		logger.write(constants.levels.INFO, 'Opened websocket connection to UI: ' + conn.id);
@@ -323,15 +332,16 @@ NodeMonitor.openWebsocket = function() {
  		});
 	});
 	
-	this.websocketServer.on('error', function (exception) {
+	NodeMonitor.websocketServer.on('error', function (exception) {
 		logger.write(constants.levels.WARNING, 'Catching a websocket exception: ' + exception);
 	});
 	
-	this.websocketServer.listen(config.websocketRealtimePort);
+	NodeMonitor.websocketServer.listen(config.websocketRealtimePort);
 		
-	this.websocketServer.addListener('close', function(conn) {
+	NodeMonitor.websocketServer.addListener('close', function(conn) {
 		logger.write(constants.levels.INFO, 'Closed websocket connection to UI: ' + conn.id);
 	});
+	
 };
 
 
