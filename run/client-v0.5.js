@@ -8,9 +8,11 @@ var fs = require('fs');
 * This should help with any odd exceptions/bugs we don't catch 
 * (restart monitor, send alert with error)
 */
+/*
 process.on('uncaughtException', function (error) {
   	console.log('Caught exception: ' + error);
 }); 
+*/
 
 /**
 * Command line parameters keep things much easier to manage on a larger scale,

@@ -47,7 +47,6 @@ CredentialManagerModule.prototype.check = function() {
 	
 	try {
 		Module.constants.credentials.TWILIO_SID = process.env['TWILIO_SID'];
-		console.log('SID' + process.env['TWILIO_SID']);
 	} catch (Exception) {
 		Module.exit('Error with credentials');
 	}
