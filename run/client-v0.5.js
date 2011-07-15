@@ -72,7 +72,7 @@ process.argv.forEach(
 					console.log('Error exporting arguments for global use');
 		        	process.exit(1);
 				} else {
-					console.log('Finished exporting ' + key);
+					console.log('Finished exporting ' + key + ' as value ' + param);
 				}
 			});
 			
