@@ -82,7 +82,7 @@ function init() {
 	* Now we read the rest of the module config into global, and
 	* make sure to start the monitor only after this completes
 	*/
-	fs.readFile('../config/monitor_config', function (error, fd) {
+	fs.readFile('/monitoring/node-monitor/config/monitor_config', function (error, fd) {
 		if (error) {
 			console.log('Error reading node-monitor config file');
 			process.exit(1);
