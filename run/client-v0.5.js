@@ -1,147 +1,7 @@
 /**
  * node-monitor 
  */
-  
-var fs = require('fs'); 
  
-/**
-* Handle dependencies (npm and custom) by declaring them here.
-* This is much easier to manage, dnd it's prettier on the eyes
-*/
-var dependencies = {
-	
-	tls: 'tls',
-	websock: '../lib/websocket-server',
-	net: 'net'
-	
-}; 
- 
-var modules = {
-
-	loggingManager: '../modules/logging-manager',
-	filehandlerManager: '../modules/filehandler-manager',
-	daoManager: '../modules/dao-manager',
-	wellnessManager: '../modules/wellness-manager',
-	bulkpostManager: '../modules/bulkpost-manager',
-	pluginsManager: '../modules/plugins-manager',
-	credentialManager: '../modules/credential-manager'
-	
-};
-
-var childDeps = {
-		
-	stack: '../lib/long-stack-traces',
-	utilitiesManager: '../modules-children/utilities-manager',  
-	constantsManager: '../modules-children/constants-manager',
-	cloudsandra: '../modules-children/node-cloudsandra',
-	cloudwatch: '../modules-children/node-cloudwatch'
-
-};
-
-
-/**
-* This should help with any odd exceptions/bugs we don't catch
-*/
-
-process.on('uncaughtException', function (error) {
-  	console.log('Caught exception: ' + error);
-}); 
-
-/**
-* Command line parameters keep things much easier to manage on a larger scale,
-* and we auto-populate synchronously
-*
-* node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
-*/	
-function init() {
-	
-	var exportGlobals = false;
-
-	var arrayCount = 0;
-	process.argv.forEach(
-		function (value, index, array) {
-			if (arrayCount == 0 || arrayCount == 1) {
-				/**
-				* We ignore node and client-v0.5.js
-				*/
-				console.log('Ignoring parameter: ' + value);
-			} else {
-				var valueArray = value.split('=');
-				var key = valueArray[0];
-				var param = valueArray[1];
-				
-				process.env[key] = param;
-					
-				if (arrayCount == (process.argv.length - 1))
-					exportGlobals = true;
-			
-			}
-			arrayCount++;
-		}	
-	);
-		
-	/**
-	* Auto-populate box configuration settings on EC2
-	*/	
-	do {
-		/**
-		* Nothing
-		*/
-	} while (exportGlobals == false);
-
-	if (process.env['ec2'] == 'true') {
-	
-		console.log('Trying auto-configuration');
-		var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
-		
-		autoPopulate.forEach(
-			function (parameter) {
-				var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
-				require('child_process').exec(cmdline, function (error, stdout, stderr) {       
-			        if (error) {
-			        	console.log('Error auto-configuring');
-			        	process.exit(1);
-			        } else {
-						process.env[parameter] = stdout;
-						console.log(parameter + ': ' + process.env[parameter]);
-			        }
-				});
-			}
-		);
-		
-		NodeMonitor.start();
-		
-	} else {
-		console.log('Not on EC2, skipping auto-configuration');
-	}
-}
-
-init();
-
-/**
-* Require files and deps after exporting auto-config to process
-*/
-for (var name in dependencies) {
-	eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
-}
-
-for (var name in modules) {
-	eval('var ' + name + '= require(\'' + modules[name] + '\')');
-}
-
-for (var name in childDeps) {
-	eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
-}
-
-/*
-var utilities = new utilitiesManager.UtilitiesManagerModule();
-var constants = new constantsManager.ConstantsManagerModule();
-var logger = new loggingManager.LoggingManagerModule(childDeps);
-var dao = new daoManager.DaoManagerModule(childDeps);
-var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
-var credentials = new credentialManager.CredentialManagerModule(childDeps);
-*/
-
 var NodeMonitor = {
 
 	init: false,
@@ -431,3 +291,143 @@ NodeMonitor.openWebsocket = function() {
 	});
 	
 };
+  
+var fs = require('fs'); 
+ 
+/**
+* Handle dependencies (npm and custom) by declaring them here.
+* This is much easier to manage, dnd it's prettier on the eyes
+*/
+var dependencies = {
+	
+	tls: 'tls',
+	websock: '../lib/websocket-server',
+	net: 'net'
+	
+}; 
+ 
+var modules = {
+
+	loggingManager: '../modules/logging-manager',
+	filehandlerManager: '../modules/filehandler-manager',
+	daoManager: '../modules/dao-manager',
+	wellnessManager: '../modules/wellness-manager',
+	bulkpostManager: '../modules/bulkpost-manager',
+	pluginsManager: '../modules/plugins-manager',
+	credentialManager: '../modules/credential-manager'
+	
+};
+
+var childDeps = {
+		
+	stack: '../lib/long-stack-traces',
+	utilitiesManager: '../modules-children/utilities-manager',  
+	constantsManager: '../modules-children/constants-manager',
+	cloudsandra: '../modules-children/node-cloudsandra',
+	cloudwatch: '../modules-children/node-cloudwatch'
+
+};
+
+
+/**
+* This should help with any odd exceptions/bugs we don't catch
+*/
+
+process.on('uncaughtException', function (error) {
+  	console.log('Caught exception: ' + error);
+}); 
+
+/**
+* Command line parameters keep things much easier to manage on a larger scale,
+* and we auto-populate synchronously
+*
+* node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
+*/	
+function init() {
+	
+	var exportGlobals = false;
+
+	var arrayCount = 0;
+	process.argv.forEach(
+		function (value, index, array) {
+			if (arrayCount == 0 || arrayCount == 1) {
+				/**
+				* We ignore node and client-v0.5.js
+				*/
+				console.log('Ignoring parameter: ' + value);
+			} else {
+				var valueArray = value.split('=');
+				var key = valueArray[0];
+				var param = valueArray[1];
+				
+				process.env[key] = param;
+					
+				if (arrayCount == (process.argv.length - 1))
+					exportGlobals = true;
+			
+			}
+			arrayCount++;
+		}	
+	);
+		
+	/**
+	* Auto-populate box configuration settings on EC2
+	*/	
+	do {
+		/**
+		* Nothing
+		*/
+	} while (exportGlobals == false);
+
+	if (process.env['ec2'] == 'true') {
+	
+		console.log('Trying auto-configuration');
+		var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
+		
+		autoPopulate.forEach(
+			function (parameter) {
+				var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
+				require('child_process').exec(cmdline, function (error, stdout, stderr) {       
+			        if (error) {
+			        	console.log('Error auto-configuring');
+			        	process.exit(1);
+			        } else {
+						process.env[parameter] = stdout;
+						console.log(parameter + ': ' + process.env[parameter]);
+			        }
+				});
+			}
+		);
+		
+		NodeMonitor.start();
+		
+	} else {
+		console.log('Not on EC2, skipping auto-configuration');
+	}
+}
+
+init();
+
+/**
+* Require files and deps after exporting auto-config to process
+*/
+for (var name in dependencies) {
+	eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
+}
+
+for (var name in modules) {
+	eval('var ' + name + '= require(\'' + modules[name] + '\')');
+}
+
+for (var name in childDeps) {
+	eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+}
+
+/*
+var utilities = new utilitiesManager.UtilitiesManagerModule();
+var constants = new constantsManager.ConstantsManagerModule();
+var logger = new loggingManager.LoggingManagerModule(childDeps);
+var dao = new daoManager.DaoManagerModule(childDeps);
+var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
+var credentials = new credentialManager.CredentialManagerModule(childDeps);
+*/
