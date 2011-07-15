@@ -85,7 +85,7 @@ process.argv.forEach(
 * Auto-populate box configuration settings on EC2
 */
 
-console.log('Process for EC2: ' + process.env['ec2']);
+console.log('Process for EC2: ' + process.env['$ec2']);
 
 if (process.env['ec2'] == true) {
 
