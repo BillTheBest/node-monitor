@@ -33,7 +33,6 @@ PluginsManagerModule = function (nodeMonitor, childDeps) {
 	Module.utilities = utilities;
 	Module.constants = constants;
 	Module.logger = logger;
-	Module.config = config;
 	
 	Module.childDeps = childDeps;
 		
@@ -42,11 +41,11 @@ PluginsManagerModule = function (nodeMonitor, childDeps) {
 PluginsManagerModule.prototype.start = function() {
 
 	var pluginCount = 0;
-	var plugins = fs.readdirSync(Module.config.pluginDirectory);
+	var plugins = fs.readdirSync(process.env['pluginDirectory']);
 	plugins.forEach (
 		function (plugin) {
 			plugin = plugin.split('.')[0];
-			var loaded = require(Module.config.pluginDirectory + plugin);
+			var loaded = require(process.env['pluginDirectory'] + plugin);
 			NodeMonitorObject.plugins[loaded.name] = loaded;
 			
 			Module.logger.write(Module.constants.levels.INFO, 'Loading plugin: ' + loaded.name.toString());
@@ -63,10 +62,10 @@ PluginsManagerModule.prototype.start = function() {
 
 PluginsManagerModule.prototype.executePlugins = function() {
 
-	if (Module.config.pluginInterval)
-		clearInterval(Module.config.pluginInterval);
+	if (Module.interval)
+		clearInterval(Module.interval);
 	
-	Module.config.pluginInterval = setInterval(
+	Module.interval = setInterval(
 		function() {
 			for (var plugin in NodeMonitorObject.plugins) {
 			
@@ -78,10 +77,10 @@ PluginsManagerModule.prototype.executePlugins = function() {
 						
 						if (key) {
 					
-							var lookupKey = Module.utilities.formatLookupPluginKey(Module.config.clientIP);
+							var lookupKey = Module.utilities.formatLookupPluginKey(process.env['clientIP']);
 							NodeMonitorObject.sendDataLookup(lookupKey, pluginName);
 							
-							var dataKey = Module.utilities.formatPluginKey(Module.config.clientIP, pluginName);
+							var dataKey = Module.utilities.formatPluginKey(process.env['clientIP'], pluginName);
 							NodeMonitorObject.sendData(Module.constants.api.PLUGINS, dataKey, data);
 							
 							
@@ -92,7 +91,7 @@ PluginsManagerModule.prototype.executePlugins = function() {
 				);
 			}
 		}, 
-		Module.config.timeToWait
+		process.env['timeToWait']
 	);
 };
 

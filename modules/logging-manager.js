@@ -29,7 +29,6 @@ LoggingManagerModule = function (childDeps) {
 	
 	Module.constants = constants;
 	Module.dao = dao;
-	Module.config = config;
 	
 };
 
@@ -38,7 +37,7 @@ LoggingManagerModule.prototype.write = function (level, message) {
 	var date = new Date();
 	message = date + ' ' + level + ' ' + message + '\n';
 
-	if (Module.config.logToConsole)
+	if (process.env['logToConsole'] == 'true')
 		console.log(message);
 	
 	if (level == Module.constants.levels.SEVERE) {
@@ -48,7 +47,7 @@ LoggingManagerModule.prototype.write = function (level, message) {
 		var postParams = {};
 		
 		var data = {
-			origin: Module.config.clientIP, 
+			origin: process.env['clientIP'], 
 			alert: message
 		};
 		
@@ -59,7 +58,7 @@ LoggingManagerModule.prototype.write = function (level, message) {
 		
 	}
 	
-	fs.open(Module.config.logFile, 'a', 0666, function (error, fd) {	
+	fs.open(process.env['logFile'], 'a', 0666, function (error, fd) {	
 			
 		if (error)
 			return;

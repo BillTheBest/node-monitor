@@ -24,13 +24,12 @@ DaoManagerModule = function (childDeps) {
 	Module.constants = constants;
 	Module.cloudsandraApi = CloudsandraApi;
 	Module.cloudwatchApi = CloudwatchApi;
-	Module.config = config;
 	
 };
 
 DaoManagerModule.prototype.debugMode = function() {
 
-	if (Module.config.debug)
+	if (process.env['debug'] == 'true')
 		return true;
 
 	return false;	
@@ -39,7 +38,7 @@ DaoManagerModule.prototype.debugMode = function() {
 
 DaoManagerModule.prototype.cloudwatchAlerts = function() {
 
-	if (Module.config.cloudwatchEnabled)
+	if (process.env['cloudwatchEnabled'] == 'true')
 		return true;
 
 	return false;	
@@ -79,14 +78,14 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
 	
 	params = {};
 	
-	params['Namespace'] = Module.config.cloudwatchNamespace;
+	params['Namespace'] = process.env['cloudwatchNamespace'];
 	params['MetricData.member.1.MetricName'] = metricName;
 	params['MetricData.member.1.Unit'] = unit;
 	params['MetricData.member.1.Value'] = value;
 	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-	params['MetricData.member.1.Dimensions.member.1.Value'] = Module.config.instanceId;
+	params['MetricData.member.1.Dimensions.member.1.Value'] = process.env['instanceId'];
 	
-	if (Module.config.cloudwatchEnabled) {
+	if (process.env['cloudwatchEnabled'] == 'true') {
 		Module.cloudwatchApi.request('PutMetricData', params, function (response) {
 			
 		});

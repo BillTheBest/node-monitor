@@ -29,20 +29,19 @@ WellnessManagerModule = function (childDeps) {
 	
 	Module.constants = constants;
 	Module.dao = dao;
-	Module.config = config;
 	
 }; 
  
 WellnessManagerModule.prototype.start = function() {
 
-	if (Module.config.wellnessInterval)
-		clearInterval(Module.config.wellnessInterval);
+	if (Module.interval)
+		clearInterval(Module.interval);
 	
-	Module.config.wellnessInterval = setInterval(
+	Module.interval = setInterval(
 		function() {
-			dao.storeSelf(Module.constants.api.CLIENTS, Module.config.clientIP, Module.config.externalIP);			
+			dao.storeSelf(Module.constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);			
 		}, 
-		Module.config.keepAliveInterval
+		process.env['keepAliveInterval']
 	);
 	
 };

@@ -29,16 +29,15 @@ BulkpostManagerModule = function (nodeMonitor, childDeps) {
 	Module = this;
 	
 	Module.filehandler = filehandler;
-	Module.config = config;
 				
 }; 
 
 BulkpostManagerModule.prototype.start = function() {
 
-	if (Module.config.bulkInterval)
-		clearInterval(config.bulkInterval);
+	if (Module.interval)
+		clearInterval(Module.interval);
 	
-	Module.config.bulkInterval = setInterval(
+	Module.interval = setInterval(
 		function() {
 			Module.filehandler.purgeCommitLog(NodeMonitorObject);
 		}, 
