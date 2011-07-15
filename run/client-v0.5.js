@@ -79,7 +79,10 @@ process.argv.forEach(
 /**
 * Auto-populate box configuration settings on EC2
 */
-if (process.env['ec2'] == 'true') {
+
+console.log('Process for EC2: ' + process.env['ec2']);
+
+if (process.env['ec2'] == true) {
 
 	console.log('Trying auto-configuration');
 	var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
@@ -94,7 +97,7 @@ if (process.env['ec2'] == 'true') {
 		        } else {
 		        	var cmdline = 'export ' + parameter + '=' + stdout;
 					require('child_process').exec(cmdline, function (error, stdout, stderr) {
-			
+				
 					});
 		        }
 			});
