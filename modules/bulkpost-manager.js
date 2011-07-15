@@ -41,7 +41,7 @@ BulkpostManagerModule.prototype.start = function() {
 		function() {
 			Module.filehandler.purgeCommitLog(NodeMonitorObject);
 		}, 
-		Module.config.timeToPost
+		Number(process.env['timeToPost'])
 	);
 	
 };

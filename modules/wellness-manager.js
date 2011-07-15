@@ -41,7 +41,7 @@ WellnessManagerModule.prototype.start = function() {
 		function() {
 			dao.storeSelf(Module.constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);			
 		}, 
-		process.env['keepAliveInterval']
+		Number(process.env['keepAliveInterval'])
 	);
 	
 };

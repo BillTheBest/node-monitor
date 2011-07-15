@@ -91,7 +91,7 @@ PluginsManagerModule.prototype.executePlugins = function() {
 				);
 			}
 		}, 
-		process.env['timeToWait']
+		Number(process.env['timeToWait'])
 	);
 };
 
