@@ -26,9 +26,8 @@ BulkpostManagerModule = function (nodeMonitor, childDeps) {
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 
 	NodeMonitorObject = nodeMonitor;
-	Module = this;
 	
-	Module.filehandler = filehandler;
+	this.filehandler = filehandler;
 				
 }; 
 
@@ -39,7 +38,7 @@ BulkpostManagerModule.prototype.start = function() {
 	
 	Module.interval = setInterval(
 		function() {
-			Module.filehandler.purgeCommitLog(NodeMonitorObject);
+			BulkpostManagerModule.filehandler.purgeCommitLog(NodeMonitorObject);
 		}, 
 		Number(process.env['timeToPost'])
 	);

@@ -8,6 +8,7 @@ var fs = require('fs');
 * This should help with any odd exceptions/bugs we don't catch 
 * (restart monitor, send alert with error)
 */
+
 /*
 process.on('uncaughtException', function (error) {
   	console.log('Caught exception: ' + error);
@@ -107,6 +108,7 @@ function init() {
 		monitor();
 		
 	});
+	
 }
 
 /**
@@ -279,6 +281,7 @@ function monitor() {
 			logger.write(constants.levels.WARNING, 'Error on initial connection to server, load plugins anyway and write server requests to commit_log locally');
 	
 		NodeMonitor.serverReconnect();
+		
 	};
 	
 	NodeMonitor.handleTimeoutError = function() {
