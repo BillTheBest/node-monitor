@@ -35,15 +35,15 @@ var childDeps = {
 	constantsManager: '../modules-children/constants-manager.js',
 	cloudsandra: '../modules-children/node-cloudsandra.js',
 	cloudwatch: '../modules-children/node-cloudwatch.js',	
-	config: '../config/config-v0.5.js'
+	config: '../config/config.js'
 
 };
 
 /**
 * This should help with any odd exceptions/bugs we don't catch
 */
-process.on('uncaughtException', function (err) {
-  	console.log('Caught exception: ' + err);
+process.on('uncaughtException', function (error) {
+  	console.log('Caught exception: ' + error);
 }); 
 
 /**

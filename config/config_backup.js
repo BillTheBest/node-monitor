@@ -1,26 +1,14 @@
 /**
 * Client Config
 */
-	
-	/**
-	* Auto-config parameters
-	*/
-	this.clientIP = process.env['local-ipv4'];
-	this.externalIP = process.env['public-hostname'];
-	this.onEC2 = process.env['ec2'];
-	this.instanceId = process.env['instance-id'];
-	this.debug = process.env['debug'];
-	this.logToConsole = process.env['console'];
-	
+
+	this.clientIP = '127.0.0.1';
+	this.externalIP = '127.0.0.1';
+	this.onEC2 = false;
+	this.instanceId = '';
 	this.drive = 'sda1';
 	
-	/**
-	* Time settings
-	*/
-	this.timeToWait = 1000 * 30; // 30 seconds
-	this.timeToPost = 1000 * 60 * 2; // 2 minutes
-	this.keepAliveInterval = 1000 * 60 * 5; // 5 minutes
-	this.serverReconnectTime = 1000 * 20 // 20 seconds
+	this.debug = true;
 	
 	/**
 	* Never need to touch these
@@ -28,7 +16,6 @@
 	this.init = false;
 	this.reconnecting = false;
 	this.realtime = false;
-	
 	this.logConfigFile = '../config/log_config';
 	this.daemonConfigFile = '../config/daemon_config';
 	this.processConfigFile = '../config/process_config';
@@ -38,6 +25,12 @@
 
 	this.monitorDirectories = true;
 	this.directoryList = '/var/log';
+	
+	
+	this.timeToWait = 1000 * 30; // 30 seconds
+	this.timeToPost = 1000 * 60 * 2; // 2 minutes
+	this.keepAliveInterval = 1000 * 60 * 5; // 5 minutes
+	this.serverReconnectTime = 1000 * 20 // 20 seconds
 
 /**
 * Server Config
@@ -80,7 +73,12 @@
 	*/
 	this.startDelimiter = '//START//';
 	this.endDelimiter = '//END//';
-
+	
+	/**
+	* Turn logging to console off when deploying, otherwise use nohup
+	*/
+	this.logToConsole = true;
+	
 	/**
 	* CloudWatch namespace
 	*/
