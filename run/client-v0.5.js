@@ -21,6 +21,8 @@ process.on('uncaughtException', function (error) {
 * node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
 */	
 function init() {
+
+	console.log('Current directory: ' + process.cwd());
 	
 	var exportGlobals = false;
 

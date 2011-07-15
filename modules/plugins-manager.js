@@ -41,11 +41,11 @@ PluginsManagerModule = function (nodeMonitor, childDeps) {
 PluginsManagerModule.prototype.start = function() {
 
 	var pluginCount = 0;
-	var plugins = fs.readdirSync(process.env['pluginDirectory']);
+	var plugins = fs.readdirSync(process.cwd() + process.env['pluginDirectory']);
 	plugins.forEach (
 		function (plugin) {
 			plugin = plugin.split('.')[0];
-			var loaded = require(process.env['pluginDirectory'] + plugin);
+			var loaded = require(process.cwd() + process.env['pluginDirectory'] + plugin);
 			NodeMonitorObject.plugins[loaded.name] = loaded;
 			
 			Module.logger.write(Module.constants.levels.INFO, 'Loading plugin: ' + loaded.name.toString());
