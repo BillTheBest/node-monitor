@@ -5,7 +5,8 @@
 var fs = require('fs'); 
  
 /**
-* This should help with any odd exceptions/bugs we don't catch
+* This should help with any odd exceptions/bugs we don't catch 
+* (restart monitor, send alert with error)
 */
 process.on('uncaughtException', function (error) {
   	console.log('Caught exception: ' + error);
@@ -67,7 +68,7 @@ function init() {
 			        	process.exit(1);
 			        } else {
 						process.env[parameter] = stdout;
-						console.log(parameter + ': ' + process.env[parameter]);
+						console.log('Setting ' + parameter + ': ' + process.env[parameter]);
 			        }
 				});
 			}
@@ -77,7 +78,31 @@ function init() {
 		console.log('Not on EC2, skipping auto-configuration');
 	}
 	
-	monitor();
+	/**
+	* Now we read the rest of the module config into global, and
+	* make sure to start the monitor only after this completes
+	*/
+	fs.readFile('../config/monitor_config', function (error, fd) {
+		if (error) {
+			console.log('Error reading node-monitor config file');
+			process.exit(1);
+		}
+				
+	  	var splitBuffer = [];
+	  	splitBuffer = fd.toString().split('\n');
+	  	
+	  	for (i = 0; i < splitBuffer.length; i++) {
+	  		var params = [];
+	  		params = splitBuffer[i].split('=');
+
+	  		process.env[params[0]] = params[1];
+	  		
+	  		console.log('Setting ' + params[0] + ': ' + process.env[params[0]]);
+		}  	 
+		
+		monitor();
+		
+	});
 }
 
 /**
