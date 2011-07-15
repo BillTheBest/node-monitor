@@ -9,12 +9,14 @@ case "$1" in
 		NODE_MONITOR=`ps -ef | grep -v grep | grep client.js | awk '{print $2'}`
 		kill -9 $NODE_MONITOR
 		
+		cd ../run
+		
 		# Credentials go here
 					
 		#node client.js > /dev/null 2>&1 &
 		#node client-v0.5.js
 		
-		node /monitoring/node-monitor/run/client-v0.5.js ec2=false debug=true console=false cloudwatch=false
+		node client-v0.5.js ec2=true debug=true console=false cloudwatch=false
 		
 		;;
 	'stop')

@@ -34,10 +34,10 @@ var childDeps = {
 	utilitiesManager: '../modules-children/utilities-manager',  
 	constantsManager: '../modules-children/constants-manager',
 	cloudsandra: '../modules-children/node-cloudsandra',
-	cloudwatch: '../modules-children/node-cloudwatch',	
-	config: '../config/config'
+	cloudwatch: '../modules-children/node-cloudwatch'
 
 };
+
 
 /**
 * This should help with any odd exceptions/bugs we don't catch
@@ -48,14 +48,13 @@ process.on('uncaughtException', function (error) {
 }); 
 
 /**
-* Command line parameters keeps things much easier to manage on a larger scale,
+* Command line parameters keep things much easier to manage on a larger scale,
 * and we auto-populate synchronously
 *
 * node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
 */	
-
 function init() {
-
+	
 	var exportGlobals = false;
 
 	var arrayCount = 0;
@@ -65,28 +64,18 @@ function init() {
 				/**
 				* We ignore node and client-v0.5.js
 				*/
+				console.log('Ignoring parameter: ' + value);
 			} else {
 				var valueArray = value.split('=');
 				var key = valueArray[0];
 				var param = valueArray[1];
 				
-				// eval('config.' + key + ' = ' + param);
-				
-				var cmdline = 'export ' + key + '=' + param;
-				require('child_process').exec(cmdline, function (error, stdout, stderr) {
-					if (error) {
-						console.log('Error exporting arguments for global use');
-			        	process.exit(1);
-					} else {
-						console.log('Finished exporting ' + key + ' as value ' + param);
-					}
-				});
-				
+				process.env[key] = param;
+					
+				if (arrayCount == (process.argv.length - 1))
+					exportGlobals = true;
+			
 			}
-			
-			if (arrayCount == process.argv.length)
-				exportGlobals = true;
-			
 			arrayCount++;
 		}	
 	);
@@ -99,8 +88,8 @@ function init() {
 		* Nothing
 		*/
 	} while (exportGlobals == false);
-	
-	if (process.env['ec2'] == true) {
+
+	if (process.env['ec2'] == 'true') {
 	
 		console.log('Trying auto-configuration');
 		var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
@@ -113,10 +102,7 @@ function init() {
 			        	console.log('Error auto-configuring');
 			        	process.exit(1);
 			        } else {
-			        	var cmdline = 'export ' + parameter + '=' + stdout;
-						require('child_process').exec(cmdline, function (error, stdout, stderr) {
-					
-						});
+						process.env[parameter] = stdout;
 			        }
 				});
 			}
@@ -441,4 +427,4 @@ NodeMonitor.openWebsocket = function() {
 	
 };
 
-NodeMonitor.start();
+//NodeMonitor.start();
