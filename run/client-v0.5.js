@@ -48,7 +48,8 @@ process.on('uncaughtException', function (error) {
 }); 
 
 /**
-* Command line parameters keeps things much easier to manage on a larger scale
+* Command line parameters keeps things much easier to manage on a larger scale,
+* and we auto-populate synchronously
 *
 * node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
 */	
@@ -79,39 +80,37 @@ process.argv.forEach(
 		}
 		arrayCount++;
 	}
+	
+	/**
+	* Auto-populate box configuration settings on EC2
+	*/	
+	if (process.env['ec2'] == true) {
+	
+		console.log('Trying auto-configuration');
+		var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
+		
+		autoPopulate.forEach(
+			function (parameter) {
+				var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
+				require('child_process').exec(cmdline, function (error, stdout, stderr) {       
+			        if (error) {
+			        	console.log('Error auto-configuring');
+			        	process.exit(1);
+			        } else {
+			        	var cmdline = 'export ' + parameter + '=' + stdout;
+						require('child_process').exec(cmdline, function (error, stdout, stderr) {
+					
+						});
+			        }
+				});
+			}
+		);
+		
+	} else {
+		console.log('Not on EC2, skipping auto-configuration');
+	}
+	
 );
-
-/**
-* Auto-populate box configuration settings on EC2
-*/
-
-console.log('Process for EC2: ' + process.env['$ec2']);
-
-if (process.env['ec2'] == true) {
-
-	console.log('Trying auto-configuration');
-	var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
-	
-	autoPopulate.forEach(
-		function (parameter) {
-			var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
-			require('child_process').exec(cmdline, function (error, stdout, stderr) {       
-		        if (error) {
-		        	console.log('Error auto-configuring');
-		        	process.exit(1);
-		        } else {
-		        	var cmdline = 'export ' + parameter + '=' + stdout;
-					require('child_process').exec(cmdline, function (error, stdout, stderr) {
-				
-					});
-		        }
-			});
-		}
-	);
-	
-} else {
-	console.log('Not on EC2, skipping auto-configuration');
-}
 
 /**
 * Require files and deps after exporting auto-config to process
@@ -424,6 +423,5 @@ NodeMonitor.openWebsocket = function() {
 	});
 	
 };
-
 
 NodeMonitor.start();
