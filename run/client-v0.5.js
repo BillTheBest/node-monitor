@@ -53,34 +53,38 @@ process.on('uncaughtException', function (error) {
 *
 * node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
 */	
-var arrayCount = 0;
-process.argv.forEach(
-	function (value, index, array) {
-		if (arrayCount == 0 || arrayCount == 1) {
-			/**
-			* We ignore node and client-v0.5.js
-			*/
-		} else {
-			var valueArray = value.split('=');
-			var key = valueArray[0];
-			var param = valueArray[1];
-			
-			// eval('config.' + key + ' = ' + param);
-			
-			var cmdline = 'export ' + key + '=' + param;
-			require('child_process').exec(cmdline, function (error, stdout, stderr) {
-				if (error) {
-					console.log('Error exporting arguments for global use');
-		        	process.exit(1);
-				} else {
-					console.log('Finished exporting ' + key + ' as value ' + param);
-				}
-			});
-			
-		}
-		arrayCount++;
-	}
-	
+
+function init() {
+
+	var arrayCount = 0;
+	process.argv.forEach(
+		function (value, index, array) {
+			if (arrayCount == 0 || arrayCount == 1) {
+				/**
+				* We ignore node and client-v0.5.js
+				*/
+			} else {
+				var valueArray = value.split('=');
+				var key = valueArray[0];
+				var param = valueArray[1];
+				
+				// eval('config.' + key + ' = ' + param);
+				
+				var cmdline = 'export ' + key + '=' + param;
+				require('child_process').exec(cmdline, function (error, stdout, stderr) {
+					if (error) {
+						console.log('Error exporting arguments for global use');
+			        	process.exit(1);
+					} else {
+						console.log('Finished exporting ' + key + ' as value ' + param);
+					}
+				});
+				
+			}
+			arrayCount++;
+		}	
+	);
+		
 	/**
 	* Auto-populate box configuration settings on EC2
 	*/	
@@ -109,8 +113,9 @@ process.argv.forEach(
 	} else {
 		console.log('Not on EC2, skipping auto-configuration');
 	}
-	
-);
+}
+
+init();
 
 /**
 * Require files and deps after exporting auto-config to process
