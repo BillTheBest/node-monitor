@@ -5,41 +5,6 @@
 var fs = require('fs'); 
  
 /**
-* Handle dependencies (npm and custom) by declaring them here.
-* This is much easier to manage, dnd it's prettier on the eyes
-*/
-var dependencies = {
-	
-	tls: 'tls',
-	websock: '../lib/websocket-server',
-	net: 'net'
-	
-}; 
- 
-var modules = {
-
-	loggingManager: '../modules/logging-manager',
-	filehandlerManager: '../modules/filehandler-manager',
-	daoManager: '../modules/dao-manager',
-	wellnessManager: '../modules/wellness-manager',
-	bulkpostManager: '../modules/bulkpost-manager',
-	pluginsManager: '../modules/plugins-manager',
-	credentialManager: '../modules/credential-manager'
-	
-};
-
-var childDeps = {
-		
-	stack: '../lib/long-stack-traces',
-	utilitiesManager: '../modules-children/utilities-manager',  
-	constantsManager: '../modules-children/constants-manager',
-	cloudsandra: '../modules-children/node-cloudsandra',
-	cloudwatch: '../modules-children/node-cloudwatch'
-
-};
-
-
-/**
 * This should help with any odd exceptions/bugs we don't catch
 */
 process.on('uncaughtException', function (error) {
@@ -115,10 +80,46 @@ function init() {
 	monitor();
 }
 
+/**
+* We start monitoring after we've populated configs and parsed
+* startup arguments
+*/
 function monitor() {
+
 	/**
-	* Require files and deps after exporting auto-config to process
+	* Handle dependencies (npm and custom) by declaring them here.
+	* This is much easier to manage, dnd it's prettier on the eyes
 	*/
+	var dependencies = {
+		
+		tls: 'tls',
+		websock: '../lib/websocket-server',
+		net: 'net'
+		
+	}; 
+	 
+	var modules = {
+	
+		loggingManager: '../modules/logging-manager',
+		filehandlerManager: '../modules/filehandler-manager',
+		daoManager: '../modules/dao-manager',
+		wellnessManager: '../modules/wellness-manager',
+		bulkpostManager: '../modules/bulkpost-manager',
+		pluginsManager: '../modules/plugins-manager',
+		credentialManager: '../modules/credential-manager'
+		
+	};
+	
+	var childDeps = {
+			
+		stack: '../lib/long-stack-traces',
+		utilitiesManager: '../modules-children/utilities-manager',  
+		constantsManager: '../modules-children/constants-manager',
+		cloudsandra: '../modules-children/node-cloudsandra',
+		cloudwatch: '../modules-children/node-cloudwatch'
+	
+	};
+	
 	for (var name in dependencies) {
 		eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
 	}
@@ -131,14 +132,12 @@ function monitor() {
 		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
 	}
 	
-	/*
 	var utilities = new utilitiesManager.UtilitiesManagerModule();
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(childDeps);
 	var dao = new daoManager.DaoManagerModule(childDeps);
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 	var credentials = new credentialManager.CredentialManagerModule(childDeps);
-	*/
 	
 	var NodeMonitor = {
 	
@@ -431,6 +430,7 @@ function monitor() {
 	};
 	
 	NodeMonitor.start();
+	
 }
 
 init();
