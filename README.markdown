@@ -187,29 +187,9 @@ If I want to use data sets other than a single day and counts have determined th
 Errors to Fix
 -----------------------------------
 
-	Uncaught TypeError: Cannot read property 'rowkeys' of undefined
-	    at Object.readFile (/monitoring/node-monitor/modules/failsafe.js:126:103)
-	    at Object.purge (/monitoring/node-monitor/modules/failsafe.js:40:7)
-	    at Timer.<anonymous> (/monitoring/node-monitor/modules/bulk-load-manager.js:41:13)
-	----------------------------------------
-	    at Object.setInterval
-	    at [object Object].bulkPost (/monitoring/node-monitor/modules/bulk-load-manager.js:38:43)
-	    at new <anonymous> (/monitoring/node-monitor/modules/bulk-load-manager.js:31:9)
-	    at Object.onStart (/monitoring/node-monitor/run/client.js:82:20)
-	    at Object.start (/monitoring/node-monitor/run/client.js:64:7)
-	    at Object.<anonymous> (/monitoring/node-monitor/run/client.js:306:13)
-	    at Module._compile (module.js:407:26)
-	    at Object..js (module.js:413:10)
-	    at Module.load (module.js:339:31)
-	
-	/monitoring/node-monitor/lib/long-stack-traces/lib/long-stack-traces.js:80
-	                    throw ""; // TODO: throw the original error, or undefined?
-
 
 Features to Add
 -----------------------------------
-
-Add ec2 metadata auto populate config
 
 Automated restarts
 
@@ -250,8 +230,6 @@ Make a deploy/undeploy solution
 Fix EC2 groups (don't match?)
 
 Log table formatting
-
-One bulk load request fails on initial post (lookup?)
 
 Need to unset realtime divs (add in call to get external IP), fix CSS
 
