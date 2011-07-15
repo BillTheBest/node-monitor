@@ -130,12 +130,14 @@ for (var name in childDeps) {
 	eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
 }
 
+/*
 var utilities = new utilitiesManager.UtilitiesManagerModule();
 var constants = new constantsManager.ConstantsManagerModule();
 var logger = new loggingManager.LoggingManagerModule(childDeps);
 var dao = new daoManager.DaoManagerModule(childDeps);
 var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 var credentials = new credentialManager.CredentialManagerModule(childDeps);
+*/
 
 var NodeMonitor = {
 
@@ -426,5 +428,3 @@ NodeMonitor.openWebsocket = function() {
 	});
 	
 };
-
-//NodeMonitor.start();
