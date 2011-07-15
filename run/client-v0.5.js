@@ -103,10 +103,13 @@ function init() {
 			        	process.exit(1);
 			        } else {
 						process.env[parameter] = stdout;
+						console.log(parameter + ': ' + process.env[parameter]);
 			        }
 				});
 			}
 		);
+		
+		NodeMonitor.start();
 		
 	} else {
 		console.log('Not on EC2, skipping auto-configuration');
