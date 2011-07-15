@@ -1,38 +1,44 @@
 #!/bin/bash
 
+GIT_PROJECT=git@github.com:isidorey/node-monitor.git
+
 case "$1" in
      'start')
 		echo "Starting node-monitor"
+		
 		NODE_MONITOR=`ps -ef | grep -v grep | grep client.js | awk '{print $2'}`
 		kill -9 $NODE_MONITOR
-		sleep 3
 		cd ../run
-		export AWS_ACCESS_KEY_ID=1;
-		export AWS_SECRET_ACCESS_KEY=1;
-		export TWILIO_SID=1;
-		export TWILIO_TOKEN=1;
-		export CLOUDSANDRA_TOKEN=1;
-		export CLOUDSANDRA_ACCOUNT=1;
+			
+	
+		
 		#node client.js > /dev/null 2>&1 &
-		node client-v0.5.js
+		#node client-v0.5.js
+		
+		node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
+		
 		;;
 	'stop')
 		echo "Stopping node-monitor"
+		
 		NODE_MONITOR=`ps -ef | grep -v grep | grep client.js | awk '{print $2'}`
 		kill -9 $NODE_MONITOR
 		for PID in `ps -ef | grep -v grep | grep "tail -F" | awk '{print $2}'`; do
         	echo "Killing: " + $PID
         	kill -9	$PID
 		done
+		
 		;;
 	'update')
 		echo "Updating node-monitor"
+		
 		cp -r /monitoring/node-monitor/config /monitoring/
 		rm -r /monitoring/node-monitor
 		cd  /monitoring
-		git clone git://github.com/franklovecchio/node-monitor.git
+		git clone $GIT_PROJECT
 		cp -r /monitoring/config /monitoring/node-monitor
 		chown ubuntu:ubuntu /monitoring * -Rf
+		
 		;;
 	'install-debian')
 		yes | apt-get install git-core scons curl build-essential openssl libssl-dev
@@ -45,7 +51,8 @@ case "$1" in
 		cd /monitoring
 		curl http://npmjs.org/install.sh | sudo sh
 		npm install iconv forever fermata ec2
-		git clone git://github.com/franklovecchio/node-monitor.git
+		git clone $GIT_PROJECT
+		
 		;;
 	'install-centos')
 		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit
@@ -59,7 +66,8 @@ case "$1" in
 		sed -i "s/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin:\/usr\/local\/bin/g" /etc/sudoers
 		curl http://npmjs.org/install.sh | sudo sh
 		npm install iconv forever fermata ec2
-		git clone git://github.com/franklovecchio/node-monitor.git
+		git clone $GIT_PROJECT
+		
 		;;
 	'')
 		echo "Usage: $0 [start|stop|update|install-debian|install-centos]"

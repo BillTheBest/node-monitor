@@ -1,9 +1,13 @@
 /**
  * node-monitor 
  */
- 
+  
 var fs = require('fs'); 
  
+/**
+* Handle dependencies (npm and custom) by declaring them here.
+* This is much easier to manage, dnd it's prettier on the eyes
+*/
 var dependencies = {
 	
 	tls: 'tls',
@@ -29,12 +33,80 @@ var childDeps = {
 	stack: '../lib/long-stack-traces',
 	utilitiesManager: '../modules-children/utilities-manager.js',  
 	constantsManager: '../modules-children/constants-manager.js',
-	cloudsandra: '../modules-children/node-cloudsandra',
-	cloudwatch: '../modules-children/node-cloudwatch',	
-	config: '../config/config'
+	cloudsandra: '../modules-children/node-cloudsandra.js',
+	cloudwatch: '../modules-children/node-cloudwatch.js',	
+	config: '../config/config-v0.5.js'
 
 };
 
+/**
+* This should help with any odd exceptions/bugs we don't catch
+*/
+process.on('uncaughtException', function (err) {
+  	console.log('Caught exception: ' + err);
+}); 
+
+/**
+* Command line parameters keeps things much easier to manage on a larger scale
+*
+* node client-v0.5.js ec2=false debug=true console=false cloudwatch=false
+*/	
+var arrayCount = 0;
+process.argv.forEach(
+	function (value, index, array) {
+		if (arrayCount == 0 || arrayCount == 1) {
+			/**
+			* We ignore node and client-v0.5.js
+			*/
+		} else {
+			var valueArray = value.split('=');
+			var key = valueArray[0];
+			var param = valueArray[1];
+			
+			// eval('config.' + key + ' = ' + param);
+			
+			var cmdline = 'export ' + key + '=' + param;
+			require('child_process').exec(cmdline, function (error, stdout, stderr) {
+			
+			});
+			
+		}
+		arrayCount++;
+	}
+);
+
+/**
+* Auto-populate box configuration settings on EC2
+*/
+if (config.ec2) {
+
+	console.log('Trying auto-configuration');
+	var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
+	
+	autoPopulate.forEach(
+		function (parameter) {
+			var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
+			require('child_process').exec(cmdline, function (error, stdout, stderr) {       
+		        if (error) {
+		        	console.log('Error auto-configuring');
+		        	process.exit(1);
+		        } else {
+		        	var cmdline = 'export ' + parameter + '=' + stdout;
+					require('child_process').exec(cmdline, function (error, stdout, stderr) {
+			
+					});
+		        }
+			});
+		}
+	);
+	
+} else {
+	console.log('Not on EC2, skipping auto-configuration');
+}
+
+/**
+* Require files and depds after exporting auto-config to process
+*/
 for (var name in dependencies) {
 	eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
 }
