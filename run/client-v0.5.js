@@ -56,6 +56,8 @@ process.on('uncaughtException', function (error) {
 
 function init() {
 
+	var exportGlobals = false;
+
 	var arrayCount = 0;
 	process.argv.forEach(
 		function (value, index, array) {
@@ -82,12 +84,20 @@ function init() {
 				
 			}
 			arrayCount++;
+			if (arrayCount.length == process.argv.length)
+				exportGlobals = true;
 		}	
 	);
 		
 	/**
 	* Auto-populate box configuration settings on EC2
 	*/	
+	do {
+		/**
+		* Nothing
+		*/
+	} while (exportGlobals == false);
+	
 	if (process.env['ec2'] == true) {
 	
 		console.log('Trying auto-configuration');
