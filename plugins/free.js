@@ -75,8 +75,6 @@ this.poll = function (callback) {
 		
 		Plugin.cloudwatchCriteria(stdout.toString());
 		
-		console.log('Name: ' + Plugin.name + ' key: ' + key + ' data: ' + data);
-		
 		callback(Plugin.name, key, data);
 	});
 	

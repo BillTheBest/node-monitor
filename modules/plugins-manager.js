@@ -62,8 +62,12 @@ PluginsManagerModule.prototype.start = function() {
 
 PluginsManagerModule.prototype.executePlugins = function() {
 
-	if (Module.interval)
+	if (Module.interval) {
 		clearInterval(Module.interval);
+		Module.interval = {
+		
+		};
+	}
 	
 	Module.interval = setInterval(
 		function() {
