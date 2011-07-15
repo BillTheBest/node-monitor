@@ -1,9 +1,3 @@
-clientIP=
-externalIP=
-onEC2=
-instanceId=
-debug=
-logToConsole=
 drive=sda1
 timeToWait=30
 timeToPost=120
