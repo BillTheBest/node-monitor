@@ -182,7 +182,7 @@ function monitor() {
 	
 		logger.write(constants.levels.INFO, 'Starting Node Monitor');
 		
-		if (config.alerts)	
+		if (process.env['alerts'] == 'true')	
 			logger.write(constants.levels.INFO, 'Alerts enabled');
 	
 		try {
@@ -192,7 +192,7 @@ function monitor() {
 		}
 		
 		try {
-			filehandler.empty(config.logFile);
+			filehandler.empty(process.env['logFile']);
 		} catch (Exception) {
 			logger.write(constants.levels.WARNING, 'Error emptying nohup.out file: ' + Exception);
 		}			
@@ -207,7 +207,7 @@ function monitor() {
 			logger.write(constants.levels.WARNING, 'Error connection to Monitoring Server: ' + Exception);
 		}
 		
-		if (config.websocket)
+		if (process.env['websocket'] == 'true')
 			NodeMonitor.openWebsocket();
 			
 	};
@@ -240,7 +240,7 @@ function monitor() {
 		NodeMonitor.serverConnection.connected = true;
 		NodeMonitor.serverConnection.setEncoding('utf-8');
 		
-		logger.write(constants.levels.INFO, 'Connected to Monitoring Server at ' + serverAddress + ':' + config.clientToServerPort);
+		logger.write(constants.levels.INFO, 'Connected to Monitoring Server at ' + serverAddress + ':' + process.env['clientToServerPort']);
 			
 		if (NodeMonitor.reconnecting)
 			NodeMonitor.reconnecting = false;
@@ -257,14 +257,14 @@ function monitor() {
 	
 		NodeMonitor.reconnecting = true;
 		
-		logger.write(constants.levels.INFO, 'Attempting reconnect to server in ' + config.serverReconnectTime + ' seconds');
+		logger.write(constants.levels.INFO, 'Attempting reconnect to server in ' + process.env['serverReconnectTime'] + ' seconds');
 		
 		setTimeout(
 			function() {
 				logger.write(constants.levels.WARNING, 'Tried to reconnect');
 				NodeMonitor.serverConnect();
 			}, 
-			config.serverReconnectTime
+			Number(process.env['serverReconnectTime'])
 		);
 		
 	};
@@ -291,15 +291,15 @@ function monitor() {
 	NodeMonitor.serverConnect = function() {
 	
 		var serverAddress;
-		if (config.onEC2) {
+		if (process.env['onEC2'] == 'true') {
 			logger.write(constants.levels.INFO, 'Configuring Monitoring Server IP as internal');
-			serverAddress = config.serverIP;
+			serverAddress = process.env['serverIP'];
 		} else {
 			logger.write(constants.levels.INFO, 'Configuring Monitoring Server IP as external');
-			serverAddress = config.serverExternalIP;
+			serverAddress = process.env['serverExternalIP'];
 		}
 	
-		if (config.ssl) {
+		if (process.env['ssl'] == 'true') {
 			logger.write(constants.levels.INFO, 'SSL enabled');
 			
 			var certPem = fs.readFileSync('../ssl/test-cert.pem', encoding='ascii');
@@ -309,7 +309,7 @@ function monitor() {
 				ca: caPem 
 			};
 			
-			NodeMonitor.serverConnection = tls.connect(config.clientToServerPort, serverAddress, options, function() {			
+			NodeMonitor.serverConnection = tls.connect(Number(process.env['clientToServerPort']), serverAddress, options, function() {			
 				if (NodeMonitor.serverConnection.authorizationError) {
 				   	logger.write(constants.levels.WARNING, 'Authorization Error: ' + NodeMonitor.serverConnection.authorizationError);
 				} else {
@@ -327,7 +327,7 @@ function monitor() {
 		} else {
 			logger.write(constants.levels.INFO, 'No SSL support, trying connection on: ' + serverAddress);
 			
-			NodeMonitor.serverConnection = net.createConnection(config.clientToServerPort, serverAddress);	
+			NodeMonitor.serverConnection = net.createConnection(Number(process.env['clientToServerPort']), serverAddress);	
 			
 			NodeMonitor.serverConnection.on('connect', 
 				function() {
@@ -357,7 +357,7 @@ function monitor() {
 	*/
 	NodeMonitor.sendDataLookup = function (key, data) {
 	
-		var jsonString = utilities.formatLookupBroadcastData(key, utilities.generateEpocTime(), data, config.clientIP);
+		var jsonString = utilities.formatLookupBroadcastData(key, utilities.generateEpocTime(), data, process.env['clientIP']);
 		
 		logger.write(constants.levels.INFO, 'Data string being sent for lookup: ' + jsonString);
 		
@@ -372,7 +372,7 @@ function monitor() {
 	*/
 	NodeMonitor.sendData = function (name, key, data) {	
 	
-		var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), data, config.clientIP);
+		var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), data, process.env['clientIP']);
 		
 		logger.write(constants.levels.INFO, 'Data string being sent for date queries: ' + jsonString);
 		
@@ -393,7 +393,7 @@ function monitor() {
 		
 			logger.write(constants.levels.INFO, 'Assert returned true, storing this data');
 			
-			if (config.realtime) {
+			if (process.env['realtime'] == 'true') {
 				dao.handleDataStorage(assertObject);
 			} else {
 				failsafe.commit(jsonString);
@@ -434,7 +434,7 @@ function monitor() {
 	
 		NodeMonitor.websocketServer.addListener('connection', function(conn) {
 		
-			logger.write(constants.levels.INFO, 'Listening for websocket connections on: ' + NodeMonitor.config.websocketRealtimePort);
+			logger.write(constants.levels.INFO, 'Listening for websocket connections on: ' + process.env['websocketRealtimePort']);
 			logger.write(constants.levels.INFO, 'Opened websocket connection to UI: ' + conn.id);
 		 
 	 		conn.addListener('message', function(jsonObject) {
@@ -448,7 +448,7 @@ function monitor() {
 			logger.write(constants.levels.WARNING, 'Catching a websocket exception: ' + exception);
 		});
 		
-		NodeMonitor.websocketServer.listen(config.websocketRealtimePort);
+		NodeMonitor.websocketServer.listen(Number(process.env['websocketRealtimePort']));
 			
 		NodeMonitor.websocketServer.addListener('close', function(conn) {
 			logger.write(constants.levels.INFO, 'Closed websocket connection to UI: ' + conn.id);
