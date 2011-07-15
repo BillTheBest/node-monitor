@@ -68,7 +68,7 @@ process.argv.forEach(
 			
 			var cmdline = 'export ' + key + '=' + param;
 			require('child_process').exec(cmdline, function (error, stdout, stderr) {
-			
+				console.log('Finished exporting: ' + stdout);
 			});
 			
 		}
