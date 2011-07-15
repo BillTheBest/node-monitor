@@ -18,30 +18,31 @@ var dependencies = {
  
 var modules = {
 
-	loggingManager: '../modules/logging-manager.js',
-	filehandlerManager: '../modules/filehandler-manager.js',
-	daoManager: '../modules/dao-manager.js',
-	wellnessManager: '../modules/wellness-manager.js',
-	bulkpostManager: '../modules/bulkpost-manager.js',
-	pluginsManager: '../modules/plugins-manager.js',
-	credentialManager: '../modules/credential-manager.js'
+	loggingManager: '../modules/logging-manager',
+	filehandlerManager: '../modules/filehandler-manager',
+	daoManager: '../modules/dao-manager',
+	wellnessManager: '../modules/wellness-manager',
+	bulkpostManager: '../modules/bulkpost-manager',
+	pluginsManager: '../modules/plugins-manager',
+	credentialManager: '../modules/credential-manager'
 	
 };
 
 var childDeps = {
 		
 	stack: '../lib/long-stack-traces',
-	utilitiesManager: '../modules-children/utilities-manager.js',  
-	constantsManager: '../modules-children/constants-manager.js',
-	cloudsandra: '../modules-children/node-cloudsandra.js',
-	cloudwatch: '../modules-children/node-cloudwatch.js',	
-	config: '../config/config.js'
+	utilitiesManager: '../modules-children/utilities-manager',  
+	constantsManager: '../modules-children/constants-manager',
+	cloudsandra: '../modules-children/node-cloudsandra',
+	cloudwatch: '../modules-children/node-cloudwatch',	
+	config: '../config/config'
 
 };
 
 /**
 * This should help with any odd exceptions/bugs we don't catch
 */
+
 process.on('uncaughtException', function (error) {
   	console.log('Caught exception: ' + error);
 }); 
@@ -78,7 +79,7 @@ process.argv.forEach(
 /**
 * Auto-populate box configuration settings on EC2
 */
-if (config.ec2) {
+if (process.env['ec2'] == 'true') {
 
 	console.log('Trying auto-configuration');
 	var autoPopulate = ['instance-id', 'local-ipv4', 'public-hostname'];
@@ -105,7 +106,7 @@ if (config.ec2) {
 }
 
 /**
-* Require files and depds after exporting auto-config to process
+* Require files and deps after exporting auto-config to process
 */
 for (var name in dependencies) {
 	eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
