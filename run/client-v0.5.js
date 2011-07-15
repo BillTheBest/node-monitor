@@ -83,9 +83,11 @@ function init() {
 				});
 				
 			}
-			arrayCount++;
-			if (arrayCount.length == (process.argv.length - 1))
+			
+			if (arrayCount == process.argv.length)
 				exportGlobals = true;
+			
+			arrayCount++;
 		}	
 	);
 		
