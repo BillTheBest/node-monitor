@@ -68,7 +68,12 @@ process.argv.forEach(
 			
 			var cmdline = 'export ' + key + '=' + param;
 			require('child_process').exec(cmdline, function (error, stdout, stderr) {
-				console.log('Finished exporting: ' + stdout);
+				if (error) {
+					console.log('Error exporting arguments for global use');
+		        	process.exit(1);
+				} else {
+					console.log('Finished exporting ' + key);
+				}
 			});
 			
 		}
