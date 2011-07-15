@@ -84,7 +84,7 @@ function init() {
 				
 			}
 			arrayCount++;
-			if (arrayCount.length == process.argv.length)
+			if (arrayCount.length == (process.argv.length - 1))
 				exportGlobals = true;
 		}	
 	);
