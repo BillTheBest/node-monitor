@@ -4,12 +4,12 @@
  
 var fs = require('fs'); 
  
-var Module;
+var Module = {};
 
 CredentialManagerModule = function (childDeps) {
 
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 
 	var constants = new constantsManager.ConstantsManagerModule();

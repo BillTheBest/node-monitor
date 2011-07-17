@@ -8,18 +8,24 @@ var Module;
 
 var modules = {
 
-	daoManager: '../modules/dao-manager.js'
+	daoManager: 'dao-manager'
 	
 };
 
 LoggingManagerModule = function (childDeps) {
 
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
 	var constants = new constantsManager.ConstantsManagerModule();
@@ -37,7 +43,7 @@ LoggingManagerModule.prototype.write = function (level, message) {
 	var date = new Date();
 	message = date + ' ' + level + ' ' + message + '\n';
 
-	if (process.env['logToConsole'] == 'true')
+	if (process.env['console'] == 'true')
 		console.log(message);
 	
 	if (level == Module.constants.levels.SEVERE) {

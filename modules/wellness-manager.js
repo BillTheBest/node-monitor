@@ -6,20 +6,26 @@ var fs = require('fs');
 
 var modules = {
 	
-	daoManager: '../modules/dao-manager.js'
+	daoManager: 'dao-manager'
 
 };
 
-var Module;
+var Module = {};
 
 WellnessManagerModule = function (childDeps) {
 
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
 	var constants = new constantsManager.ConstantsManagerModule();
@@ -39,9 +45,9 @@ WellnessManagerModule.prototype.start = function() {
 	
 	Module.interval = setInterval(
 		function() {
-			dao.storeSelf(Module.constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);			
+			Module.dao.storeSelf(Module.constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);			
 		}, 
-		Number(process.env['keepAliveInterval'])
+		Number(process.env['keepAliveInterval']) * 1000
 	);
 	
 };

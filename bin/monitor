@@ -12,18 +12,36 @@ case "$1" in
 		cd ../run
 		
 		# Credentials go here
-		export AWS_ACCESS_KEY_ID=;
-		export AWS_SECRET_ACCESS_KEY=;
-		export TWILIO_SID=;
-		export TWILIO_TOKEN=;
-		export CLOUDSANDRA_TOKEN=;
-		export CLOUDSANDRA_ACCOUNT=;
+		#export AWS_ACCESS_KEY_ID=;
+		#export AWS_SECRET_ACCESS_KEY=;
+		#export TWILIO_SID=;
+		#export TWILIO_TOKEN=;
+		#export CLOUDSANDRA_TOKEN=;
+		#export CLOUDSANDRA_ACCOUNT=;
 			
 		#node client.js > /dev/null 2>&1 &
-		#node client-v0.5.js
+		node client-v0.5.js ec2=false debug=true console=true cloudwatch=false
 		
-		node client-v0.5.js ec2=true debug=true console=false cloudwatch=false
+		;;
+	'start-server')
+		echo "Starting node-monitor server"
 		
+		NODE_MONITOR=`ps -ef | grep -v grep | grep server.js | awk '{print $2'}`
+		kill -9 $NODE_MONITOR
+		
+		cd ../run
+		
+		# Credentials go here
+		#export AWS_ACCESS_KEY_ID=;
+		#export AWS_SECRET_ACCESS_KEY=;
+		#export TWILIO_SID=;
+		#export TWILIO_TOKEN=;
+		#export CLOUDSANDRA_TOKEN=;
+		#export CLOUDSANDRA_ACCOUNT=;
+					
+		#node server.js > /dev/null 2>&1 &
+		node server-v0.5.js ec2=false debug=true console=true cloudwatch=false
+
 		;;
 	'stop')
 		echo "Stopping node-monitor"

@@ -6,24 +6,30 @@ var fs = require('fs');
  
 var modules = {
 	
-	loggingManager: '../modules/logging-manager.js'
+	loggingManager: 'logging-manager'
 	
 };
 
-var Module;
+var Module = {};
 var NodeMonitorObject;
 
 PluginsManagerModule = function (nodeMonitor, childDeps) {
 
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		console.log('Error moving to modules directory: ' + Exception);
+	}
+
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
-	var utilities = new utilitiesManager.UtilitiesManagerModule();
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(childDeps);
 
@@ -39,13 +45,19 @@ PluginsManagerModule = function (nodeMonitor, childDeps) {
 }; 
 
 PluginsManagerModule.prototype.start = function() {
+	
+	try {
+	  	process.chdir(process.env['pluginDirectory']);
+	} catch (Exception) {
+	  	console.log('Error moving to directory: ' + Exception);
+	}
 
 	var pluginCount = 0;
-	var plugins = fs.readdirSync(process.cwd() + process.env['pluginDirectory']);
+	var plugins = fs.readdirSync(process.cwd());
 	plugins.forEach (
 		function (plugin) {
 			plugin = plugin.split('.')[0];
-			var loaded = require(process.cwd() + process.env['pluginDirectory'] + plugin);
+			var loaded = require(process.cwd() + '/' + plugin);
 			NodeMonitorObject.plugins[loaded.name] = loaded;
 			
 			Module.logger.write(Module.constants.levels.INFO, 'Loading plugin: ' + loaded.name.toString());
@@ -62,12 +74,8 @@ PluginsManagerModule.prototype.start = function() {
 
 PluginsManagerModule.prototype.executePlugins = function() {
 
-	if (Module.interval) {
+	if (Module.interval)
 		clearInterval(Module.interval);
-		Module.interval = {
-		
-		};
-	}
 	
 	Module.interval = setInterval(
 		function() {
@@ -95,7 +103,7 @@ PluginsManagerModule.prototype.executePlugins = function() {
 				);
 			}
 		}, 
-		Number(process.env['timeToWait'])
+		Number(process.env['timeToWait']) * 1000
 	);
 };
 

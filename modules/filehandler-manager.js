@@ -6,13 +6,19 @@ var fs = require('fs');
 
 var modules = {
 	
-	loggingManager: '../modules/logging-manager.js'
+	loggingManager: 'logging-manager'
 
 };
 
-var Module;
+var Module = {};
 
 FilehandlerManagerModule = function (childDeps) {
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
 
 	for (var name in modules) {
 		eval('var ' + name + '= require(\'' + modules[name] + '\')');
@@ -22,7 +28,7 @@ FilehandlerManagerModule = function (childDeps) {
 		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
 	}
 	
-	var utilities = new utilitiesManager.UtilitiesManagerModule();
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(childDeps);
 
@@ -97,10 +103,8 @@ FilehandlerManagerModule.prototype.addToCommitLog = function (fileName, data) {
 	
 };
 
-FilehandlerManagerModule.prototype.purgeCommmitLog = function() {
-	
-	Module.logger.write(Module.constants.levels.INFO, 'Posting the commit log');	
-	
+FilehandlerManagerModule.prototype.purgeCommitLog = function() {
+		
 	var bufferSize = 10;
  	
   	if (!bufferSize)
@@ -108,7 +112,7 @@ FilehandlerManagerModule.prototype.purgeCommmitLog = function() {
 
     var currentPositionInFile = 0;
     var buffer = '';
-    var fd = fs.openSync(commitLogFile, 'r');
+    var fd = fs.openSync(process.env['commitLogFile'], 'r');
 
     var fillBuffer = function(position) {
         var res = fs.readSync(fd, bufferSize, position, 'ascii');
@@ -185,19 +189,29 @@ FilehandlerManagerModule.prototype.purgeCommmitLog = function() {
 	*/
 	// Module.utilities.aggregateCounters(returnedBulkRequestObject);
 	
-	Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request # Keys: ' + returnedLookupRequestObject.rowkeys.length);	
-	Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedLookupRequestObject));
+	try {
 	
-	dao.bulkPost(Module.constants.values.CFUTF8Type, returnedLookupRequestObject);
+		dao.bulkPost(Module.constants.values.CFUTF8Type, returnedLookupRequestObject);
 	
-	Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request # Keys: ' + returnedBulkRequestObject.rowkeys.length);	
-	Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedBulkRequestObject));
+		Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request # Keys: ' + returnedLookupRequestObject.rowkeys.length);	
+		Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedLookupRequestObject));
+		
+	} catch (Exception) {
+		Module.logger.write(Module.constants.levels.WARNING, 'Lookup Bulk Post has an undefined attribute, not POSTing');
+	}
 	
-	dao.bulkPost(Module.constants.values.CFLongType, returnedBulkRequestObject);
-
-	Module.logger.write(Module.constants.levels.INFO, 'Done purging commit log');
+	try {
 	
-	this.empty(commitLogFile);
+		dao.bulkPost(Module.constants.values.CFLongType, returnedBulkRequestObject);
+	
+		Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request # Keys: ' + returnedBulkRequestObject.rowkeys.length);	
+		Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedBulkRequestObject));
+	
+	} catch (Exception) {
+		Module.logger.write(Module.constants.levels.WARNING, 'Data for Bulk Post has an undefined attribute, not POSTing');
+	}
+			
+	Module.empty(process.env['commitLogFile']);
 
 };
 

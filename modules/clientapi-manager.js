@@ -1,34 +1,54 @@
 /**
-* Client API Module
-*/
-
-// Includes
-var stack = require('../lib/long-stack-traces');
-
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
-var filehandler = require('../modules/filehandler.js');
+ * clientapi-manager.js module
+ */
+ 	
+var fs = require('fs'); 
  
-// Constants
-var constantsModule = require('./constants');
-var constants = new constantsModule.ConstantsModule();
+var modules = {
 
-// Config
-var config = require('../config/config');
-
-// Logging
-var logger = require('./logger');
-
-ClientApiModule = function() {
+	filehandlerManager: 'filehandler-manager',
+	loggingManager: 'logging-manager'
 
 };
+
+var Module = {};
+
+ClientapiManagerModule = function (childDeps) {
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+	}
+
+	for (var name in modules) {
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+	}
+	
+	for (var name in childDeps) {
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
+	}
+	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
+
+	Module = this;
+	
+	Module.utilities = utilities;
+	Module.constants = constants;
+	Module.logger = logger;
+	
+	Module.childDeps = childDeps;
+					
+}; 
+
 
 /**
 * Handle requests that are made from the UI => Server => Client,
 * then execute, then send a response back to the UI
 */
-ClientApiModule.prototype.handleServerRequest = function (request) {
+ClientapiManagerModule.prototype.handleRequest = function (request) {
 
 	switch (request) {
 		case constants.clientapi.COMMAND:
@@ -43,16 +63,16 @@ ClientApiModule.prototype.handleServerRequest = function (request) {
 			
 };
 
-ClientApiModule.prototype.handleCommandLineRequest = function(jsonObject) {
+ClientapiManagerModule.prototype.handleCommandLineRequest = function(jsonObject) {
 
 };
 
-ClientApiModule.prototype.handleConfigurationRequest = function(jsonObject) {
+ClientapiManagerModule.prototype.handleConfigurationRequest = function(jsonObject) {
 
 };
 
 
-ClientApiModule.prototype.handleDataRequest = function(data) {
+ClientapiManagerModule.prototype.handleDataRequest = function(data) {
 	
 	var assertObject = {
 	};
@@ -142,4 +162,4 @@ ClientApiModule.prototype.handleDataRequest = function(data) {
 	}
 };
 
-exports.ClientApiModule = ClientApiModule;
+exports.ClientapiManagerModule = ClientapiManagerModule;

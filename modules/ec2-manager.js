@@ -12,24 +12,30 @@ var dependencies = {
 
 var modules = {
 	
-	loggingManager: '../modules/logging-manager.js'
-	
+	loggingManager: 'logging-manager'
+
 };
 
-var Module;
+var Module = {};
 
 EC2ManagerModule = function (childDeps) {
 
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
 	for (var name in dependencies) {
-		eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
+		eval('var ' + name + ' = require(\'' + dependencies[name] + '\')');
 	}
 	
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
 	var constants = new constantsManager.ConstantsManagerModule();

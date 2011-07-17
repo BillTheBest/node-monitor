@@ -1,34 +1,50 @@
 /**
  * bulkpost-manager.js module
  */
- 
+ 	
 var fs = require('fs'); 
  
 var modules = {
 
-	filehandlerManager: '../modules/filehandler-manager.js'
+	filehandlerManager: 'filehandler-manager',
+	loggingManager: 'logging-manager'
 
 };
 
-var Module;
+var Module = {};
 var NodeMonitorObject;
 
 BulkpostManagerModule = function (nodeMonitor, childDeps) {
 
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 
 	NodeMonitorObject = nodeMonitor;
+	Module = this;
 	
-	this.filehandler = filehandler;
-				
+	Module.utilities = utilities;
+	Module.constants = constants;
+	Module.logger = logger;
+	Module.filehandler = filehandler;
+	
+	Module.childDeps = childDeps;
+					
 }; 
 
 BulkpostManagerModule.prototype.start = function() {
@@ -38,9 +54,9 @@ BulkpostManagerModule.prototype.start = function() {
 	
 	Module.interval = setInterval(
 		function() {
-			BulkpostManagerModule.filehandler.purgeCommitLog(NodeMonitorObject);
+			Module.filehandler.purgeCommitLog(NodeMonitorObject);
 		}, 
-		Number(process.env['timeToPost'])
+		Number(process.env['timeToPost']) * 1000
 	);
 	
 };

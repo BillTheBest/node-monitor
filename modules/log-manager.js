@@ -1,39 +1,73 @@
-/* 
- * Log Monitor Module
+/**
+ * log-manager.js module
  */
- 
-// Includes
-var stack = require('../lib/long-stack-traces'),
-	fs = require('fs'),
-		step = require('../lib/step');
+ 	
+var fs = require('fs'); 
 
-// Utilities
-var utilsModule = require('./utils');
-var utils = new utilsModule.UtilsModule();
-
-// Global Constants
-var constantsModule = require('./constants');
-var constants = new constantsModule.ConstantsModule();
-
-// Logging
-var logger = require('./logger');
-
-// Module Constants
-var Module;
-var NodeMonitorObject;
-
-LogMonitorModule = function (clientMonitor) {
-	NodeMonitorObject = clientMonitor;
+var dependencies = {
 	
-	Module = this;
-	Module.logMonitoring();
+	step: 'step'
+	
+};
+ 
+var modules = {
+
+	loggingManager: 'logging-manager'
+
 };
 
-LogMonitorModule.prototype.logMonitoring = function() {		
-	fs.readFile(NodeMonitorObject.config.logConfigFile, function (error, buffer, fd) {
+var Module = {};
+var NodeMonitorObject;
+
+LogManagerModule = function (nodeMonitor, childDeps) {
+
+	try {
+  		process.chdir(process.env['libDirectory']);
+	} catch (Exception) {
+  		
+  	}
+  	
+  	for (var name in dependencies) {
+		eval('var ' + name + ' = require(\'' + dependencies[name] + '\')');
+	}
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
+	for (var name in modules) {
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+	}
+	
+	for (var name in childDeps) {
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
+	}
+	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
+
+	NodeMonitorObject = nodeMonitor;
+	Module = this;
+	
+	Module.utilities = utilities;
+	Module.constants = constants;
+	Module.logger = logger;
+	Module.step = step;
+	
+	Module.childDeps = childDeps;
+					
+}; 
+
+LogManagerModule.prototype.start = function() {
+
+	fs.readFile(process.env['logConfigFile'], function (error, buffer, fd) {
+		
 		if (error) {
 		
-			logger.write(constants.levels.SEVERE, 'Error reading config file: ' + error.stack);
+			Module.logger.write(Module.constants.levels.SEVERE, 'Error reading config file: ' + error.stack);
 			
 			return;
 		}
@@ -42,7 +76,7 @@ LogMonitorModule.prototype.logMonitoring = function() {
 	  	splitBuffer = buffer.toString().split('\n');
 	  	
 		for (i = 0; i < splitBuffer.length; i++) {
-			logger.write(constants.levels.INFO, 'Found log in config: ' + splitBuffer[i]);
+			Module.logger.write(Module.constants.levels.INFO, 'Found log in config: ' + splitBuffer[i]);
 			
 			var logName = splitBuffer[i];
 			NodeMonitorObject.logsToMonitor.push(logName);
@@ -52,26 +86,31 @@ LogMonitorModule.prototype.logMonitoring = function() {
 				* Ignore empty file, probably a better way to do this...
 				*/
 			} else {
-				var lookupKey = utils.formatLookupLogKey(NodeMonitorObject.config.clientIP);			
+			
+				var lookupKey = Module.utilities.formatLookupLogKey(process.env['clientIP']);			
 				NodeMonitorObject.sendDataLookup(lookupKey, logName);
+				
 			}
 		}
 		Module.asyncTailing();
+		
 	});
+		
 };
 
-LogMonitorModule.prototype.asyncTailing = function() {	
-	step(
+LogManagerModule.prototype.asyncTailing = function() {	
+
+	Module.step(
 		function tailAll() {
 		    var self = this;
 		    NodeMonitorObject.logsToMonitor.forEach(
-		    	function(log) {
+		    	function (log) {
 		    		if (log == 'none' || '') {
 		    			/**
 						* Ignore empty file, probably a better way to do this...
 						*/
 		    		} else {
-			    		logger.write(constants.levels.INFO, 'Now tailing log: ' + log);
+			    		Module.logger.write(Module.constants.levels.INFO, 'Now tailing log: ' + log);
 			      		Module.tailFile(log, self.parallel());
 			      	}
 		    	}
@@ -79,29 +118,30 @@ LogMonitorModule.prototype.asyncTailing = function() {
 		 },
 		 function finalize(error) {
 		    	if (error) { 
-		    		logger.write(constants.levels.SEVERE, 'Error tailing log file: ' + error);
+		    		Module.logger.write(Module.constants.levels.SEVERE, 'Error tailing log file: ' + error);
 		    		return;
 		    	}
 		  }
 	);
+	
 };
 
-LogMonitorModule.prototype.tailFile = function (logName, callback) {	
+LogManagerModule.prototype.tailFile = function (logName, callback) {
+	
 	var spawn = require('child_process').spawn;
 	var tail = spawn('tail', ['-F', logName]);
     tail.stdout.on('data', function (data) {				
-		var data = utils.format(constants.api.LOGS, data.toString());
 		
-		// Handle formatting and data pushing from main client
-		
-		// Always insert/upsert logs to keep track of them
-		var lookupKey = utils.formatLookupLogKey(NodeMonitorObject.config.clientIP);
+		var data = Module.utilities.format(Module.constants.api.LOGS, data.toString());
+	
+		var lookupKey = Module.utilities.formatLookupLogKey(process.env['clientIP']);
 		NodeMonitorObject.sendDataLookup(lookupKey, logName);
+
+		var dataKey = Module.utilities.formatLogKey(process.env['clientIP'], logName);
+		NodeMonitorObject.sendData(Module.constants.api.LOGS, dataKey, data);
 		
-		// Insert log data by day 
-		var dataKey = utils.formatLogKey(NodeMonitorObject.config.clientIP, logName);
-		NodeMonitorObject.sendData(constants.api.LOGS, dataKey, data);
 	});
+	
 };
 
-exports.LogMonitorModule = LogMonitorModule;
+exports.LogManagerModule = LogManagerModule;

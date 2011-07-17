@@ -6,26 +6,32 @@ var fs = require('fs');
  
 var modules = {
 	
-	loggingManager: '../modules/logging-manager.js',
-	daoManager: '../modules/dao-manager.js',
-	filehandlerManager: '../modules/filehandler-manager.js',
-	ec2Manager: '../modules/ec2-manager.js'
+	loggingManager: 'logging-manager',
+	daoManager: 'dao-manager',
+	filehandlerManager: 'filehandler-manager',
+	ec2Manager: 'ec2-manager'
 
 };
 
-var Module;
+var Module = {};
 
 WebsocketapiManagerModule = function (websocketConn, childDeps) {
 
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
-	var utilities = new utilitiesManager.UtilitiesManagerModule();
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(childDeps);
 	var dao = new daoManager.DaoManagerModule(childDeps);

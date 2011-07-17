@@ -4,15 +4,15 @@
  
 var fs = require('fs');
 
-var Module;
+var Module = {};
 
 DaoManagerModule = function (childDeps) {
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
-	var utilities = new utilitiesManager.UtilitiesManagerModule();
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
 	
 	var CloudsandraApi = new cloudsandra.CloudsandraApi();

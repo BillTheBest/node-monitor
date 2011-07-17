@@ -6,9 +6,12 @@ Development - v0.5
 
 Lots of really great features are taking shape, some release notes to build on (not yet released):
 	
-	Auto-configuration of boxes
+	Auto-configuration of boxes for both client and server
 	Differentiation of platforms in core and plugin/module templates
 	Re-architecture of dependencies for cleaner handling
+	Actual server handling connection management
+	Chaos monkey kills client to server connection every 5 minutes
+	
 
 This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX) UI, and keep credentials on the server side.
 
@@ -200,6 +203,8 @@ Errors to Fix
 Features to Add
 -----------------------------------
 
+npm
+
 Automated restarts
 
 Command and control of boxes through Twilio
@@ -207,8 +212,6 @@ Command and control of boxes through Twilio
 Plugins need to be reformatted for new dependency model
 
 Plugins need to check if command exists (/usr/sbin/lsof | wc -l instead of lsof)
-
-Get server working (make sustained connections with clients)
 
 Add command line manager for UI -> Server -> Client
 
@@ -243,8 +246,6 @@ Log table formatting
 Need to unset realtime divs (add in call to get external IP), fix CSS
 
 Make utils module work for UI
-
-Add universal import for dependencies
 
 Add counts to bulk posting
 

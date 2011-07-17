@@ -78,16 +78,26 @@ function init() {
 				});
 			}
 		);
-		
+				
 	} else {
-		console.log('Not on EC2, skipping auto-configuration');
+		/**
+		* We will need to run ifconfig, but it's not fun to parse on OSx
+		*/
+		console.log('Not on EC2, no websocket connections yet w/o');
+		
+		process.env['instance-id'] = 'none';
+		process.env['local-ipv4'] = '127.0.0.1';
+		process.env['public-hostname'] = '127.0.0.1';
 	}
+	
+	process.env['clientIP'] = process.env['local-ipv4'];
+	process.env['clientExternalIP'] = process.env['public-hostname'];
 	
 	/**
 	* Now we read the rest of the module config into global, and
 	* make sure to start the monitor only after this completes
 	*/
-	fs.readFile('/monitoring/node-monitor/config/monitor_config', function (error, fd) {
+	fs.readFile('../config/monitor_config', function (error, fd) {
 		if (error) {
 			console.log('Error reading node-monitor config file');
 			process.exit(1);
@@ -134,6 +144,7 @@ function monitor() {
 		loggingManager: '../modules/logging-manager',
 		filehandlerManager: '../modules/filehandler-manager',
 		daoManager: '../modules/dao-manager',
+		logManager: '../modules/log-manager',
 		wellnessManager: '../modules/wellness-manager',
 		bulkpostManager: '../modules/bulkpost-manager',
 		pluginsManager: '../modules/plugins-manager',
@@ -152,18 +163,18 @@ function monitor() {
 	};
 	
 	for (var name in dependencies) {
-		eval('var ' + name + '= require(\'' + dependencies[name] + '\')');
+		eval('var ' + name + ' = require(\'' + dependencies[name] + '\')');
 	}
 	
 	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
-	var utilities = new utilitiesManager.UtilitiesManagerModule();
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(childDeps);
 	var dao = new daoManager.DaoManagerModule(childDeps);
@@ -172,7 +183,9 @@ function monitor() {
 	
 	var NodeMonitor = {
 	
+		serverAddress: false,
 		init: false,
+		reconnecting: false,
 		serverConnection: false,
 		plugins: {},
 		logsToMonitor: [],
@@ -198,12 +211,10 @@ function monitor() {
 		try {
 			filehandler.empty(process.env['logFile']);
 		} catch (Exception) {
-			logger.write(constants.levels.WARNING, 'Error emptying nohup.out file: ' + Exception);
+			logger.write(constants.levels.WARNING, 'Error emptying log file: ' + Exception);
 		}			
 		
-		// dao.storeSelf(constants.api.CLIENTS, config.clientIP, config.externalIP);
-		
-		NodeMonitor.startPolling();
+		dao.storeSelf(constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);
 		
 		try {
 			NodeMonitor.serverConnect();
@@ -214,6 +225,8 @@ function monitor() {
 		if (process.env['websocket'] == 'true')
 			NodeMonitor.openWebsocket();
 			
+		NodeMonitor.startPolling();
+			
 	};
 	
 	NodeMonitor.startPolling = function() {	
@@ -221,13 +234,12 @@ function monitor() {
 		var keepalive = new wellnessManager.WellnessManagerModule(childDeps);
 		var bulkpost = new bulkpostManager.BulkpostManagerModule(NodeMonitor, childDeps);
 		var plugins = new pluginsManager.PluginsManagerModule(NodeMonitor, childDeps);
+		var logs = new logManager.LogManagerModule(NodeMonitor, childDeps);
 	
 		keepalive.start();
 		bulkpost.start();
 		plugins.start();
-				
-		//var logMonitorModule = require('../modules/log-manager');
-		//new logMonitorModule.LogMonitorModule(this);
+		logs.start();
 		
 	};
 	
@@ -239,12 +251,12 @@ function monitor() {
 		
 	};
 	
-	NodeMonitor.onConnect = function (serverAddress) {
+	NodeMonitor.onConnect = function () {
 	
 		NodeMonitor.serverConnection.connected = true;
 		NodeMonitor.serverConnection.setEncoding('utf-8');
 		
-		logger.write(constants.levels.INFO, 'Connected to Monitoring Server at ' + serverAddress + ':' + process.env['clientToServerPort']);
+		logger.write(constants.levels.INFO, 'Connected to Monitoring Server at ' + NodeMonitor.serverAddress + ':' + process.env['clientToServerPort']);
 			
 		if (NodeMonitor.reconnecting)
 			NodeMonitor.reconnecting = false;
@@ -259,8 +271,6 @@ function monitor() {
 	
 	NodeMonitor.serverReconnect = function() {	
 	
-		NodeMonitor.reconnecting = true;
-		
 		logger.write(constants.levels.INFO, 'Attempting reconnect to server in ' + process.env['serverReconnectTime'] + ' seconds');
 		
 		setTimeout(
@@ -268,7 +278,7 @@ function monitor() {
 				logger.write(constants.levels.WARNING, 'Tried to reconnect');
 				NodeMonitor.serverConnect();
 			}, 
-			Number(process.env['serverReconnectTime'])
+			Number(process.env['serverReconnectTime']) * 1000
 		);
 		
 	};
@@ -276,11 +286,23 @@ function monitor() {
 	NodeMonitor.handleConnectionError = function (exception) {
 	
 		logger.write(constants.levels.SEVERE, 'A connection issue has arisen: ' + exception.message);
-		
-		if (!NodeMonitor.init)
-			logger.write(constants.levels.WARNING, 'Error on initial connection to server, load plugins anyway and write server requests to commit_log locally');
 	
-		NodeMonitor.serverReconnect();
+		if (NodeMonitor.reconnecting) {
+			
+			logger.write(constants.levels.INFO, 'We have already tried to reconnect, try again');
+			
+			NodeMonitor.serverReconnect();
+			
+		} else {
+		
+			if (!NodeMonitor.init)
+				logger.write(constants.levels.WARNING, 'Error on initial connection to server, load plugins anyway and write server requests to commit_log locally');
+				
+			NodeMonitor.reconnecting = true;
+			
+			NodeMonitor.serverReconnect();
+		
+		}
 		
 	};
 	
@@ -303,6 +325,8 @@ function monitor() {
 			logger.write(constants.levels.INFO, 'Configuring Monitoring Server IP as external');
 			serverAddress = process.env['serverExternalIP'];
 		}
+		
+		NodeMonitor.serverAddress = serverAddress;
 	
 		if (process.env['ssl'] == 'true') {
 			logger.write(constants.levels.INFO, 'SSL enabled');
@@ -314,41 +338,44 @@ function monitor() {
 				ca: caPem 
 			};
 			
-			NodeMonitor.serverConnection = tls.connect(Number(process.env['clientToServerPort']), serverAddress, options, function() {			
+			NodeMonitor.serverConnection = tls.connect(Number(process.env['clientToServerPort']), NodeMonitor.serverAddress, options, function() {			
 				if (NodeMonitor.serverConnection.authorizationError) {
 				   	logger.write(constants.levels.WARNING, 'Authorization Error: ' + NodeMonitor.serverConnection.authorizationError);
 				} else {
 				     logger.write(constants.levels.INFO, 'Authorized a Secure SSL/TLS Connection');
-				     NodeMonitor.onConnect(serverAddress);
+				     NodeMonitor.onConnect();
 				}
 			});
 			
 			NodeMonitor.serverConnection.on('data', 
-				function() {
+				function () {
 					logger.write(constants.levels.INFO, 'Received a message from the server: ' + data);
 					clientApi.handleDataRequest(data);
 				}
 			);
 		} else {
-			logger.write(constants.levels.INFO, 'No SSL support, trying connection on: ' + serverAddress);
+			logger.write(constants.levels.INFO, 'No SSL support, trying connection on: ' + NodeMonitor.serverAddress);
 			
-			NodeMonitor.serverConnection = net.createConnection(Number(process.env['clientToServerPort']), serverAddress);	
+			NodeMonitor.serverConnection = net.createConnection(Number(process.env['clientToServerPort']), NodeMonitor.serverAddress);	
 			
 			NodeMonitor.serverConnection.on('connect', 
-				function() {
-				 	NodeMonitor.onConnect(serverAddress);
+				function () {
+				 	NodeMonitor.onConnect();
+				 	NodeMonitor.serverConnection.setTimeout(Number(process.env['serverTimeoutMonkey']) * 1000);
 				}
 			);	
+
 		}
 		
 		NodeMonitor.serverConnection.on('error', 
-			function(exception) {
+			function (exception) {
+				
 				NodeMonitor.handleConnectionError(exception);
 			}
 		);
 		
 		NodeMonitor.serverConnection.on('timeout', 
-			function() {
+			function () {
 				NodeMonitor.handleTimeoutError();
 			}
 		);
@@ -401,7 +428,11 @@ function monitor() {
 			if (process.env['realtime'] == 'true') {
 				dao.handleDataStorage(assertObject);
 			} else {
-				failsafe.commit(jsonString);
+				var data = jsonString;
+				
+				data += '\n';
+				filehandler.write(process.env['commitLogFile'], data);
+				
 				NodeMonitor.websocketServer.broadcast(jsonString);
 			}
 		} else {
@@ -465,4 +496,7 @@ function monitor() {
 	
 }
 
+/**
+* Start the client
+*/
 init();

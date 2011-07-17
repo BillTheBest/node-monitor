@@ -4,21 +4,17 @@
  
 var fs = require('fs');
 
-var childDeps = {
+var Module = {};
 
-	constants: './constants-manager.js'
-	
-};
-
-var Module;
-
-UtilitiesManagerModule = function () {
+UtilitiesManagerModule = function (childDeps) {
 
 	for (var name in childDeps) {
-		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 
 	Module = this;
+	
+	var constants = new constantsManager.ConstantsManagerModule();
 	
 	Module.constants = constants;
 	
@@ -217,7 +213,7 @@ UtilitiesManagerModule.prototype.formatLogKey = function(ip, log) {
 	return key;
 };
 
-UtilitiesManagerModule.prototype.formatLookupLogKey = function(ip) {
+UtilitiesManagerModule.prototype.formatLookupLogKey = function (ip) {
 	var key = ip + ':' + Module.constants.api.LOGS;
 	return key;
 };
