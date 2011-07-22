@@ -1,6 +1,6 @@
+version=0.5
 serverIP=127.0.0.1
 serverExternalIP=127.0.0.1
-drive=sda1
 timeToWait=30
 timeToCheck=10
 serverTimeoutMonkey=300
@@ -12,6 +12,7 @@ logConfigFile=../config/log_config
 daemonConfigFile=../config/daemon_config
 processConfigFile=../config/process_config
 filesizeConfigFile=../config/filesize_config
+diskConfigFile=../config/disk_config
 commitLogFile=../logs/commit_log
 pluginDirectory=../plugins
 moduleDirectory=../modules

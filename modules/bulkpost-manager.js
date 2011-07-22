@@ -6,8 +6,7 @@ var fs = require('fs');
  
 var modules = {
 
-	filehandlerManager: 'filehandler-manager',
-	loggingManager: 'logging-manager'
+	filehandlerManager: 'filehandler-manager'
 
 };
 
@@ -30,17 +29,11 @@ BulkpostManagerModule = function (nodeMonitor, childDeps) {
 		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
 	
-	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
-	var constants = new constantsManager.ConstantsManagerModule();
-	var logger = new loggingManager.LoggingManagerModule(childDeps);
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 
 	NodeMonitorObject = nodeMonitor;
 	Module = this;
-	
-	Module.utilities = utilities;
-	Module.constants = constants;
-	Module.logger = logger;
+
 	Module.filehandler = filehandler;
 	
 	Module.childDeps = childDeps;

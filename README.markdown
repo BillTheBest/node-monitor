@@ -11,8 +11,12 @@ Lots of really great features are taking shape, some release notes to build on (
 	Re-architecture of dependencies for cleaner handling
 	Actual server handling connection management
 	Chaos monkey kills client to server connection every 5 minutes
+	Added statuses of requests to log
+	Added version to self store and separated clients/servers better
+	Add multiple drive size check support
+	Fixed issue with bulk posting 
+	Added RESPONSE tag to logs
 	
-
 This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX) UI, and keep credentials on the server side.
 
 Products I Admire
@@ -203,7 +207,12 @@ Errors to Fix
 Features to Add
 -----------------------------------
 
+Isidorey integrations node.js everyday at X
+https://api.isidorey.net/WHOSONCALL
+
 npm
+
+Make alerts better for SEVERE on connection issues, since chaos monkey introduces every 5 min
 
 Automated restarts
 

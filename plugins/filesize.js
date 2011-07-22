@@ -1,79 +1,92 @@
 /**
- * Plugin - filesize
+ * filesize - plugin
  */
-
-// Includes
-var stack = require('../lib/long-stack-traces'),
-		fs = require('fs'),
-			net = require('net');
-
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
-
-// Constants
-var constantsModule = require('../modules/constants');
-var constants = new constantsModule.ConstantsModule();
-
-// Logging
-var logger = require('../modules/logger');
-
-// Cloudwatch
-var REST = require('../modules/node-cloudwatch');
-var client = new REST.AmazonCloudwatchClient();
-
-// Filehandler
-var filehandlerModule = require('../modules/filehandler');
-var filehandler = new filehandlerModule.FilehandlerModule();
  
+var fs = require('fs');
+
+var modules = {
+	
+	daoManager: 'dao-manager',
+	loggingManager: 'logging-manager',
+	filehandlerManager: 'filehandler-manager'
+	
+};
+  
 var Plugin = {
+
 	name: 'filesize',
-	config: require('../config/config')
+	command: ''
+		
 };
 
-this.name = Plugin.name;
+Plugin.format = function (fileName, fileSize) {
 
-Plugin.format = function(fileName, size) {
+	fileName = fileName.replace(/(\r\n|\n|\r)/gm, '');
+	fileSize = fileSize.toString().replace(/(\r\n|\n|\r)/gm, '');
+	
+	fileSize = Number(fileSize) * 1024;
+
+	var data = {
+	
+		file: fileName,
+		size: fileSize.toString()
+	
+	}
 
 	output_hash = {
 		date: new Date().getTime(),
-		returned: {
-			file: fileName,
-			size: size * 1024
-		}
+		returned: data
 	};
 	return JSON.stringify(output_hash);
 	
 };
 
-Plugin.cloudwatchCriteria = function(response, fileName) {
+Plugin.evaluateDeps = function (childDeps, self) {
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
 	
-	params = {};
-	
-	params['Namespace'] = Plugin.config.cloudwatchNamespace;
-	params['MetricData.member.1.MetricName'] = 'FileSize-' + fileName;
-	params['MetricData.member.1.Unit'] = 'Kilobytes';
-	params['MetricData.member.1.Value'] = response;
-	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-	params['MetricData.member.1.Dimensions.member.1.Value'] = Plugin.config.instanceId;
-	
-	if (Plugin.config.cloudwatchEnabled) {
-		client.request('PutMetricData', params, function (response) {
-			logger.write(constants.levels.INFO, 'Amazon Response: ' + response);
-		});
+	for (var name in modules) {
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
 	
-	// logger.write(constants.levels.SEVERE, JSON.stringify(params));
+	for (var name in childDeps) {
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
+	}
 	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
+	var dao = new daoManager.DaoManagerModule(childDeps);
+	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
+
+	self = this;
+	
+	self.constants = constants;
+	self.utilities = utilities;
+	self.constants = constants;
+	self.filehandler = filehandler;
+	self.dao = dao;
+	self.logger = logger;
+		
 };
 
-this.poll = function (callback) {
-	var key = Plugin.config.clientIP + ':' + Plugin.name;
+this.name = Plugin.name;
+
+this.poll = function (childDeps, callback) {
+
+	Plugin.evaluateDeps(childDeps, this);
+	
+	var key = process.env['clientIP'] + ':' + Plugin.name;
 	var files = [];
 
-	fs.readFile(Plugin.config.filesizeConfigFile, function (error, fd) {
+	fs.readFile(process.env['filesizeConfigFile'], function (error, fd) {
+		
 		if (error)
-			logger.write('Error reading file: ' + fileName);
+			Plugin.logger.write('Error reading file: ' + fileName);
 			
 		function fileCheck(name, sizeLimit) {
 			this.name = name;
@@ -88,8 +101,8 @@ this.poll = function (callback) {
 	  		var aFile = [];
 	  		aFile = splitBuffer[i].split('=');
 	  		
-	  		logger.write(constants.levels.INFO, 'File name: ' + aFile[0]);
-	  		logger.write(constants.levels.INFO, 'File size limit: ' + aFile[1]);
+	  		Plugin.logger.write(Plugin.constants.levels.INFO, 'File name: ' + aFile[0]);
+	  		Plugin.logger.write(Plugin.constants.levels.INFO, 'File size limit: ' + aFile[1]);
 	
 		  	files.push(new fileCheck(aFile[0], Number(aFile[1])));
 	  	}  	 
@@ -97,7 +110,7 @@ this.poll = function (callback) {
 		files.forEach(
 			function(file) {
 				
-				var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
+				var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 			
 				if (file.name == 'none' || file.name == '') {
 					/**
@@ -106,6 +119,7 @@ this.poll = function (callback) {
 				} else {
 									  		
 			    	fs.stat(file.name, function (error, stat) {
+				    	
 				    	if (error) {
 				      		if (error.errno === process.ENOENT) {
 				        		return;
@@ -113,14 +127,21 @@ this.poll = function (callback) {
 				      		return;
 				    	}
 				    	
-				    	var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
-				    	var data = Plugin.format(file, stat.size);
+				    	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
+				    	var data = Plugin.format(file.name, stat.size);
 				    	
-				    	logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
+				    	Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
 				    	
-				    	if (stat.size > file.sizeLimit) {
-				    		Plugin.cloudwatchCriteria(stat.size, file.name);
-				    		filehandler.empty(file.name);
+				    	Plugin.logger.write(Plugin.constants.levels.INFO, 'stat.size: ' + stat.size);
+				    	Plugin.logger.write(Plugin.constants.levels.INFO, 'file.sizeLimit: ' +  file.sizeLimit);
+				    	
+				    	if (Number(stat.size) > Number(file.sizeLimit)) {
+					
+							Plugin.logger.write('Emptying file, it exceeds limit');
+				    		Plugin.dao.postCloudwatch('FileSize-' + file, 'Kilobytes', stat.size);
+				    		
+				    		Plugin.filehandler.empty(file.name);
+				    		
 				    	}
 				    	
 						callback(Plugin.name, key, data);
@@ -131,4 +152,5 @@ this.poll = function (callback) {
 			}	
 		);
 	});
+
 };

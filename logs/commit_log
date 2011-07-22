@@ -1,0 +1,17 @@
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123096410,"data":"filesize","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:filesize:2011:6:20","date":1311123096410,"data":"%7B%22date%22%3A1311123096409%2C%22returned%22%3A%7B%22file%22%3A%22../logs/log%22%2C%22size%22%3A%2215019008%22%7D%7D","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:df:2011:6:20","date":1311123096415,"data":"%7B%22date%22%3A1311123096414%2C%22returned%22%3A%2267%22%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123096416,"data":"df","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:df:2011:6:20","date":1311123096417,"data":"%7B%22date%22%3A1311123096416%2C%22returned%22%3A%22100%22%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123126404,"data":"filesize","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:filesize:2011:6:20","date":1311123126405,"data":"%7B%22date%22%3A1311123126404%2C%22returned%22%3A%7B%22file%22%3A%22../logs/log%22%2C%22size%22%3A%2218798592%22%7D%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123126411,"data":"df","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:df:2011:6:20","date":1311123126412,"data":"%7B%22date%22%3A1311123126411%2C%22returned%22%3A%22100%22%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123126413,"data":"df","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:df:2011:6:20","date":1311123126413,"data":"%7B%22date%22%3A1311123126413%2C%22returned%22%3A%2267%22%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123156404,"data":"filesize","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:filesize:2011:6:20","date":1311123156404,"data":"%7B%22date%22%3A1311123156403%2C%22returned%22%3A%7B%22file%22%3A%22../logs/log%22%2C%22size%22%3A%2222445056%22%7D%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123156409,"data":"df","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:df:2011:6:20","date":1311123156409,"data":"%7B%22date%22%3A1311123156409%2C%22returned%22%3A%2267%22%7D","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:plugins","date":1311123156410,"data":"df","origin":"127.0.0.1"}
+{"name":"plugins","key":"127.0.0.1:plugins:df:2011:6:20","date":1311123156411,"data":"%7B%22date%22%3A1311123156410%2C%22returned%22%3A%22100%22%7D","origin":"127.0.0.1"}

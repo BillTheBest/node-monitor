@@ -110,10 +110,15 @@ function init() {
 	  		var params = [];
 	  		params = splitBuffer[i].split('=');
 
-	  		process.env[params[0]] = params[1];
-	  		
-	  		console.log('Setting ' + params[0] + ': ' + process.env[params[0]]);
-		}  	 
+			if (params[0] == undefined || params[0] == '') {
+				/**
+				* Ignore
+				*/
+			} else {
+	  			process.env[params[0]] = params[1];
+	  			console.log('Setting ' + params[0] + ': ' + process.env[params[0]]);
+	  		}
+	  	}  	 
 		
 		monitor();
 		
@@ -215,6 +220,7 @@ function monitor() {
 		}			
 		
 		dao.storeSelf(constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);
+		dao.storeSelf(constants.api.CLIENT_VERSIONS, process.env['clientIP'], process.env['version']);
 		
 		try {
 			NodeMonitor.serverConnect();
@@ -404,7 +410,7 @@ function monitor() {
 	*/
 	NodeMonitor.sendData = function (name, key, data) {	
 	
-		var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), data, process.env['clientIP']);
+		var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), escape(data), process.env['clientIP']);
 		
 		logger.write(constants.levels.INFO, 'Data string being sent for date queries: ' + jsonString);
 		

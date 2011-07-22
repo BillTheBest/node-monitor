@@ -107,9 +107,14 @@ function init() {
 	  		var params = [];
 	  		params = splitBuffer[i].split('=');
 
-	  		process.env[params[0]] = params[1];
-	  		
-	  		console.log('Setting ' + params[0] + ': ' + process.env[params[0]]);
+	  		if (params[0] == undefined || params[0] == '') {
+				/**
+				* Ignore
+				*/
+			} else {
+	  			process.env[params[0]] = params[1];
+	  			console.log('Setting ' + params[0] + ': ' + process.env[params[0]]);
+	  		}
 		}  	 
 		
 		server();
@@ -208,7 +213,7 @@ function server() {
 			logger.write(constants.levels.WARNING, 'Error emptying log file: ' + Exception);
 		}
 	
-		dao.storeSelf(constants.api.CLIENTS, process.env['serverIP'], process.env['serverExternalIP']);
+		dao.storeSelf(constants.api.SERVER, process.env['serverIP'], process.env['serverExternalIP']);
 		
 		MonitorServer.startListener();
 		MonitorServer.openWebsocket();
@@ -309,7 +314,7 @@ function server() {
 		logger.write(constants.levels.INFO, 'Data received from client: ' + data);
 					
 		var parts = [];
-		data = utils.trim(data);
+		data = utilities.trim(data);
 		parts = data.split(/\/\/START\/\/(.*?)\/\/END\/\//);
 		
 		logger.write(constants.levels.INFO, 'Data size in parts: ' + parts.length.toString());
@@ -318,7 +323,7 @@ function server() {
 		parts.forEach(
 			function (message) {
 				logger.write(constants.levels.INFO, 'Part # : ' + partsCount);
-				if (utils.isEven(partsCount)) {				
+				if (utilities.isEven(partsCount)) {				
 					 MonitorServer.parseData(message);
 				}
 				partsCount++; 		
@@ -334,6 +339,7 @@ function server() {
 			logger.write(constants.levels.INFO, 'Opened connection on websocket: ' + conn.id);
 			
 			var websocketapi = new websocketapiManager.WebsocketapiManagerModule(MonitorServer.websocketServer, childDeps);
+			MonitorServer.websocketapi = websocketapi;
 			
 			/* 
 			 * Store conn.id
@@ -343,7 +349,7 @@ function server() {
 	   		
 	   		dao.postDataUTF8Type(constants.api.USERS, postParams);
 	
-			MonitorServer.websocketServer.send(conn.id, utils.formatWebsocketApiData(constants.api.USERS, constants.api.POST, conn.id, constants.values.SELF));
+			MonitorServer.websocketServer.send(conn.id, utilities.formatWebsocketApiData(constants.api.USERS, constants.api.POST, conn.id, constants.values.SELF));
 		 
 	 		conn.addListener('message', function(jsonObject) {
 	 			logger.write(constants.levels.INFO, 'Handling websocket request');
@@ -370,7 +376,7 @@ function server() {
 	
 	
 	MonitorServer.handleWebsocketRequests = function(jsonObject) {
-		websocketApi.handleRequest(jsonObject);
+		MonitorServer.websocketapi.handleRequest(jsonObject);
 	};
 
 	MonitorServer.start();

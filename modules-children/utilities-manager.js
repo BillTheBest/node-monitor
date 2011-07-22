@@ -11,10 +11,10 @@ UtilitiesManagerModule = function (childDeps) {
 	for (var name in childDeps) {
 		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}
-
-	Module = this;
 	
 	var constants = new constantsManager.ConstantsManagerModule();
+
+	Module = this;
 	
 	Module.constants = constants;
 	
@@ -27,14 +27,18 @@ UtilitiesManagerModule.prototype.fromJSON = function (jsonMessage) {
  		try {
  			jsonObject = eval('(' + jsonMessage + ')');
  		} catch (Exception) {
- 			/**
- 			* Write this to log
- 			*/
- 		}
+ 	 
+ 	 	}
 	}
 		
 	return jsonObject;
 	
+};
+
+UtilitiesManagerModule.prototype.toJSON = function (object) {
+
+  	return JSON.stringify(object);
+  		
 };
 
 UtilitiesManagerModule.prototype.isEven = function (number) {
@@ -270,7 +274,7 @@ UtilitiesManagerModule.prototype.wordIndex = function(string) {
 
 /**
 * Items read from commit_log were already checked, so we can just parse
-* them into a bulk load request
+* them into a bulk load request.  We escape all json.
 */
 UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupRequest, bulkLoadRequest, jsonString) {
 		
@@ -279,14 +283,29 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 	if (json != undefined) {
 		if (json.name == Module.constants.api.LOOKUP) {
 					
-			// Work backwords, check for duplicate keys and duplicate columns
+			/**
+			* Work backwords, check for duplicate keys and columns
+			*/
 			
 			var dataObject = {
 				
 			};
 			
-			dataObject['columnname'] = json.data;
-			dataObject['columnvalue'] = json.date;			
+			/**
+			* For some reason, columns are coming through undefined
+			*/
+			if (json.data == undefined) {
+				dataObject['columnname'] = '';
+			} else {
+				dataObject['columnname'] = json.data;
+			}
+			
+			if (json.data == undefined) {
+				dataObject['columnvalue'] = '';
+			} else {
+				dataObject['columnvalue'] = json.date;
+			}
+						
 			dataObject['ttl'] = 0;
 			
 			var rowObject = {
@@ -322,21 +341,33 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 				}
 			);
 			
-			if (!keyExists) {
+			if (!keyExists) {			
 				bulkLoadLookupRequest.rowkeys.push(rowObject);
 			}
 			
 		} else {
 			
-			// Work backwords, check for duplicate keys
+			/**
+			* Work backwords, check for duplicate keys
+			*/			
 			
 			var dataObject = {
 				
 			};
 			
-			dataObject['columnname'] = json.date;
-			dataObject['columnvalue'] = escape(json.data);			
-			dataObject['ttl'] = 0;
+			if (json.data == undefined) {
+				dataObject['columnname'] = '';
+			} else {
+				dataObject['columnname'] = json.key;
+			}
+			
+			if (json.data == undefined) {
+				dataObject['columnvalue'] = '';
+			} else {
+				dataObject['columnvalue'] = escape(json.data);
+			}
+	
+			dataObject['ttl'] = '0';
 			
 			var rowObject = {
 				rowkey: this.safeEncodeKey(json.key),
@@ -364,7 +395,9 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 		}
 	}
 	
-	// Helps visualize WTF is going on
+	/**
+	* Helps visualize WTF is going on
+	*/
 		
 	/*	
 	{
@@ -401,7 +434,6 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
     ]
 	}
 	*/
-	
 	
 	var returnedObject = {
 		

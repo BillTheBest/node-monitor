@@ -6,6 +6,7 @@ var fs = require('fs');
 
 var modules = {
 	
+	daoManager: 'dao-manager.js',
 	loggingManager: 'logging-manager'
 
 };
@@ -20,23 +21,25 @@ FilehandlerManagerModule = function (childDeps) {
   		
   	}
 
-	for (var name in modules) {
-		eval('var ' + name + '= require(\'' + modules[name] + '\')');
-	}
-	
 	for (var name in childDeps) {
 		eval('var ' + name + '= require(\'' + childDeps[name] + '\')');
 	}
-	
+
+	for (var name in modules) {
+		eval('var ' + name + '= require(\'' + modules[name] + '\')');
+	}
+		
 	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(childDeps);
+	var dao = new daoManager.DaoManagerModule(childDeps);
 
 	Module = this;
 	
 	Module.utilities = utilities;
 	Module.constants = constants;
 	Module.logger = logger;
+	Module.dao = dao;
 	
 }; 
 
@@ -189,28 +192,14 @@ FilehandlerManagerModule.prototype.purgeCommitLog = function() {
 	*/
 	// Module.utilities.aggregateCounters(returnedBulkRequestObject);
 	
-	try {
+	Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedLookupRequestObject));
+	Module.dao.bulkPost(Module.constants.values.CFUTF8Type, returnedLookupRequestObject);
 	
-		dao.bulkPost(Module.constants.values.CFUTF8Type, returnedLookupRequestObject);
 	
-		Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request # Keys: ' + returnedLookupRequestObject.rowkeys.length);	
-		Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedLookupRequestObject));
-		
-	} catch (Exception) {
-		Module.logger.write(Module.constants.levels.WARNING, 'Lookup Bulk Post has an undefined attribute, not POSTing');
-	}
+	Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedBulkRequestObject));
+	Module.dao.bulkPost(Module.constants.values.CFLongType, returnedBulkRequestObject);
 	
-	try {
-	
-		dao.bulkPost(Module.constants.values.CFLongType, returnedBulkRequestObject);
-	
-		Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request # Keys: ' + returnedBulkRequestObject.rowkeys.length);	
-		Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedBulkRequestObject));
-	
-	} catch (Exception) {
-		Module.logger.write(Module.constants.levels.WARNING, 'Data for Bulk Post has an undefined attribute, not POSTing');
-	}
-			
+					
 	Module.empty(process.env['commitLogFile']);
 
 };

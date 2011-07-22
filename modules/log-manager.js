@@ -126,19 +126,29 @@ LogManagerModule.prototype.asyncTailing = function() {
 	
 };
 
+/**
+* It is important to note that -F is correct, if the log file rolls,
+* and we always ignore the first one. 
+*/
 LogManagerModule.prototype.tailFile = function (logName, callback) {
 	
+	var count = 0;
 	var spawn = require('child_process').spawn;
 	var tail = spawn('tail', ['-F', logName]);
-    tail.stdout.on('data', function (data) {				
+    tail.stdout.on('data', function (data) {	
+    	
+    	if (count == 0) {
+    		count++;
+    	} else {
+    		data = data.toString().replace(/(\r\n|\n|\r)/gm, '');	
+			var data = Module.utilities.format(Module.constants.api.LOGS, data);
 		
-		var data = Module.utilities.format(Module.constants.api.LOGS, data.toString());
+			var lookupKey = Module.utilities.formatLookupLogKey(process.env['clientIP']);
+			NodeMonitorObject.sendDataLookup(lookupKey, logName);
 	
-		var lookupKey = Module.utilities.formatLookupLogKey(process.env['clientIP']);
-		NodeMonitorObject.sendDataLookup(lookupKey, logName);
-
-		var dataKey = Module.utilities.formatLogKey(process.env['clientIP'], logName);
-		NodeMonitorObject.sendData(Module.constants.api.LOGS, dataKey, data);
+			var dataKey = Module.utilities.formatLogKey(process.env['clientIP'], logName);
+			NodeMonitorObject.sendData(Module.constants.api.LOGS, dataKey, data);
+    	}
 		
 	});
 	

@@ -18,7 +18,7 @@ PluginsManagerModule = function (nodeMonitor, childDeps) {
 	try {
   		process.chdir(process.env['moduleDirectory']);
 	} catch (Exception) {
-  		console.log('Error moving to modules directory: ' + Exception);
+  	
 	}
 
 	for (var name in modules) {
@@ -49,7 +49,7 @@ PluginsManagerModule.prototype.start = function() {
 	try {
 	  	process.chdir(process.env['pluginDirectory']);
 	} catch (Exception) {
-	  	console.log('Error moving to directory: ' + Exception);
+	  	Module.logger.write(Module.constants.levels.INFO, 'Error moving to directory: ' + Exception);
 	}
 
 	var pluginCount = 0;

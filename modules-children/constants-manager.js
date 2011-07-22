@@ -25,6 +25,8 @@ ConstantsManagerModule.prototype.api.POST = 'post';
 ConstantsManagerModule.prototype.api.DEL = 'del';
 
 ConstantsManagerModule.prototype.api.SERVER = 'servers';
+ConstantsManagerModule.prototype.api.SERVER_VERSIONS = 'server-versions';
+ConstantsManagerModule.prototype.api.SERVER_EXTERNAL = 'server-external';
 ConstantsManagerModule.prototype.api.USERS = 'users';
 ConstantsManagerModule.prototype.api.CLIENTS = 'clients';
 ConstantsManagerModule.prototype.api.INSTANCES = 'instances';
@@ -39,6 +41,7 @@ ConstantsManagerModule.prototype.api.ALERTS = 'alerts';
 ConstantsManagerModule.prototype.api.ALERTS_LIVE = 'alerts-live';
 ConstantsManagerModule.prototype.api.ALERTS_HISTORY = 'alerts-history';
 ConstantsManagerModule.prototype.api.CLIENT_TAGS = 'client-tags';
+ConstantsManagerModule.prototype.api.CLIENT_VERSIONS = 'client-versions';
 ConstantsManagerModule.prototype.api.CLIENT_EXTERNAL = 'client-external';
 ConstantsManagerModule.prototype.api.MAPREDUCE_TABLE = 'mapreduce-table';
 ConstantsManagerModule.prototype.api.MAPREDUCE_JOB = 'mapreduce-job';

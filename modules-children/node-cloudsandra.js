@@ -3,13 +3,30 @@
 */
 
 // Your credentials
-var token = ''; // Token
-var accountId = ''; // AccountId
-
-var sys = require('sys'),
-		querystring = require('querystring'),
-			http = require('http');
+var token = process.env['CLOUDSANDRA_TOKEN']; // Token
+var accountId = process.env['CLOUDSANDRA_ACCOUNT']; // AccountId
 			
+var dependencies = {
+
+	sys: 'sys',
+	querystring: 'querystring',
+	http: 'http'
+	
+};		
+
+var modules = {
+
+	loggingManager: '../modules/logging-manager',
+	
+};
+
+for (var name in dependencies) {
+	eval('var ' + name + ' = require(\'' + dependencies[name] + '\')');
+}
+
+for (var name in modules) {
+	eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+}
 
 CloudsandraApi = function () {
 
@@ -499,9 +516,6 @@ CloudsandraApi.prototype.del = function (uriParams, getParams, postParams, callb
 };
 
 CloudsandraApi.prototype.makePostRequest = function (options, queryString, uriParams, getParams, postParams, callback) {
-
-	console.log('hitting url: ' + simpleRestClient.host + simpleRestClient.version + this.pathBuilder(uriParams, getParams));
-	console.log('post string: ' + queryString);
 	
 	if (postParams && postParams.body) {
 		options.headers['Content-Length'] = postParams.body.length;
@@ -532,8 +546,6 @@ CloudsandraApi.prototype.makePostRequest = function (options, queryString, uriPa
 		}
 	);
 	
-	// this.handleTerribleNoGoodVeryBadConnectionRefusedRequest(restRequest);
-	
 	if (postParams && postParams.body) {
 		restRequest.write(postParams.body);
 	} else if (postParams) {
@@ -546,7 +558,9 @@ CloudsandraApi.prototype.makePostRequest = function (options, queryString, uriPa
 	
 	restRequest.on('error',
 		function(error) {
-			console.log('ERRORRRRRRRRRRRRRRRR' + error);
+			/**
+			* Write this to log
+			*/
 		}
 	);
 	
@@ -574,8 +588,6 @@ CloudsandraApi.prototype.makeGetRequest = function (options, uriParams, getParam
 			);
 		}
 	);
-	
-	// this.handleTerribleNoGoodVeryBadConnectionRefusedRequest(restRequest);
 	
 	restRequest.write('');
 	restRequest.end();
@@ -609,8 +621,6 @@ CloudsandraApi.prototype.makeDeleteRequest = function (options, queryString, uri
 		}
 	);
 	
-	// this.handleTerribleNoGoodVeryBadConnectionRefusedRequest(restRequest);
-	
 	if (postParams) {
 		restRequest.write(querystring.stringify(postParams));
 	} else {
@@ -619,16 +629,6 @@ CloudsandraApi.prototype.makeDeleteRequest = function (options, queryString, uri
 	
 	restRequest.end();
 	
-};
-
-CloudsandraApi.prototype.handleTerribleNoGoodVeryBadConnectionRefusedRequest = function (restRequest) {
-	restRequest.socket.addListener('error', function(socketException) {
-	    if (socketException.errno === 61) {
-	        console.log('For some reason, this *would* kill the process - ECONNREFUSED: connection refused to ' + request.socket.host + ':' + request.socket.port);
-	    } else {
-	        console.log(socketException);
-	    }
-	});
 };
 
 CloudsandraApi.prototype.handleResponse = function(response) {
