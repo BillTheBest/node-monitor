@@ -208,7 +208,7 @@ function monitor() {
 			logger.write(constants.levels.INFO, 'Alerts enabled');
 	
 		try {
-			filehandler.empty('nohup.out');
+			filehandler.empty('../bin/nohup.out');
 		} catch (Exception) {
 			logger.write(constants.levels.WARNING, 'Error emptying nohup.out file: ' + Exception);
 		}
@@ -410,7 +410,7 @@ function monitor() {
 	*/
 	NodeMonitor.sendData = function (name, key, data) {	
 	
-		var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), escape(data), process.env['clientIP']);
+		var jsonString = utilities.formatBroadcastData(name, key, utilities.generateEpocTime(), data, process.env['clientIP']);
 		
 		logger.write(constants.levels.INFO, 'Data string being sent for date queries: ' + jsonString);
 		

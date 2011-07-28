@@ -1,74 +1,84 @@
 /**
- * Plugin - daemons
+ * daemons.js - plugin
  */
-
-// Includes
-var stack = require('../lib/long-stack-traces'),
-		fs = require('fs'),
-			net = require('net');
-
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
-
-// Constants
-var constantsModule = require('../modules/constants');
-var constants = new constantsModule.ConstantsModule();
-
-// Logging
-var logger = require('../modules/logger');
-
-// Cloudwatch
-var REST = require('../modules/node-cloudwatch');
-var client = new REST.AmazonCloudwatchClient();
  
+var fs = require('fs');
+
+var dependencies = {
+
+	net: 'net'
+
+}; 
+
+var modules = {
+	
+	daoManager: 'dao-manager',
+	loggingManager: 'logging-manager'
+	
+};
+  
 var Plugin = {
 
-	name: 'daemons',
-	config: require('../config/config')
+	name: 'daemons'
+		
+};
+
+Plugin.format = function (data) {
+
+	data = data.replace(/(\r\n|\n|\r)/gm, '');
 	
+	return data;
+	
+};
+
+Plugin.evaluateDeps = function (childDeps, self) {
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
+	for (var name in dependencies) {
+		eval('var ' + name + ' = require(\'' + dependencies[name] + '\')');
+	}
+	
+	for (var name in modules) {
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+	}
+	
+	for (var name in childDeps) {
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
+	}
+	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
+	var dao = new daoManager.DaoManagerModule(childDeps);
+
+	self = this;
+	
+	self.constants = constants;
+	self.utilities = utilities;
+	self.constants = constants;
+	self.dao = dao;
+	self.logger = logger;
+		
 };
 
 this.name = Plugin.name;
 
-Plugin.format = function(data) {
+this.poll = function (childDeps, callback) {
 
-	output_hash = {
-		date: new Date().getTime(),
-		returned: data,
-	};
-	return JSON.stringify(output_hash);
-	
-};
+	Plugin.evaluateDeps(childDeps, this);
 
-Plugin.cloudwatchCriteria = function(response, processName) {
-
-	params = {};
-	
-	params['Namespace'] = Plugin.config.cloudwatchNamespace;
-	params['MetricData.member.1.MetricName'] = 'RunningProcess-' + processName;
-	params['MetricData.member.1.Unit'] = 'None';
-	params['MetricData.member.1.Value'] = response;
-	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-	params['MetricData.member.1.Dimensions.member.1.Value'] = Plugin.config.instanceId;
-	
-	if (Plugin.config.cloudwatchEnabled) {
-		client.request('PutMetricData', params, function (response) {
-			logger.write(constants.levels.INFO, 'Amazon Response: ' + response);
-		});
-	}
-	
-	// logger.write(constants.levels.SEVERE, JSON.stringify(params));
-	
-};
-
-this.poll = function (callback) {
-	var key = Plugin.config.clientIP + ':' + Plugin.name;
+	var key = process.env['clientIP'] + ':' + Plugin.name;
 	var daemons = [];
 
-	fs.readFile(Plugin.config.daemonConfigFile, function (error, fd) {
+	fs.readFile(process.env['daemonConfigFile'], function (error, fd) {
+		
 		if (error)
-			logger.write('Error reading file: ' + fileName);
+			Plugin.logger.write('Error reading file: ' + fileName);
 			
 		function Daemon(name, port) {
 			this.name = name;
@@ -83,8 +93,8 @@ this.poll = function (callback) {
 	  		var daemon = [];
 	  		daemon = splitBuffer[i].split('=');
 	  		
-	  		logger.write(constants.levels.INFO, 'Daemon name: ' + daemon[0]);
-	  		logger.write(constants.levels.INFO, 'Daemon pid: ' + daemon[1]);
+	  		Plugin.logger.write(Plugin.constants.levels.INFO, 'Daemon name: ' + daemon[0]);
+	  		Plugin.logger.write(Plugin.constants.levels.INFO, 'Daemon pid: ' + daemon[1]);
 	
 		  	daemons.push(new Daemon(daemon[0], Number(daemon[1])));
 	  	}  	 
@@ -92,22 +102,26 @@ this.poll = function (callback) {
 		daemons.forEach(
 			function(daemon) {
 				
-				var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
+				var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 			
-				if (daemon.name == 'none' || daemon.name == '') {
+				if (daemon.name == 'none' || daemon.name == '' || daemon.name == undefined) {
 					/**
-					* Ignore empty file, probably a better way to do this...
+					* Ignore empty file, or default of none
 					*/
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Ignoring bad daemon');
 				} else {
-					var stream = net.createConnection(daemon.port, Plugin.config.clientIP);
+					var stream = net.createConnection(daemon.port, process.env['clientIP']);
 			
-				  	var returnedSuccess = stream.on('connect', function() {
+				  	var returnedSuccess = stream.on('connect', function() {	  		
 				  		
-				  		Plugin.cloudwatchCriteria('1', daemon.name);
-				    	logger.write(constants.levels.INFO, '[' + daemon.name + '] connected');
+				  		Plugin.dao.postCloudwatch('RunningProcess-' + daemon.name, 'None', 1);
+				  		
+				    	Plugin.logger.write(Plugin.constants.levels.INFO, '[' + daemon.name + '] connected');
 				    	
-						var data = Plugin.format('1');
-    					logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
+						var data = Plugin.format(daemon.name, '1');
+						
+    					Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
+    					
 						callback(Plugin.name, key, data);
 				    	
 				    	return;
@@ -119,13 +133,16 @@ this.poll = function (callback) {
 				  	var returnedFail = stream.on('error', function(error) {
 				  		
 				  		if (error == 'Error: EINVAL, Invalid argument') {
-				  			logger.write(constants.levels.INFO, 'Reading an invalid daemon, ignoring');
+				  			Plugin.logger.write(Plugin.constants.levels.INFO, 'Reading an invalid daemon, ignoring');
 				  		} else {
-				  			Plugin.cloudwatchCriteria('0', daemon.name);
-				    		logger.write(constants.levels.SEVERE, '['+ daemon.name + '] : cant find process that should be running : ' + error);
+				  			Plugin.dao.postCloudwatch('RunningProcess-' + daemon.name, 'None', 0);
+				  			
+				    		Plugin.logger.write(Pluign.constants.levels.SEVERE, '['+ daemon.name + '] : cant find process that should be running : ' + error);
 				    		
 				    		var data = Plugin.format('0');
-    						logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
+				    		
+    						Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
+    						
 							callback(Plugin.name, key, data);
 				  		}	
 				  		    	

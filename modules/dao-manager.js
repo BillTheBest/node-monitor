@@ -146,9 +146,13 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
 	params['MetricData.member.1.Dimensions.member.1.Value'] = process.env['instanceId'];
 	
 	if (process.env['cloudwatchEnabled'] == 'true') {
-		Module.cloudwatchApi.request('PutMetricData', params, function (response) {
-			Module.write(response);
-		});
+		try {
+			Module.cloudwatchApi.request('PutMetricData', params, function (response) {
+				Module.write(response);
+			});
+		} catch (Exception) {
+			Module.write(Exception);
+		}
 	}	
 	
 	return params;
@@ -192,9 +196,13 @@ DaoManagerModule.prototype.createColumnFamily = function (cfName, cfType) {
 	if (this.debugMode())
 		return;
 	
-	Module.cloudsandraApi.createColumnFamily(cfName, cfType, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.createColumnFamily(cfName, cfType, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -203,9 +211,13 @@ DaoManagerModule.prototype.postDataUTF8Type = function (key, postParams) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.utilities.safeEncodeKey(key), postParams, null, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.utilities.safeEncodeKey(key), postParams, null, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -214,9 +226,13 @@ DaoManagerModule.prototype.postDataLongType = function (key, postParams) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.postData(Module.constants.values.CFLongType, Module.utilities.safeEncodeKey(key), postParams, null, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.postData(Module.constants.values.CFLongType, Module.utilities.safeEncodeKey(key), postParams, null, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -225,9 +241,13 @@ DaoManagerModule.prototype.deleteUTF8Type = function (key, column) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.deleteDataFromRow(Module.constants.values.CFUTF8Type, Module.utilities.safeEncodeKey(key), column, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.deleteDataFromRow(Module.constants.values.CFUTF8Type, Module.utilities.safeEncodeKey(key), column, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -236,10 +256,14 @@ DaoManagerModule.prototype.getRow = function (cfName, key, callback) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.getRow(cfName, Module.utilities.safeEncodeKey(key), function (response) {
-		Module.write(response);
-		callback(response);
-	});
+	try {
+		Module.cloudsandraApi.getRow(cfName, Module.utilities.safeEncodeKey(key), function (response) {
+			Module.write(response);
+			callback(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -248,10 +272,14 @@ DaoManagerModule.prototype.paginateRow = function (cfName, key, fromKey, limit, 
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.paginateRow(cfName, Module.utilities.safeEncodeKey(key), fromKey, limit, function (response) {
-		Module.write(response);
-		callback(response);
-	});
+	try {
+		Module.cloudsandraApi.paginateRow(cfName, Module.utilities.safeEncodeKey(key), fromKey, limit, function (response) {
+			Module.write(response);
+			callback(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -260,9 +288,13 @@ DaoManagerModule.prototype.incrementCount = function (key, cName, value) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.incrementCount(key, cName, value, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.incrementCount(key, cName, value, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -271,9 +303,13 @@ DaoManagerModule.prototype.decrementCount = function (key, cName, value) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.decrementCount(key, cName, value, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.decrementCount(key, cName, value, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -282,9 +318,13 @@ DaoManagerModule.prototype.mapReduceTable = function (key, postParams) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.mapReduceTable(key, postParams, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.mapReduceTable(key, postParams, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -293,9 +333,13 @@ DaoManagerModule.prototype.mapReduceJob = function (postParams) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.mapReduceTable(jsonObject.data, postParams, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.mapReduceTable(jsonObject.data, postParams, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 
@@ -304,9 +348,13 @@ DaoManagerModule.prototype.bulkPost = function (cfName, bulkLoadRequest) {
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.postBulkData(cfName, JSON.stringify(bulkLoadRequest), function (response) {
-		Module.write(response);
-	});	
+	try {
+		Module.cloudsandraApi.postBulkData(cfName, JSON.stringify(bulkLoadRequest), function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}	
 	
 };
 
@@ -315,9 +363,13 @@ DaoManagerModule.prototype.deleteDataFromRow = function (cfName, rowKey, cName) 
 	if (this.debugMode())
 		return;
 
-	Module.cloudsandraApi.deleteDataFromRow(cfName, rowKey, cName, function (response) {
-		Module.write(response);
-	});
+	try {
+		Module.cloudsandraApi.deleteDataFromRow(cfName, rowKey, cName, function (response) {
+			Module.write(response);
+		});
+	} catch (Exception) {
+		Module.write(Exception);
+	}
 	
 };
 

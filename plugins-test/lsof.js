@@ -25,13 +25,11 @@ var Plugin = {
 this.name = Plugin.name;
 
 Plugin.format = function(data) {
-	data = data.trim();
-	data = data.replace('\n', '');
-	output_hash = {
-		date: new Date().getTime(),
-		value: data
-	};
-	return JSON.stringify(output_hash);
+	
+	data = data.replace(/(\r\n|\n|\r)/gm, '');
+
+	return data;
+	
 };
 
 this.poll = function (callback) {	

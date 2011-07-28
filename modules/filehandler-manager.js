@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var modules = {
 	
-	daoManager: 'dao-manager.js',
+	daoManager: 'dao-manager',
 	loggingManager: 'logging-manager'
 
 };
@@ -159,9 +159,14 @@ FilehandlerManagerModule.prototype.purgeCommitLog = function() {
     var bulkLoadRequest = {
     	rowkeys: []
     };
+    
+     var bulkLoadWordIndexRequest = {
+    	rowkeys: []
+    };
      
     var returnedLookupRequestObject;
     var returnedBulkRequestObject;
+    var returnedBulkLoadWordIndexRequest;
     
     var returnedOnce = false;
     
@@ -171,14 +176,16 @@ FilehandlerManagerModule.prototype.purgeCommitLog = function() {
     		var data = nextLine();
   			
 			if (!returnedOnce) {
-				var returnedObject = Module.utilities.formatBulkPostData(bulkLoadLookupRequest, bulkLoadRequest, data);
+				var returnedObject = Module.utilities.formatBulkPostData(bulkLoadLookupRequest, bulkLoadRequest, bulkLoadWordIndexRequest, data);
 				returnedLookupRequestObject = returnedObject.bulkLoadLookupRequest;
 				returnedBulkRequestObject = returnedObject.bulkLoadRequest;
+				returnedBulkLoadWordIndexRequest = returnedObject.bulkLoadWordIndexRequest;
 				returnedOnce = true;
 			} else {
-				var returnedObject = Module.utilities.formatBulkPostData(returnedLookupRequestObject, returnedBulkRequestObject, data);
+				var returnedObject = Module.utilities.formatBulkPostData(returnedLookupRequestObject, returnedBulkRequestObject, returnedBulkLoadWordIndexRequest, data);
 				returnedLookupRequestObject = returnedObject.bulkLoadLookupRequest;
 				returnedBulkRequestObject = returnedObject.bulkLoadRequest;
+				returnedBulkLoadWordIndexRequest = returnedObject.bulkLoadWordIndexRequest;
 			}
 			
     	}
@@ -190,15 +197,19 @@ FilehandlerManagerModule.prototype.purgeCommitLog = function() {
 	/**
 	* Now we need to aggregate counters for the entire bulk post
 	*/
-	// Module.utilities.aggregateCounters(returnedBulkRequestObject);
+	var rowKeys = Module.utilities.aggregateCounters(returnedBulkRequestObject);
+	
+	rowKeys.forEach(
+		function (rowCountObject) {
+			Module.dao.incrementCount(rowCountObject['key'], 'count', rowCountObject['count']);
+		}
+	);
 	
 	Module.logger.write(Module.constants.levels.INFO, 'Lookup Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedLookupRequestObject));
 	Module.dao.bulkPost(Module.constants.values.CFUTF8Type, returnedLookupRequestObject);
 	
-	
 	Module.logger.write(Module.constants.levels.INFO, 'Bulk Load Request JSON: ' + Module.utilities.toJSON(returnedBulkRequestObject));
 	Module.dao.bulkPost(Module.constants.values.CFLongType, returnedBulkRequestObject);
-	
 					
 	Module.empty(process.env['commitLogFile']);
 

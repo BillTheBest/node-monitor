@@ -200,18 +200,18 @@ UtilitiesManagerModule.prototype.dataChecker = function (data) {
 	}	
 };
 
-UtilitiesManagerModule.prototype.formatPluginKey = function(ip, plugin) {
+UtilitiesManagerModule.prototype.formatPluginKey = function (ip, plugin) {
 	var date = new Date();
 	var key = ip + ':' + Module.constants.api.PLUGINS + ':' + plugin + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	return key;
 };
 
-UtilitiesManagerModule.prototype.formatLookupPluginKey = function(ip) {
+UtilitiesManagerModule.prototype.formatLookupPluginKey = function (ip) {
 	var key = ip + ':' + Module.constants.api.PLUGINS;
 	return key;
 };
 
-UtilitiesManagerModule.prototype.formatLogKey = function(ip, log) {
+UtilitiesManagerModule.prototype.formatLogKey = function (ip, log) {
 	var date = new Date();
 	var key = ip + ':' + Module.constants.api.LOGS + ':' + log + ':' + date.getUTCFullYear() + ':' + date.getUTCMonth() + ':' + date.getUTCDate();
 	return key;
@@ -222,7 +222,7 @@ UtilitiesManagerModule.prototype.formatLookupLogKey = function (ip) {
 	return key;
 };
 
-UtilitiesManagerModule.prototype.formatAlertKey = function(date) {
+UtilitiesManagerModule.prototype.formatAlertKey = function (date) {
 	var key;
 	if (date != undefined) {
 		key = Module.constants.api.ALERTS + ':' + date;
@@ -264,19 +264,32 @@ UtilitiesManagerModule.prototype.formatAlertKey = function(date) {
         }
     ]
 	}
-*
 */
-UtilitiesManagerModule.prototype.wordIndex = function(string) {
-	var logEntryIndexArray = string.replace(/[^\w\s]|_/g, function ($1) { 
+
+UtilitiesManagerModule.prototype.wordIndex = function (jsonString) {
+
+	console.log('STRING: ' + jsonString);
+
+	var jsonObject = this.fromJSON(jsonString);
+	var entry = jsonObject.returned
+
+	var logEntryIndexArray = entry.replace(/[^\w\s]|_/g, function ($1) { 
 		return ' ' + $1 + ' ';
 	}).replace(/[ ]+/g, ' ').split(' ');
+	
+	logEntryIndexArray.forEach(
+		function (itemToIndex) {
+	
+		}
+	);
+	
 };
 
 /**
 * Items read from commit_log were already checked, so we can just parse
 * them into a bulk load request.  We escape all json.
 */
-UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupRequest, bulkLoadRequest, jsonString) {
+UtilitiesManagerModule.prototype.formatBulkPostData = function (bulkLoadLookupRequest, bulkLoadRequest, bulkLoadWordIndexRequest, jsonString) {
 		
 	var json = this.fromJSON(jsonString);	
 	
@@ -349,7 +362,9 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 			
 			/**
 			* Work backwords, check for duplicate keys
-			*/			
+			*/		
+			
+			var self = this;	
 			
 			var dataObject = {
 				
@@ -358,19 +373,25 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 			if (json.data == undefined) {
 				dataObject['columnname'] = '';
 			} else {
-				dataObject['columnname'] = json.key;
+				dataObject['columnname'] = json.date;
 			}
 			
 			if (json.data == undefined) {
 				dataObject['columnvalue'] = '';
 			} else {
+				/**
+				* Testing word-count indexing on logs
+				*/
+				if (json.key.indexOf('logs') != -1)
+					self.wordIndex(json.data);
+				
 				dataObject['columnvalue'] = escape(json.data);
 			}
 	
 			dataObject['ttl'] = '0';
 			
 			var rowObject = {
-				rowkey: this.safeEncodeKey(json.key),
+				rowkey: self.safeEncodeKey(json.key),
 				columns: []
 			};
 			
@@ -380,7 +401,7 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 			var keyExists = false;
 			bulkLoadRequest.rowkeys.forEach(
 				function(key) {
-					if (key.rowkey == json.key) {
+					if (key.rowkey == self.safeEncodeKey(json.key)) {
 						keyExists = true;
 						bulkLoadRequest.rowkeys[keyPosition].columns.push(dataObject);
 					} else {
@@ -441,54 +462,47 @@ UtilitiesManagerModule.prototype.formatBulkPostData = function(bulkLoadLookupReq
 	
 	returnedObject['bulkLoadLookupRequest'] = bulkLoadLookupRequest;
 	returnedObject['bulkLoadRequest'] = bulkLoadRequest;
+	returnedObject['bulkLoadWordIndexRequest'] = bulkLoadWordIndexRequest;
 	
 	return returnedObject;
 };
 
-/*
-UtilitiesManagerModule.prototype.aggregateCounters = function(bulkLoadRequest) {
+/**
+* Currently, we can't bulk post counters -- this is a feature I'd like to see, but
+* for now multiple posts will be fine.  It's not THAT many more.
+*/
+UtilitiesManagerModule.prototype.aggregateCounters = function (bulkLoadRequest) {
 
-	var counterObject = {
-		rowkeys: []
-	};
-
+	var rowKeys = [];
+	
 	bulkLoadRequest.rowkeys.forEach(
 		function (key) {
-			counterObject.rowkeys[key] = {};
+			var columnCount = 0;
 			key.columns.forEach(
 				function(row) {
-					console.log('Column Value to Count: ' + row.columnvalue);
-					
-					if (counterObject.rowkeys[key][row.columnname]) {
-				
-						var count = counterObject.rowkeys[key][row.columnname];
-						
-						console.log('Old Count: ' + count);
-						
-						count = parseInt(count);
-						count = count++;
-						counterObject.rowkeys[key][row.columnname] = count;
-						
-						console.log('Incremented Count: ' + count);
-
-					} else {
-						counterObject.rowkeys[key][row.columnname] = 1;
-						
-						console.log('New Count');
-					}
+					columnCount++;
 				}
 			);
+						
+			var rowCountObject = {
+				key: key.rowkey,
+				count: columnCount
+			}		
+
+			rowKeys.push(rowCountObject);		
+			
 		}
 	);
-};
-*/
+	
+	return rowKeys;
 
-UtilitiesManagerModule.prototype.format = function(command, data) {
+};
+
+UtilitiesManagerModule.prototype.format = function (command, data) {
+
 	var splitBuffer = [];
 	switch (command) {
 		case Module.constants.api.LOGS:
-			data.trim();
-			data.replace('\n', '');
 			output_hash = {
 				date: new Date().getTime(),
 				returned: data
@@ -496,6 +510,7 @@ UtilitiesManagerModule.prototype.format = function(command, data) {
 			return JSON.stringify(output_hash);
 			break;
 	}
+	
 };
 
 exports.UtilitiesManagerModule = UtilitiesManagerModule;

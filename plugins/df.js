@@ -20,14 +20,9 @@ var Plugin = {
 
 Plugin.format = function (data) {
 
-	data = data.replace(/(\r\n|\n|\r)/gm, '');
-
-	output_hash = {
-		date: new Date().getTime(),
-		returned: data.replace('%', '')
-	};
-	return JSON.stringify(output_hash);
-	
+	data = data.replace('%', '')
+	return data;
+		
 };
 
 Plugin.evaluateDeps = function (childDeps, self) {
@@ -67,7 +62,6 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 	
-	var key = process.env['clientIP'] + ':' + Plugin.name;
 	var disks = [];
 
 	fs.readFile(process.env['diskConfigFile'], function (error, fd) {
@@ -105,6 +99,9 @@ this.poll = function (childDeps, callback) {
 					var data = Plugin.format(stdout.toString());
 					
 					Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: DiskSpace');
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: Percent');
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: ' + data);
 							
 					Plugin.dao.postCloudwatch('DiskSpace', 'Percent', stdout.toString().replace('%', ''));
 					
