@@ -18,7 +18,9 @@ case "$1" in
 		#export TWILIO_TOKEN=;
 		#export CLOUDSANDRA_TOKEN=;
 		#export CLOUDSANDRA_ACCOUNT=;
-				
+		
+	
+			
 		# debug sets whether we post data or not
 		# console sets whether or not we spit to console as well as log
 		#node client.js > /dev/null 2>&1 &
@@ -40,6 +42,8 @@ case "$1" in
 		#export TWILIO_TOKEN=;
 		#export CLOUDSANDRA_TOKEN=;
 		#export CLOUDSANDRA_ACCOUNT=;
+		
+
 			
 		# debug sets whether we post data or not
 		# console sets whether or not we spit to console as well as log

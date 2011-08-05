@@ -19,7 +19,8 @@ var Plugin = {
 };
 
 Plugin.format = function (data) {
-
+	
+	data = data.replace(/(\r\n|\n|\r)/gm, '');
 	data = data.replace('%', '')
 	return data;
 		

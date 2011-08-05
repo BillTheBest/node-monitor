@@ -1,48 +1,87 @@
 /**
- * Plugin - lsof
+ * lsof.js - plugin
  */
  
-// Includes
-var stack = require('../lib/long-stack-traces');
+var fs = require('fs');
 
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
-
-// Constants
-var constantsModule = require('../modules/constants');
-var constants = new constantsModule.ConstantsModule();
-
-// Logging
-var logger = require('../modules/logger');
- 
+var modules = {
+	
+	daoManager: 'dao-manager',
+	loggingManager: 'logging-manager'
+	
+};
+  
 var Plugin = {
+
 	name: 'lsof',
-	command: 'lsof | wc -l',
-	config: require('../config/config')
+	command: 'lsof | wc -l'
+		
+};
+
+Plugin.format = function (data) {
+
+	data = data.replace(/(\r\n|\n|\r)/gm, '');
+	data = data.replace('%', '')
+	return data;
+		
 };
 
 this.name = Plugin.name;
 
-Plugin.format = function(data) {
-	data = data.trim();
-	data = data.replace('\n', '');
-	output_hash = {
-		date: new Date().getTime(),
-		value: data
-	};
-	return JSON.stringify(output_hash);
+Plugin.evaluateDeps = function (childDeps, self) {
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+	
+	for (var name in modules) {
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+	}
+	
+	for (var name in childDeps) {
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
+	}
+	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
+	var dao = new daoManager.DaoManagerModule(childDeps);
+
+	self = this;
+	
+	self.constants = constants;
+	self.utilities = utilities;
+	self.constants = constants;
+	self.dao = dao;
+	self.logger = logger;
+		
 };
 
-this.poll = function (callback) {	
+this.name = Plugin.name;
+
+this.poll = function (childDeps, callback) {
+
+	Plugin.evaluateDeps(childDeps, this);
+	
+	Plugin.logger.write(Plugin.constants.levels.INFO, 'Plugin command to run: ' + Plugin.command);
+
 	var exec = require('child_process').exec, child;
 	child = exec(Plugin.command, function (error, stdout, stderr) {		
 		
-		var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
+		var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 		var data = Plugin.format(stdout.toString());
 		
-		logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
+		Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
+		Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: OpenFiles');
+		Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: Count');
+		Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: ' + data);
+				
+		Plugin.dao.postCloudwatch('OpenFiles', 'Count', data);
 		
 		callback(Plugin.name, key, data);
+		
 	});
+	
 };

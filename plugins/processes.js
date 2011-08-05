@@ -1,134 +1,140 @@
 /**
- * Plugin - processes
+ * processes.js - plugin
  */
  
-// Includes
-var stack = require('../lib/long-stack-traces'),
-		fs = require('fs'),
-			net = require('net');
+var fs = require('fs');
 
-// Utilities
-var utilsModule = require('../modules/utils');
-var utils = new utilsModule.UtilsModule();
+var dependencies = {
 
-// Constants
-var constantsModule = require('../modules/constants');
-var constants = new constantsModule.ConstantsModule();
+	net: 'net'
 
-// Logging
-var logger = require('../modules/logger');
+}; 
 
-// Cloudwatch
-var REST = require('../modules/node-cloudwatch');
-var client = new REST.AmazonCloudwatchClient();
- 
+var modules = {
+	
+	daoManager: 'dao-manager',
+	loggingManager: 'logging-manager'
+	
+};
+  
 var Plugin = {
+
 	name: 'processes',
-	config: require('../config/config')
+	command: ''
+		
+};
+
+Plugin.format = function(response, processName) {
+
+	data = {
+		process: processName,
+		status: response
+	};
+	
+	return JSON.stringify(data);
+	
+};
+
+Plugin.evaluateDeps = function(childDeps, self) {
+
+	try {
+  		process.chdir(process.env['moduleDirectory']);
+	} catch (Exception) {
+  		
+  	}
+
+	for (var name in dependencies) {
+		eval('var ' + name + ' = require(\'' + dependencies[name] + '\')');
+	}
+	
+	for (var name in modules) {
+		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
+	}
+	
+	for (var name in childDeps) {
+		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
+	}
+	
+	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
+	var constants = new constantsManager.ConstantsManagerModule();
+	var logger = new loggingManager.LoggingManagerModule(childDeps);
+	var dao = new daoManager.DaoManagerModule(childDeps);
+
+	self = this;
+	
+	self.constants = constants;
+	self.utilities = utilities;
+	self.constants = constants;
+	self.dao = dao;
+	self.logger = logger;
+		
 };
 
 this.name = Plugin.name;
 
-Plugin.format = function(response, processName) {
+this.poll = function (childDeps, callback) {
 
-	output_hash = {
-		date: new Date().getTime(),
-		returned:  {
-			process: processName,
-			status: response
-		}
-	};
-	return JSON.stringify(output_hash);
-	
-};
+	Plugin.evaluateDeps(childDeps, this);
 
-Plugin.cloudwatchCriteria = function(response, processName) {
-	
-	params = {};
-	
-	params['Namespace'] = Plugin.config.cloudwatchNamespace;
-	params['MetricData.member.1.MetricName'] = 'RunningProcess-' + processName;
-	params['MetricData.member.1.Unit'] = 'None';
-	params['MetricData.member.1.Value'] = response;
-	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
-	params['MetricData.member.1.Dimensions.member.1.Value'] = Plugin.config.instanceId;
-	
-	if (Plugin.config.cloudwatchEnabled) {
-		client.request('PutMetricData', params, function (response) {
-			logger.write(constants.levels.INFO, 'Amazon Response: ' + response);
-		});
-	}
-	
-	// logger.write(constants.levels.SEVERE, JSON.stringify(params));
-	
-};
-
-this.poll = function (callback) {
-	var key = Plugin.config.clientIP + ':' + Plugin.name;
+	var key = process.env['clientIP'] + ':' + Plugin.name;
 	var processes = [];
 
-	fs.readFile(Plugin.config.processConfigFile, function (error, fd) {
+	fs.readFile(process.env['processConfigFile'], function (error, fd) {
+		
 		if (error)
-			logger.write('Error reading file: ' + fileName);
+			Plugin.logger.write('Error reading file: ' + fileName);
 			
-		function Daemon(name) {
-			this.name = name;
-		}
-			
-		var status;
-	  	var splitBuffer = [];
+		var splitBuffer = [];
 	  	splitBuffer = fd.toString().split('\n');
-	  	
-	  	for (i = 0; i < splitBuffer.length; i++) {
+			
+		for (i = 0; i < splitBuffer.length; i++) {
+
 	  		var process = splitBuffer[i];
 	  		
-	  		logger.write(constants.levels.INFO, 'Process name: ' + process);
-	
-		  	processes.push(process);
-	  	}  	 
+	  		Plugin.logger.write(Plugin.constants.levels.INFO, 'Process to check: ' + process);
 	  		
-		processes.forEach(
-			function(process) {
-				
-				var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
-			
-				if (process == 'none' || process == '') {
-					/**
-					* Ignore empty file, probably a better way to do this...
-					*/
-				} else {
-				
-					Plugin.command = 'ps ax | grep -v grep | grep -v tail | grep ' + process;
+	  		if (process == '' || process == 'none' || process == 'undefined') {
+	  			/**
+				* Ignore empty file, or default of none
+				*/
+	  		} else {
+	  			processes.push(proces);
+	  		}
 
-					logger.write(constants.levels.INFO, 'Plugin command to run: ' + Plugin.command);
+	  	}  	
+	  	
+	  	processes.forEach(
+			function (process) {
+				Plugin.command = 'ps ax | grep -v grep | grep -v tail | grep ' + process;
 				
-					var exec = require('child_process').exec, child;
-					child = exec(Plugin.command, function (error, stdout, stderr) {		
-						
-						var key = utils.formatPluginKey(Plugin.config.clientIP, Plugin.name);
-						
-						var data;
-						if (stdout.toString() == '') {
+				var exec = require('child_process').exec, child;
+				child = exec(Plugin.command, function (error, stdout, stderr) {		
+					
+					var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
+					var data;
+					
+					Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: RunningProcess-' + processName);
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: None');
+					
+					if (stdout.toString() == '') {
 							
-							logger.write(constants.levels.INFO, process + ' is not running!');
+						Plugin.logger.write(Plugin.constants.levels.INFO, process + ' is not running!');
+						data = Plugin.format('0', process);
+						Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: 0');
+						Plugin.dao.postCloudwatch('RunningProcess-' + processName, 'None', '0');
 						
-							data = Plugin.format('0', process);
-							Plugin.cloudwatchCriteria('0', process);
-							
-						} else {
-							
-							logger.write(constants.levels.INFO, process + ' is running');
+					} else {
 						
-							data = Plugin.format('1', process);
-							Plugin.cloudwatchCriteria('1', process);
-							
-						}
-										
-						logger.write(constants.levels.INFO, Plugin.name + ' Data: ' + data);
+						Plugin.logger.write(Plugin.constants.levels.INFO, process + ' is running!');
+						data = Plugin.format('1', process);
+						Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: 1');
+						Plugin.dao.postCloudwatch('RunningProcess-' + processName, 'None', '1');
 						
-						callback(Plugin.name, key, data);
-					});
-				}	
+					}
+						
+					callback(Plugin.name, key, data);
+				});
 			}
 		);
 	});

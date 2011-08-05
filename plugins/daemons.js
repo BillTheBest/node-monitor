@@ -26,12 +26,7 @@ var Plugin = {
 Plugin.format = function (data) {
 
 	data = data.replace(/(\r\n|\n|\r)/gm, '');
-
-	output_hash = {
-		date: new Date().getTime(),
-		returned: data
-	};
-	return JSON.stringify(output_hash);
+	return data;
 	
 };
 
@@ -122,7 +117,7 @@ this.poll = function (childDeps, callback) {
 				  		
 				    	Plugin.logger.write(Plugin.constants.levels.INFO, '[' + daemon.name + '] connected');
 				    	
-						var data = Plugin.format('1');
+						var data = Plugin.format(daemon.name, '1');
 						
     					Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
     					

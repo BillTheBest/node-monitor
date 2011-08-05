@@ -26,18 +26,12 @@ Plugin.format = function (fileName, fileSize) {
 	
 	fileSize = Number(fileSize) * 1024;
 
-	var data = {
-	
+	data = {
 		file: fileName,
 		size: fileSize.toString()
-	
-	}
-
-	output_hash = {
-		date: new Date().getTime(),
-		returned: data
 	};
-	return JSON.stringify(output_hash);
+	
+	return JSON.stringify(data);
 	
 };
 
