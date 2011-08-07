@@ -132,8 +132,11 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
 
 	if (this.debugMode())
 		return;
+				
+	if (!this.cloudwatchAlerts())
+		return;
 		
-	if (this.cloudwatchAlerts())
+	if (process.env['ec2'] != 'true')
 		return;
 	
 	params = {};
@@ -144,7 +147,7 @@ DaoManagerModule.prototype.postCloudwatch = function (metricName, unit, value) {
 	params['MetricData.member.1.Value'] = value;
 	params['MetricData.member.1.Dimensions.member.1.Name'] = 'InstanceID';
 	params['MetricData.member.1.Dimensions.member.1.Value'] = process.env['instanceId'];
-	
+
 	if (process.env['cloudwatchEnabled'] == 'true') {
 		try {
 			Module.cloudwatchApi.request('PutMetricData', params, function (response) {

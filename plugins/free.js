@@ -14,14 +14,30 @@ var modules = {
 var Plugin = {
 
 	name: 'free',
-	command: 'free -t -m | awk \'NR==5{print $4}\''
+	command: ''
 		
 };
 
 Plugin.format = function (data) {
 
+	/**
+	* Take into account different systems
+ 	*/
+	var system = Plugin.utilities.getSystemEnvironment();
+	
+	switch (system) {
+ 		case 'darwin':
+ 			Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
+ 			break;
+ 		case 'linux2':
+ 			break;
+ 		default:
+ 			Plugin.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
+ 			break;
+ 	}
+
 	data = data.replace(/(\r\n|\n|\r)/gm, '');
-	data = data.replace('%', '')
+	data = data.replace('M', '')
 	return data;
 		
 };
@@ -65,12 +81,31 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 	
+	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
+	
+	/**
+	* Take into account different systems
+ 	*/
+ 	var system = Plugin.utilities.getSystemEnvironment();
+ 	Plugin.logger.write(Plugin.constants.levels.INFO, 'System type: ' + system);
+ 	
+ 	switch (system) {
+ 		case 'darwin':
+ 			Plugin.command = 'top -l 1 | awk \'/PhysMem/ {print $10}\'';
+ 			break;
+ 		case 'linux2':
+ 			Plugin.command = 'free -t -m | awk \'NR==5{print $4}\'';
+ 			break;
+ 		default:
+ 			Plugin.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
+ 			break;
+ 	}
+	
 	Plugin.logger.write(Plugin.constants.levels.INFO, 'Plugin command to run: ' + Plugin.command);
 
 	var exec = require('child_process').exec, child;
 	child = exec(Plugin.command, function (error, stdout, stderr) {		
-		
-		var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
+	
 		var data = Plugin.format(stdout.toString());
 		
 		Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);

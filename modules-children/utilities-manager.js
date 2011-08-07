@@ -77,6 +77,12 @@ UtilitiesManagerModule.prototype.generateFormattedDate = function() {
 	
 };
 
+UtilitiesManagerModule.prototype.getSystemEnvironment = function() {
+
+	return process.platform;
+	
+};
+
 UtilitiesManagerModule.prototype.formatBroadcastData = function (name, key, date, data, origin) {
 
 	var broadcastData = JSON.stringify({

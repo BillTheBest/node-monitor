@@ -74,7 +74,7 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 	
-	var key = process.env['clientIP'] + ':' + Plugin.name;
+	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 	var files = [];
 
 	fs.readFile(process.env['filesizeConfigFile'], function (error, fd) {
@@ -104,8 +104,6 @@ this.poll = function (childDeps, callback) {
 		files.forEach(
 			function(file) {
 				
-				var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
-			
 				if (file.name == 'none' || file.name == '') {
 					/**
 					* Ignore empty file, probably a better way to do this...

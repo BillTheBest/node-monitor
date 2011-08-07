@@ -12,6 +12,7 @@ AmazonCloudwatchClient.prototype.showResponse = function (jsonObject) {
    /**
    * Write this to log
    */
+   console.log('CloudWatch Response: ' + string);
    
 };
 

@@ -18,12 +18,18 @@ var Plugin = {
 		
 };
 
-Plugin.format = function (data) {
+Plugin.format = function (diskToCheck, data) {
 	
 	data = data.replace(/(\r\n|\n|\r)/gm, '');
 	data = data.replace('%', '')
-	return data;
-		
+	
+	data = {
+		disk: diskToCheck,
+		size: data
+	};
+	
+	return JSON.stringify(data);
+	
 };
 
 Plugin.evaluateDeps = function (childDeps, self) {
@@ -63,6 +69,7 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 	
+	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 	var disks = [];
 
 	fs.readFile(process.env['diskConfigFile'], function (error, fd) {
@@ -96,13 +103,12 @@ this.poll = function (childDeps, callback) {
 				var exec = require('child_process').exec, child;
 				child = exec(Plugin.command, function (error, stdout, stderr) {		
 					
-					var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
-					var data = Plugin.format(stdout.toString());
+					var data = Plugin.format(diskToCheck, stdout.toString());
 					
 					Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
-					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: DiskSpace');
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: DiskSpace-' + diskToCheck);
 					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: Percent');
-					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: ' + data);
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: ' + stdout.toString().replace('%', ''));
 							
 					Plugin.dao.postCloudwatch('DiskSpace', 'Percent', stdout.toString().replace('%', ''));
 					

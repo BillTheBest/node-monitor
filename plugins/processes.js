@@ -76,7 +76,7 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 
-	var key = process.env['clientIP'] + ':' + Plugin.name;
+	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 	var processes = [];
 
 	fs.readFile(process.env['processConfigFile'], function (error, fd) {
@@ -98,38 +98,36 @@ this.poll = function (childDeps, callback) {
 				* Ignore empty file, or default of none
 				*/
 	  		} else {
-	  			processes.push(proces);
+	  			processes.push(process);
 	  		}
 
 	  	}  	
 	  	
 	  	processes.forEach(
-			function (process) {
-				Plugin.command = 'ps ax | grep -v grep | grep -v tail | grep ' + process;
+			function (processToCheck) {
+				Plugin.command = 'ps ax | grep -v grep | grep -v tail | grep ' + processToCheck;
 				
 				var exec = require('child_process').exec, child;
 				child = exec(Plugin.command, function (error, stdout, stderr) {		
 					
-					var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 					var data;
 					
-					Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
-					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: RunningProcess-' + processName);
+					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: RunningProcess-' + processToCheck);
 					Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: None');
 					
 					if (stdout.toString() == '') {
 							
-						Plugin.logger.write(Plugin.constants.levels.INFO, process + ' is not running!');
-						data = Plugin.format('0', process);
+						Plugin.logger.write(Plugin.constants.levels.INFO, processToCheck + ' is not running!');
+						data = Plugin.format('0', processToCheck);
 						Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: 0');
-						Plugin.dao.postCloudwatch('RunningProcess-' + processName, 'None', '0');
+						Plugin.dao.postCloudwatch('RunningProcess-' + processToCheck, 'None', '0');
 						
 					} else {
 						
-						Plugin.logger.write(Plugin.constants.levels.INFO, process + ' is running!');
-						data = Plugin.format('1', process);
+						Plugin.logger.write(Plugin.constants.levels.INFO, processToCheck + ' is running!');
+						data = Plugin.format('1', processToCheck);
 						Plugin.logger.write(Plugin.constants.levels.INFO, 'Cloudwatch param: 1');
-						Plugin.dao.postCloudwatch('RunningProcess-' + processName, 'None', '1');
+						Plugin.dao.postCloudwatch('RunningProcess-' + processToCheck, 'None', '1');
 						
 					}
 						

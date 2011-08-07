@@ -62,6 +62,7 @@ Plugin.evaluateDeps = function (childDeps, self) {
 	self.constants = constants;
 	self.dao = dao;
 	self.logger = logger;
+	self.net = net;
 		
 };
 
@@ -71,7 +72,7 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 
-	var key = process.env['clientIP'] + ':' + Plugin.name;
+	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 	var daemons = [];
 
 	fs.readFile(process.env['daemonConfigFile'], function (error, fd) {
@@ -100,8 +101,6 @@ this.poll = function (childDeps, callback) {
 	  		
 		daemons.forEach(
 			function(daemon) {
-				
-				var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 			
 				if (daemon.name == 'none' || daemon.name == '' || daemon.name == undefined) {
 					/**
@@ -109,7 +108,7 @@ this.poll = function (childDeps, callback) {
 					*/
 					Plugin.logger.write(Plugin.constants.levels.INFO, 'Ignoring bad daemon');
 				} else {
-					var stream = net.createConnection(daemon.port, process.env['clientIP']);
+					var stream = Plugin.net.createConnection(daemon.port, process.env['clientIP']);
 			
 				  	var returnedSuccess = stream.on('connect', function() {	  		
 				  		

@@ -20,7 +20,7 @@ var Plugin = {
 
 Plugin.format = function (data) {
 
-	data = data.replace(/(\r\n|\n|\r)/gm, '');
+	data = data.replace(/^(\s*)((\S+\s*?)*)(\s*)$/,'$2');
 	data = data.replace('%', '')
 	return data;
 		
@@ -65,12 +65,13 @@ this.poll = function (childDeps, callback) {
 
 	Plugin.evaluateDeps(childDeps, this);
 	
+	var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
+	
 	Plugin.logger.write(Plugin.constants.levels.INFO, 'Plugin command to run: ' + Plugin.command);
 
 	var exec = require('child_process').exec, child;
 	child = exec(Plugin.command, function (error, stdout, stderr) {		
 		
-		var key = Plugin.utilities.formatPluginKey(process.env['clientIP'], Plugin.name);
 		var data = Plugin.format(stdout.toString());
 		
 		Plugin.logger.write(Plugin.constants.levels.INFO, Plugin.name + ' Data: ' + data);
