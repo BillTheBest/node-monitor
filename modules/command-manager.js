@@ -13,7 +13,7 @@ var modules = {
 var Module = {};
 var NodeMonitorObject;
 
-CommandManagerModule = function (nodeMonitor, childDeps) {
+CommandManagerModule = function (childDeps) {
 
 	try {
   		process.chdir(process.env['moduleDirectory']);
@@ -33,15 +33,72 @@ CommandManagerModule = function (nodeMonitor, childDeps) {
 	var constants = new constantsManager.ConstantsManagerModule();
 	var logger = new loggingManager.LoggingManagerModule(nodeMonitor, childDeps);
 
-	NodeMonitorObject = nodeMonitor;
 	Module = this;
 	
 };
 
 CommandManagerModule.prototype.executeCommand = function (command) {
-
-	console.log('my command ' + command);
 	
+	/**
+	* Parse command
+	*/
+	
+	/**
+	* Stop tailing a file
+	*/
+	this.stopTailing(logName, client) {
+	
+	}
+	
+	/**
+	* Tail a new file
+	*/
+	this.tailFile(logName, client) {
+	
+	}
+		
 };	
+
+CommandManagerModule.prototype.stopTailing = function(logName, client) {
+
+};
+
+CommandManagerModule.prototype.tailFile = function (logName, client) {
+	
+	var count = 0;
+	var spawn = require('child_process').spawn;
+	var tail = spawn('tail', ['-F', logName]);
+	
+	var logPid = tail.pid;
+	
+	var lookupKey = Module.utilities.formatLookupLogPidKey(process.env['clientIP']);
+			
+	var pidData = {
+		log: logName,
+		pid: logPid	
+	}
+	
+	var pidData = JSON.stringify(pidData);
+	
+	//NodeMonitorObject.sendDataLookup(lookupKey, pidData);
+	
+    tail.stdout.on('data', function (data) {	
+    	
+    	if (count == 0) {
+    		count++;
+    	} else {
+    		data = data.toString().replace(/(\r\n|\n|\r)/gm, '');	
+			var data = Module.utilities.format(Module.constants.api.LOGS, data);
+		
+			var lookupKey = Module.utilities.formatLookupLogKey(process.env['clientIP']);
+			//NodeMonitorObject.sendDataLookup(lookupKey, logName);
+	
+			var dataKey = Module.utilities.formatLogKey(process.env['clientIP'], logName);
+			//NodeMonitorObject.sendData(Module.constants.api.LOGS, dataKey, data);
+    	}
+		
+	});
+	
+};
 
 exports.CommandManagerModule = CommandManagerModule;

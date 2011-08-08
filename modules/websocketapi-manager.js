@@ -9,13 +9,15 @@ var modules = {
 	loggingManager: 'logging-manager',
 	daoManager: 'dao-manager',
 	filehandlerManager: 'filehandler-manager',
-	ec2Manager: 'ec2-manager'
+	ec2Manager: 'ec2-manager',
+	commandManager: 'command-manager'
 
 };
 
 var Module = {};
+var MonitorServerObject;
 
-WebsocketapiManagerModule = function (websocketConn, childDeps) {
+WebsocketapiManagerModule = function (MonitorServer, websocketConn, childDeps) {
 
 	try {
   		process.chdir(process.env['moduleDirectory']);
@@ -37,8 +39,10 @@ WebsocketapiManagerModule = function (websocketConn, childDeps) {
 	var dao = new daoManager.DaoManagerModule(childDeps);
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 	var ec2 = new ec2Manager.EC2ManagerModule(childDeps);
+	var commandManager = new commandManager.CommandManagerModule(childDeps);
 
 	Module = this;
+	MonitorServerObject = MonitorServer;
 	
 	Module.utilities = utilities;
 	Module.constants = constants;
@@ -46,6 +50,7 @@ WebsocketapiManagerModule = function (websocketConn, childDeps) {
 	Module.dao = dao;
 	Module.filehandler = filehandler;
 	Module.ec2 = ec2;
+	Module.commandManager = commandManager;
 	
 	Module.websocket = new Module.websocketServer(websocketConn);
 		
@@ -133,7 +138,23 @@ WebsocketapiManagerModule.prototype.handleRequest = function (data) {
 	}
 	
 	if (assertObject.assert) {			
-		switch(request) {
+		switch(request) {	
+			/**
+			* If we send a command from websocket to server that is not data based, but command based
+			*/
+			case Module.constants.api.COMMAND:
+				/**
+				* TYPE Module.constants.api.COMMAND
+				* REQ Module.constants.api.COMMAND_START_TAILING
+				* DATA logfileName
+				* SUB REQUEST internal IP of node
+				*
+				*/ 
+				MonitorServer.stream.write(utilities.formatClientApiData(type, request, message, process.env['serverIP'], subRequest));
+				break;
+			/**
+			* Data requests
+			*/
 			case Module.constants.api.SERVER:
 				this.handleServerRequest(jsonObject);
 				break;

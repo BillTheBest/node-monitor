@@ -37,6 +37,20 @@ Plugin.format = function (data) {
  	
 };
 
+Plugin.formatLinux2 = function (data) {
+	
+	var splitBuffer = [];
+	splitBuffer = data.split('\n');
+
+	/*
+	top - 22:32:04 up 103 days,  2:52,  1 user,  load average: 0.40, 0.57, 0.28
+	Tasks:  82 total,   1 running,  81 sleeping,   0 stopped,   0 zombie
+	Cpu(s):  2.3%us,  1.2%sy,  0.0%ni, 92.1%id,  0.2%wa,  0.0%hi,  0.0%si,  4.1%st
+	Mem:   1705708k total,  1304804k used,   400904k free,    57052k buffers
+	Swap:   917500k total,     6088k used,   911412k free,  1008452k cached
+	*/
+};
+
 Plugin.formatDarwin = function (data) {
 
 	var splitBuffer = [];
@@ -418,18 +432,6 @@ Plugin.formatDarwin = function (data) {
 
 	};
 	
-	/*
-	data['processes'] = {};
-	data['load'] = {};
-	data['cpu'] = {};
-	data['libs'] = {};
-	data['regions'] = {};
-	data['mem'] = {};
-	data['vm'] = {};
-	data['network'] = {};
-	data['disks'] = {};
-	*/
-	
 	data['processes'] = processes;
 	data['load'] = load;
 	data['cpu'] = cpu;
@@ -496,7 +498,7 @@ Plugin.evaluateDeps(childDeps, this);
  			Plugin.command = 'top -l 1';
  			break;
  		case 'linux2':
- 			Plugin.command = 'top -b -n 1 | head -n 5';
+ 			Plugin.command = 'top -b -n 1';
  			break;
  		default:
  			Plugin.logger.write(Plugin.constants.levels.INFO, 'Unaccounted for system: ' + system);
@@ -517,7 +519,3 @@ Plugin.evaluateDeps(childDeps, this);
 	});
 	
 };
-
-/*
-top - 01:45:48 up 6 days, 6:06, 2 users, load average: 209.03, 174.28, 146.97 Tasks: 78 total, 2 running, 76 sleeping, 0 stopped, 0 zombie Cpu(s): 1.7%us, 2.2%sy, 0.0%ni, 92.3%id,  0.0%wa, 0.0%hi, 0.0%si, 3.8%st Mem: 1705708k total, 1645624k used, 60084k free, 76648k buffers Swap: 917500k total, 124k used, 917376k free, 1125924k cached
-*/

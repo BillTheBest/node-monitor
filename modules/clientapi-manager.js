@@ -43,34 +43,67 @@ ClientapiManagerModule = function (childDeps) {
 					
 }; 
 
-
 /**
 * Handle requests that are made from the UI => Server => Client,
 * then execute, then send a response back to the UI
 */
 ClientapiManagerModule.prototype.handleRequest = function (request) {
 
-	switch (request) {
-		case constants.clientapi.COMMAND:
-			this.handleCommandLineRequest(request);
+	var assertObject = handleDataRequest(request);
+
+	switch (assertObject.request) {
+		case constants.clientapi.COMMAND_STOP_TAILING:
+			
 			break;
-		case constants.clientapi.CONFIG:
-			this.handleConfigurationRequest(request);
+		case constants.clientapi.COMMAND_START_TAILING:
+		
 			break;
-		default:
+		case constants.clientapi.COMMAND_UPLOAD_PLUGIN:
+		
+			break;
+		case constants.clientapi.COMMAND_REMOVE_PLUGIN:
+		
+			break;
+		case constants.clientapi.COMMAND_ADD_CONFIG:
+		
+			break;
+		case constants.clientapi.COMMAND_REMOVE_CONFIG:
+		
+			break;
+		case constants.clientapi.COMMAND_UPDATE_CONFIG:
+		
 			break;
 	}
 			
 };
 
-ClientapiManagerModule.prototype.handleCommandLineRequest = function(jsonObject) {
+ClientapiManagerModule.prototype.handleStopTailingRequest = function(jsonObject) {
 
 };
 
-ClientapiManagerModule.prototype.handleConfigurationRequest = function(jsonObject) {
+ClientapiManagerModule.prototype.handleStartTailingRequest = function(jsonObject) {
 
 };
 
+ClientapiManagerModule.prototype.handleUploadPluginRequest = function(jsonObject) {
+
+};
+
+ClientapiManagerModule.prototype.handleRemovePluginRequest = function(jsonObject) {
+
+};
+
+ClientapiManagerModule.prototype.handleAddConfigRequest = function(jsonObject) {
+
+};
+
+ClientapiManagerModule.prototype.handleRemoveConfigRequest = function(jsonObject) {
+
+};
+
+ClientapiManagerModule.prototype.handleUpdateConfigRequest = function(jsonObject) {
+
+};
 
 ClientapiManagerModule.prototype.handleDataRequest = function(data) {
 	
@@ -82,26 +115,24 @@ ClientapiManagerModule.prototype.handleDataRequest = function(data) {
 	var undefinedAttribute = false;
 	
 	if (jsonObject != undefined) {
-		/*
-		 * When client disconnects, we must check message
-		 */
+
 		logger.write(constants.levels.INFO, 'JSON checks out');
 		
-		var name;
-		if (jsonObject.name != undefined) {
-			name = jsonObject.name.toString();
-			logger.write(constants.levels.INFO, 'Name: ' + name);
+		var type;
+		if (jsonObject.type != undefined) {
+			type = jsonObject.type.toString();
+			logger.write(constants.levels.INFO, 'Type: ' + type);
 		} else {
-			logger.write(constants.levels.INFO, 'Undefined Name');
+			logger.write(constants.levels.INFO, 'Undefined Type');
 			undefinedAttribute = true;
 		}
 		
-		var key;
-		if (jsonObject.key != undefined) {
-			key = jsonObject.key.toString();
-			logger.write(constants.levels.INFO, 'Key: ' + key);
+		var request;
+		if (jsonObject.request != undefined) {
+			request = jsonObject.request.toString();
+			logger.write(constants.levels.INFO, 'Request: ' + request);
 		} else {
-			logger.write(constants.levels.INFO, 'Undefined Key');
+			logger.write(constants.levels.INFO, 'Undefined Request');
 			undefinedAttribute = true;
 		}
 		
@@ -132,31 +163,22 @@ ClientapiManagerModule.prototype.handleDataRequest = function(data) {
 			undefinedAttribute = true;
 		}
 		
-		assertObject.name = name;
-	 	assertObject.key = key;
+		assertObject.type = type;
+	 	assertObject.request = request;
 	 	assertObject.message = message;
 	 	assertObject.origin = origin;
-	 	assertObject.destination = destination;
+	 	assertObject.target = destination;
 					
 		if (undefinedAttribute == true) {
-			/*
-			 * Keep server from going down
-			 */
 			logger.write(constants.levels.INFO, 'Undefined attribute, ignoring');
 			assertObject.assert = false;
 		 	return assertObject;
 		} else {
-			/*
-			 * Ok to store, check for bulk load?
-			 */
-			 
-			
-		 	logger.write(constants.levels.INFO, 'Storing message from node: ' + origin);
 		 	assertObject.assert = true;
 		 	return assertObject;
 		}
 	} else {
-		logger.write(constants.levels.INFO, 'Undefined jsonObject, client probably disconnected or did something stupid');
+		logger.write(constants.levels.INFO, 'Undefined jsonObject, server probably did something stupid');
 		assertObject.assert = false;
 		return assertObject;
 	}

@@ -153,7 +153,8 @@ function monitor() {
 		wellnessManager: '../modules/wellness-manager',
 		bulkpostManager: '../modules/bulkpost-manager',
 		pluginsManager: '../modules/plugins-manager',
-		credentialManager: '../modules/credential-manager'
+		credentialManager: '../modules/credential-manager',
+		ClientapiManagerModule: '../modules/clientapi-manager'
 		
 	};
 	
@@ -185,6 +186,7 @@ function monitor() {
 	var dao = new daoManager.DaoManagerModule(childDeps);
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 	var credentials = new credentialManager.CredentialManagerModule(childDeps);
+	var clientApiManager = new clientApiManager.ClientApiManagerModule(childDeps);
 	
 	var NodeMonitor = {
 	
@@ -220,7 +222,6 @@ function monitor() {
 		}			
 		
 		dao.storeSelf(constants.api.CLIENTS, process.env['clientIP'], process.env['externalIP']);
-		dao.storeSelf(constants.api.CLIENT_VERSIONS, process.env['clientIP'], process.env['version']);
 		
 		try {
 			NodeMonitor.serverConnect();
@@ -344,38 +345,43 @@ function monitor() {
 				ca: caPem 
 			};
 			
-			NodeMonitor.serverConnection = tls.connect(Number(process.env['clientToServerPort']), NodeMonitor.serverAddress, options, function() {			
+			NodeMonitor.serverConnection = tls.connect(Number(process.env['clientToServerPort']), NodeMonitor.serverAddress, options, function(stream) {			
 				if (NodeMonitor.serverConnection.authorizationError) {
 				   	logger.write(constants.levels.WARNING, 'Authorization Error: ' + NodeMonitor.serverConnection.authorizationError);
 				} else {
-				     logger.write(constants.levels.INFO, 'Authorized a Secure SSL/TLS Connection');
-				     NodeMonitor.onConnect();
+					logger.write(constants.levels.INFO, 'Authorized a Secure SSL/TLS Connection');
+					
+					/**
+					* Need to replicate normal operations Éset timeoout here, on data?
+					*/				   	
+				   	NodeMonitor.onConnect();
 				}
 			});
-			
-			NodeMonitor.serverConnection.on('data', 
-				function () {
-					logger.write(constants.levels.INFO, 'Received a message from the server: ' + data);
-					clientApi.handleDataRequest(data);
-				}
-			);
 		} else {
 			logger.write(constants.levels.INFO, 'No SSL support, trying connection on: ' + NodeMonitor.serverAddress);
 			
-			NodeMonitor.serverConnection = net.createConnection(Number(process.env['clientToServerPort']), NodeMonitor.serverAddress);	
+			NodeMonitor.serverConnection = net.createConnection(Number(process.env['clientToServerPort']), NodeMonitor.serverAddress, function () {
+			
+			});	
 			
 			NodeMonitor.serverConnection.on('connect', 
 				function () {
 				 	NodeMonitor.onConnect();
 				 	NodeMonitor.serverConnection.setTimeout(Number(process.env['serverTimeoutMonkey']) * 1000);
+				 	NodeMonitor.sendMessageToServer('Client ' + process.env['clientIP'] + ' reporting');
 				}
 			);	
 
 		}
 		
+		NodeMonitor.serverConnection.on('data',
+			function (data) {
+				NodeMonitor.handleServerRequest(data);
+			}
+		);
+		
 		NodeMonitor.serverConnection.on('error', 
 			function (exception) {
-				
 				NodeMonitor.handleConnectionError(exception);
 			}
 		);
@@ -385,6 +391,22 @@ function monitor() {
 				NodeMonitor.handleTimeoutError();
 			}
 		);
+		
+	};
+	
+	NodeMonitor.sendMessageToServer = function (message) {
+	
+		NodeMonitor.serverConnection.write(message);
+		
+	};
+	
+	/**
+	* The client API should handle requests made from UI => Server => Client and back!
+	*/
+	NodeMonitor.handleServerRequest = function (data) {
+	
+		logger.write(constants.levels.INFO, 'Received a message from the server: ' + data);
+		clientApiManager.handleRequest(data);
 		
 	};
 	

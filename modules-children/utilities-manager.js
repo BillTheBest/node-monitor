@@ -124,6 +124,20 @@ UtilitiesManagerModule.prototype.formatWebsocketApiData = function (type, reques
  	
 };
 
+UtilitiesManagerModule.prototype.formatClientApiData = function (type, request, data, origin, target) {
+
+	var broadcastData = JSON.stringify({
+		'type': type, 
+		'request': request,
+		'data': data,
+		'origin': origin, 
+		'target': target
+	});
+	
+ 	return broadcastData;
+ 	
+};
+
 UtilitiesManagerModule.prototype.safeEncodeKey = function (key) {
 
 	var encodedKey = key.replace(/\//g, '_');
@@ -225,6 +239,11 @@ UtilitiesManagerModule.prototype.formatLogKey = function (ip, log) {
 
 UtilitiesManagerModule.prototype.formatLookupLogKey = function (ip) {
 	var key = ip + ':' + Module.constants.api.LOGS;
+	return key;
+};
+
+UtilitiesManagerModule.prototype.formatLookupLogPidKey = function (ip) {
+	var key = ip + ':' + Module.constants.api.LOGS_PID;
 	return key;
 };
 

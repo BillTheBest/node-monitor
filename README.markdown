@@ -22,6 +22,7 @@ Lots of really great features are taking shape, some release notes to build on (
 	Current plugins all working, added some platform support (linux vs. Mac)
 	Added top plugin for Mac (development environment)
 	Removed CloudWatch for non-EC2 (needs instanceID currently)
+	Fixed server => client message sending
 	
 This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX) UI, and keep credentials on the server side.
 
@@ -213,8 +214,12 @@ Errors to Fix
 Features to Add
 -----------------------------------
 
-Isidorey integrations node.js everyday at X
-https://api.isidorey.net/WHOSONCALL
+what command manager should do:
+	allow deployment/undeployment of new clients if pem file is given
+	change configs:
+		upload new plugins to all selected boxes
+		tail new files/directories on all selected boxes
+		remove taling for new files on all selected boxes
 
 npm
 
@@ -223,8 +228,6 @@ Make alerts better for SEVERE on connection issues, since chaos monkey introduce
 Automated restarts
 
 Command and control of boxes through Twilio
-
-Plugins need to be reformatted for new dependency model
 
 Plugins need to check if command exists (/usr/sbin/lsof | wc -l instead of lsof)
 
@@ -242,15 +245,7 @@ Add log-based text alerts
 
 Write up a detailed use-case on alerting (pluses and minuses of CloudWatch vs. Twilio)
 
-Tailing...ignore \n !
-
-Fix initial bulk load failure check
-
-Add multiple disks to check in plugin
-
 Add CloudWatch metrics to instance list for ease
-
-Make CloudSandra credentials apparent
 
 Make a deploy/undeploy solution
 
@@ -261,12 +256,6 @@ Log table formatting
 Need to unset realtime divs (add in call to get external IP), fix CSS
 
 Make utils module work for UI
-
-Add counts to bulk posting
-
-Find a better way to integrate dependencies across the board
-
-DAO logging
 
 Add redundancy to post 400 status (DNS error or something)
 
@@ -288,13 +277,9 @@ Put back updated checks for handling gui requests (new log files to monitor, ale
 
 Add ability to monitor all logs in directory
 
-Fix broken plugins - almost there
-
 Add file streaming to grab remote files and check for errors?  Any other useful ideas?
 
 Add chart configuration inside plugin
-
-Add better module configuration
 
 Troubleshooting
 -----------------------------------

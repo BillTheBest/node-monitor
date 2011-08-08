@@ -135,6 +135,20 @@ LogManagerModule.prototype.tailFile = function (logName, callback) {
 	var count = 0;
 	var spawn = require('child_process').spawn;
 	var tail = spawn('tail', ['-F', logName]);
+	
+	var logPid = tail.pid;
+	
+	var lookupKey = Module.utilities.formatLookupLogPidKey(process.env['clientIP']);
+			
+	var pidData = {
+		log: logName,
+		pid: logPid	
+	}
+	
+	var pidData = JSON.stringify(pidData);
+	
+	NodeMonitorObject.sendDataLookup(lookupKey, pidData);
+	
     tail.stdout.on('data', function (data) {	
     	
     	if (count == 0) {

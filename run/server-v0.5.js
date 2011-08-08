@@ -245,7 +245,8 @@ function server() {
 			logger.write(constants.levels.INFO, 'No SSL support');
 			
 			this.server = net.createServer(
-				function(stream) {
+				function (stream) {
+					MonitorServer.stream = stream;
 					MonitorServer.handleStream(stream);
 				}
 			);
@@ -266,9 +267,6 @@ function server() {
 		
 	};
 	
-	/**
-	* Keep track of total connections ever, as well as live connections
-	*/
 	MonitorServer.handleStream = function(stream) {
 	
 		/**
@@ -276,13 +274,12 @@ function server() {
 		*/ 
 	
 		stream.setEncoding('utf8');
-		stream.on('connect', function (t) {
+		stream.on('connect', function () {
 		
 			if (MonitorServer.clients[stream.remoteAddress]) {
 				/**
 				* Already being monitored
 				*/
-			
 				logger.write(constants.levels.INFO, 'Node re-connected from: ' + stream.remoteAddress);
 				
 			} else {
@@ -291,13 +288,15 @@ function server() {
 				   			
 	   			logger.write(constants.levels.INFO, 'Node connected from: ' + stream.remoteAddress);
 				logger.write(constants.levels.INFO, 'Now monitoring: ' + MonitorServer.getClients() + ' node(s)');
-	   			
+				
 			}	
 				
 		});
 		
-		stream.on('data', function(data) {
+		stream.on('data', function (data) {
+		
 			MonitorServer.handleClientRequests(data);
+				
 		});
 		
 		stream.on('end', function() {
@@ -310,7 +309,7 @@ function server() {
 	/**
 	 * Handle client requests from clients
 	 */
-	MonitorServer.handleClientRequests = function(data) {
+	MonitorServer.handleClientRequests = function (data) {
 		logger.write(constants.levels.INFO, 'Data received from client: ' + data);
 					
 		var parts = [];
@@ -338,11 +337,11 @@ function server() {
 			logger.write(constants.levels.INFO, 'Listening for websocket connections on: ' + process.env['websocketApiPort']);
 			logger.write(constants.levels.INFO, 'Opened connection on websocket: ' + conn.id);
 			
-			var websocketapi = new websocketapiManager.WebsocketapiManagerModule(MonitorServer.websocketServer, childDeps);
+			var websocketapi = new websocketapiManager.WebsocketapiManagerModule(MonitorServer, MonitorServer.websocketServer, childDeps);
 			MonitorServer.websocketapi = websocketapi;
 			
 			/* 
-			 * Store conn.id
+			 * Store conn.id…does this get associated with clientIP?
 			 */
 			var postParams = {};
 	   		postParams[conn.id] = new Date().getTime().toString();
@@ -367,7 +366,7 @@ function server() {
 		});
 	};
 	
-	MonitorServer.sendWebsocketData = function(data) {
+	MonitorServer.sendWebsocketData = function (data) {
 	
 		logger.write(constants.levels.INFO, 'Sending data over websocket: ' + data);
 		this.websocketServer.broadcast(data);

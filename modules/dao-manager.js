@@ -90,6 +90,9 @@ DaoManagerModule.prototype.storeSelf = function (type, internalIP, externalIP) {
 	
 	var postParams3 = {};
 	postParams3[internalIP] = process.env['version'];
+	
+	var postParams4 = {};
+	postParams4[internalIP] = process.platform;
 
 	switch (type) {
 		case Module.constants.api.SERVER:
@@ -103,6 +106,10 @@ DaoManagerModule.prototype.storeSelf = function (type, internalIP, externalIP) {
 			});
 			
 			Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.constants.api.SERVER_VERSIONS, postParams3, null, function (response) {
+				Module.write(response);
+			});
+			
+			Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.constants.api.SERVER_PLATFORM, postParams4, null, function (response) {
 				Module.write(response);
 			});
 		
@@ -119,6 +126,10 @@ DaoManagerModule.prototype.storeSelf = function (type, internalIP, externalIP) {
 			});
 			
 			Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.constants.api.CLIENT_VERSIONS, postParams3, null, function (response) {
+				Module.write(response);
+			});
+			
+			Module.cloudsandraApi.postData(Module.constants.values.CFUTF8Type, Module.constants.api.CLIENT_PLATFORM, postParams4, null, function (response) {
 				Module.write(response);
 			});
 			
