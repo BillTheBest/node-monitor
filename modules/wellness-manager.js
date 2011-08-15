@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var modules = {
 	
-	daoManager: 'dao-manager'
+	daoManager: '../modules/dao-manager'
 
 };
 

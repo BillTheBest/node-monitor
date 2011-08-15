@@ -6,8 +6,8 @@ var fs = require('fs');
  
 var modules = {
 
-	filehandlerManager: 'filehandler-manager',
-	loggingManager: 'logging-manager'
+	filehandlerManager: '../modules/filehandler-manager',
+	loggingManager: '../modules/logging-manager'
 
 };
 

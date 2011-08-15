@@ -12,7 +12,7 @@ var dependencies = {
  
 var modules = {
 
-	loggingManager: 'logging-manager'
+	loggingManager: '../modules/logging-manager'
 
 };
 

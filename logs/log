@@ -1,0 +1,28 @@
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Starting Node Monitor
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Configuring Monitoring Server IP as external
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO No SSL support, trying connection on: 127.0.0.1
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: daemons
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: df
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: filesize
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: free
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: lsof
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: processes
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: top
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Loading plugin: who
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO 8 plugins loaded, beginning long polling
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) WARNING Error on initial connection to server, load plugins anyway and write server requests to commit_log locally
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) SEVERE A connection issue has arisen: ECONNREFUSED, Connection refused
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Attempting reconnect to server in 20 seconds
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Found log in config: /var/log/system.log
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Data string being sent for lookup: {"name":"lookup","key":"127.0.0.1:logs","date":1313370354671,"data":"/var/log/system.log","origin":"127.0.0.1"}
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Assert returned true, storing this data
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Now tailing log: /var/log/system.log
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Data string being sent for lookup: {"name":"lookup","key":"127.0.0.1:logs-pid","date":1313370354673,"data":"{\"log\":\"/var/log/system.log\",\"pid\":65186}","origin":"127.0.0.1"}
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Assert returned true, storing this data
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Writing file
+Sun Aug 14 2011 19:05:54 GMT-0600 (MDT) INFO Writing file
+Sun Aug 14 2011 19:05:55 GMT-0600 (MDT) RESPONSE {"message":"Success","status":"200","detail":"clients upsert successfull."}
+Sun Aug 14 2011 19:05:55 GMT-0600 (MDT) RESPONSE {"message":"Success","status":"200","detail":"client-external upsert successfull."}
+Sun Aug 14 2011 19:05:55 GMT-0600 (MDT) RESPONSE {"message":"Success","status":"200","detail":"client-versions upsert successfull."}
+Sun Aug 14 2011 19:05:55 GMT-0600 (MDT) RESPONSE {"message":"Success","status":"200","detail":"client-platform upsert successfull."}
+Sun Aug 14 2011 19:05:55 GMT-0600 (MDT) RESPONSE {"message":"Success","status":"200","detail":"alerts:2011:7:15 upsert successfull."}

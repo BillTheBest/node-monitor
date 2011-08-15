@@ -6,7 +6,7 @@ var fs = require('fs');
  
 var modules = {
 	
-	loggingManager: 'logging-manager'
+	loggingManager: '../modules/logging-manager'
 	
 };
 

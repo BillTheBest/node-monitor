@@ -6,11 +6,11 @@ var fs = require('fs');
  
 var modules = {
 	
-	loggingManager: 'logging-manager',
-	daoManager: 'dao-manager',
-	filehandlerManager: 'filehandler-manager',
-	ec2Manager: 'ec2-manager',
-	commandManager: 'command-manager'
+	loggingManager: '../modules/logging-manager',
+	daoManager: '../modules/dao-manager',
+	filehandlerManager: '../modules/filehandler-manager',
+	ec2Manager: '../modules/ec2-manager',
+	commandManager: '../modules/command-manager'
 
 };
 

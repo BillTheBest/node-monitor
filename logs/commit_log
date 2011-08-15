@@ -1,0 +1,4 @@
+{"name":"lookup","key":"127.0.0.1:logs","date":1313370243436,"data":"/var/log/system.log","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:logs-pid","date":1313370243438,"data":"{\"log\":\"/var/log/system.log\",\"pid\":65134}","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:logs","date":1313370354671,"data":"/var/log/system.log","origin":"127.0.0.1"}
+{"name":"lookup","key":"127.0.0.1:logs-pid","date":1313370354673,"data":"{\"log\":\"/var/log/system.log\",\"pid\":65186}","origin":"127.0.0.1"}

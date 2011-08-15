@@ -4,11 +4,11 @@
  
 var fs = require('fs');
 
-var Module;
+var Module = {};
 
 var modules = {
 
-	daoManager: 'dao-manager'
+	daoManager: '../modules/dao-manager'
 	
 };
 
@@ -23,7 +23,7 @@ LoggingManagerModule = function (childDeps) {
 	for (var name in modules) {
 		eval('var ' + name + ' = require(\'' + modules[name] + '\')');
 	}
-
+	
 	for (var name in childDeps) {
 		eval('var ' + name + ' = require(\'' + childDeps[name] + '\')');
 	}

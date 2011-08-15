@@ -6,8 +6,8 @@ var fs = require('fs');
 
 var modules = {
 	
-	daoManager: 'dao-manager',
-	loggingManager: 'logging-manager'
+	daoManager: '../modules/dao-manager',
+	loggingManager: '../modules/logging-manager'
 
 };
 
