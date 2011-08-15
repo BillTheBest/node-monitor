@@ -23,6 +23,7 @@ Lots of really great features are taking shape, some release notes to build on (
 	Added top plugin for Mac (development environment)
 	Removed CloudWatch for non-EC2 (needs instanceID currently)
 	Fixed server => client message sending
+	Updated installation cases
 	
 This is a monitoring application built on today's technologies centered around CloudSandra, Node.js, and the Amazon EC2/CloudWatch APIs.  REST and websockets for historical and realtime views of what's happening on our boxes, combined with Chromatron and Highcharts (along with lots of jQuery functionality) together in a UI piece that interacts with a websocket API.  This is crucial, as it allows us to make server-side API calls for big data, have a cleaner (no PHP/AJAX) UI, and keep credentials on the server side.
 
@@ -74,12 +75,22 @@ Usage/Installation
 
 	// DEBIAN 
 	
-	mkdir /monitoring
+	sudo mkdir /monitoring
+	cd /monitoring
+	sudo git clone git://github.com/isidorey/node-monitor.git
+	cd /monitoring/node-monitor
+	sudo git checkout v0.5
+	cd /monitoring/node-monitor/bin
 	sudo ./monitor install-debian
 	
 	// CentOS	
 	
-	mkdir /monitoring
+	sudo mkdir /monitoring
+	cd /monitoring
+	sudo git clone git://github.com/isidorey/node-monitor.git
+	cd /monitoring/node-monitor
+	sudo git checkout v0.5
+	cd /monitoring/node-monitor/bin
 	sudo ./monitor install-centos
 	
 	sudo ./monitor start

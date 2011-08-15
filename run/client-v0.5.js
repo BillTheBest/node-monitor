@@ -66,7 +66,7 @@ function init() {
 		
 		autoPopulate.forEach(
 			function (parameter) {
-				var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
+				var cmdline = '/monitoring/node-monitor/bin/ec2-metadata  --' + parameter;
 				require('child_process').exec(cmdline, function (error, stdout, stderr) {       
 			        if (error) {
 			        	console.log('Error auto-configuring');
@@ -146,6 +146,7 @@ function monitor() {
 	 
 	var modules = {
 	
+		daoManager: '../modules/dao-manager',
 		loggingManager: '../modules/logging-manager',
 		filehandlerManager: '../modules/filehandler-manager',
 		daoManager: '../modules/dao-manager',
@@ -154,7 +155,7 @@ function monitor() {
 		bulkpostManager: '../modules/bulkpost-manager',
 		pluginsManager: '../modules/plugins-manager',
 		credentialManager: '../modules/credential-manager',
-		ClientapiManagerModule: '../modules/clientapi-manager'
+		clientapiManager: '../modules/clientapi-manager'
 		
 	};
 	
@@ -186,7 +187,7 @@ function monitor() {
 	var dao = new daoManager.DaoManagerModule(childDeps);
 	var filehandler = new filehandlerManager.FilehandlerManagerModule(childDeps);
 	var credentials = new credentialManager.CredentialManagerModule(childDeps);
-	var clientApiManager = new clientApiManager.ClientApiManagerModule(childDeps);
+	var clientapi = new clientapiManager.ClientapiManagerModule(childDeps);
 	
 	var NodeMonitor = {
 	

@@ -9,11 +9,9 @@ var fs = require('fs');
 * (restart monitor, send alert with error)
 */
 
-/*
 process.on('uncaughtException', function (error) {
-  	console.log('Caught exception: ' + error);
+  	console.log('Uncaught exception: ' + error);
 }); 
-*/
 
 /**
 * Command line parameters keep things much easier to manage on a larger scale,
@@ -66,7 +64,7 @@ function init() {
 		
 		autoPopulate.forEach(
 			function (parameter) {
-				var cmdline = '/monitoring/node-monitor/scripts/ec2-metadata  --' + parameter;
+				var cmdline = '/monitoring/node-monitor/bin/ec2-metadata  --' + parameter;
 				require('child_process').exec(cmdline, function (error, stdout, stderr) {       
 			        if (error) {
 			        	console.log('Error auto-configuring');
@@ -137,10 +135,9 @@ function server() {
 
 		tls: 'tls',
 		stack: '../lib/long-stack-traces',
-		websock: '../lib/websocket-server',
+		socket: 'websocket-server',
 		net: 'net',
 		http: 'http',
-		io: '../lib/socket.io',
 		async: '../lib/async'
 		
 	}; 
@@ -192,7 +189,7 @@ function server() {
 	var MonitorServer = {
 		server: false,
 		clients: {},
-		websocketServer: websock.createServer({debug: true})
+		websocketServer: socket.createServer({debug: true}),
 	};
 	
 	MonitorServer.start = function() {	
@@ -214,8 +211,13 @@ function server() {
 		}
 	
 		dao.storeSelf(constants.api.SERVER, process.env['serverIP'], process.env['serverExternalIP']);
-		
+		/**
+		* Here we open connections to clients
+		*/
 		MonitorServer.startListener();
+		/**
+		* Here we open up a websocket for UI
+		*/
 		MonitorServer.openWebsocket();
 		
 	};
@@ -332,7 +334,24 @@ function server() {
 	
 	
 	MonitorServer.openWebsocket = function() {
-		this.websocketServer.addListener('connection', function(conn){
+	
+			/**********/
+	
+			/*
+			this.websocketServer.addListener('connection', function(conn){
+		 		conn.addListener('message', function(message){
+		 			WebsocketServer.handleWebsocketRequests(message.toString());
+		  		});
+			});
+			this.websocketServer.listen(8001);
+			this.websocketServer.addListener('close', function(conn){
+				console.log('Closed connection with: ' + conn.id);
+			});
+			*/
+			
+			/**********/
+	
+		this.websocketServer.addListener('connection', function (conn) {
 		
 			logger.write(constants.levels.INFO, 'Listening for websocket connections on: ' + process.env['websocketApiPort']);
 			logger.write(constants.levels.INFO, 'Opened connection on websocket: ' + conn.id);
@@ -355,6 +374,9 @@ function server() {
 	 			MonitorServer.handleWebsocketRequests(jsonObject);
 	  		});
 		});
+		
+		logger.write('PORT: ' + Number(process.env['websocketApiPort']));
+		
 		this.websocketServer.listen(Number(process.env['websocketApiPort']));
 			
 		this.websocketServer.addListener('close', function(conn) {

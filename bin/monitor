@@ -19,8 +19,7 @@ case "$1" in
 		#export CLOUDSANDRA_TOKEN=;
 		#export CLOUDSANDRA_ACCOUNT=;
 		
-		
-			
+				
 		# debug sets whether we post data or not
 		# console sets whether or not we spit to console as well as log
 		#node client.js > /dev/null 2>&1 &
@@ -42,7 +41,8 @@ case "$1" in
 		#export TWILIO_TOKEN=;
 		#export CLOUDSANDRA_TOKEN=;
 		#export CLOUDSANDRA_ACCOUNT=;
-
+		
+	
 			
 		# debug sets whether we post data or not
 		# console sets whether or not we spit to console as well as log
@@ -82,9 +82,8 @@ case "$1" in
 		make install
 		cd /monitoring
 		curl http://npmjs.org/install.sh | sudo sh
-		npm install iconv forever fermata ec2
-		git clone $GIT_PROJECT
-		
+		npm install iconv forever ec2
+
 		;;
 	'install-centos')
 		yes | yum install gcc gcc-c++ autoconf automake openssl-devel nginx unzip gcc-c++ screen git-core monit
@@ -97,8 +96,7 @@ case "$1" in
 		cd /monitoring
 		sed -i "s/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin/Defaults    secure_path = \/sbin:\/bin:\/usr\/sbin:\/usr\/bin:\/usr\/local\/bin/g" /etc/sudoers
 		curl http://npmjs.org/install.sh | sudo sh
-		npm install iconv forever fermata ec2
-		git clone $GIT_PROJECT
+		npm install iconv forever ec2
 		
 		;;
 	'')

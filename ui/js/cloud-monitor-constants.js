@@ -165,5 +165,5 @@ var keyDate = ':' + today.getUTCFullYear() + ':' + today.getUTCMonth() + ':' + t
 	
 	var websocketServerConnection;
 	
-	var serverWebsocketUrl = 'ws://127.0.0.1:8001';
-	//var serverWebsocketUrl = 'ws://ec2-174-129-229-190.compute-1.amazonaws.com:8001';
+	//var serverWebsocketUrl = 'ws://127.0.0.1:8001';
+	var serverWebsocketUrl = 'ws://ec2-50-16-144-4.compute-1.amazonaws.com:8001';

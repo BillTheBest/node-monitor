@@ -1,0 +1,967 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'socketio' ]
+info using npm@1.0.1rc9
+info using node@v0.4.6
+verbose /usr/local/bin/node node symlink
+verbose config file /Users/franklovecchio/.npmrc
+verbose config file /usr/local/etc/npmrc
+silly testEngine { name: 'async',
+silly testEngine   description: 'Higher-order functions and common patterns for asynchronous code',
+silly testEngine   main: './index',
+silly testEngine   author: { name: 'Caolan McMahon' },
+silly testEngine   version: '0.1.9',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/caolan/async.git' },
+silly testEngine   bugs: { url: 'http://github.com/caolan/async/issues' },
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'MIT',
+silly testEngine        url: 'http://github.com/caolan/async/raw/master/LICENSE' } ],
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'async@0.1.9',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/async/package.json
+verbose loadDefaults async@0.1.9
+silly testEngine { name: 'browserify',
+silly testEngine   version: '0.3.6',
+silly testEngine   description: 'Browser-side require() for js directories and npm modules',
+silly testEngine   main: './index.js',
+silly testEngine   directories: { example: './examples' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/substack/node-browserify.git' },
+silly testEngine   keywords: 
+silly testEngine    [ 'browser',
+silly testEngine      'require',
+silly testEngine      'middleware',
+silly testEngine      'bundle',
+silly testEngine      'npm',
+silly testEngine      'coffee',
+silly testEngine      'javascript' ],
+silly testEngine   dependencies: 
+silly testEngine    { findit: '>=0.0.3',
+silly testEngine      source: '>=0.0.3',
+silly testEngine      'es5-shim': '>=1.0.0',
+silly testEngine      'coffee-script': '>=1.0.0',
+silly testEngine      hashish: '>=0.0.2' },
+silly testEngine   devDependencies: 
+silly testEngine    { connect: '>=1.0.0',
+silly testEngine      seq: '>=0.1.8',
+silly testEngine      traverse: '>=0.3.1',
+silly testEngine      backbone: '>=0.3.3',
+silly testEngine      dnode: '>=0.6.2' },
+silly testEngine   author: 
+silly testEngine    { name: 'James Halliday',
+silly testEngine      email: 'mail@substack.net',
+silly testEngine      url: 'http://substack.net' },
+silly testEngine   scripts: { test: 'expresso' },
+silly testEngine   license: 'MIT/X11',
+silly testEngine   engine: { node: '>=0.4.0' },
+silly testEngine   _id: 'browserify@0.3.6',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/browserify/package.json
+verbose loadDefaults browserify@0.3.6
+silly testEngine { name: 'commonjs-utils',
+silly testEngine   author: { name: 'Kris Zyp' },
+silly testEngine   version: '0.1.1',
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   dependencies: {},
+silly testEngine   contributors: [],
+silly testEngine   keywords: [ 'json', 'schema', 'query' ],
+silly testEngine   engines: { node: '>=0.1.30', rhino: true },
+silly testEngine   githubName: 'commonjs-utils',
+silly testEngine   type: 'zip',
+silly testEngine   location: 'http://github.com/kriszyp/commonjs-utils/zipball/master',
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'commonjs-utils@0.1.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/commonjs-utils/package.json
+verbose loadDefaults commonjs-utils@0.1.1
+silly testEngine { name: 'connect',
+silly testEngine   version: '1.4.1',
+silly testEngine   description: 'High performance middleware framework',
+silly testEngine   keywords: [ 'framework', 'web', 'middleware', 'connect', 'rack' ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/senchalabs/connect.git' },
+silly testEngine   author: 
+silly testEngine    { name: 'TJ Holowaychuk',
+silly testEngine      email: 'tj@vision-media.ca',
+silly testEngine      url: 'http://tjholowaychuk.com' },
+silly testEngine   dependencies: { qs: '>= 0.0.6', mime: '>= 0.0.1' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '>= 0.4.1 < 0.5.0' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'connect@1.4.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/connect/package.json
+verbose loadDefaults connect@1.4.1
+silly testEngine { name: 'dnode',
+silly testEngine   version: '0.6.9',
+silly testEngine   description: 'freestyle RPC like a boss',
+silly testEngine   main: './index.js',
+silly testEngine   keywords: 
+silly testEngine    [ 'message passing',
+silly testEngine      'rpc',
+silly testEngine      'rmi',
+silly testEngine      'drb',
+silly testEngine      'remote',
+silly testEngine      'communication',
+silly testEngine      'websockets',
+silly testEngine      'socket.io' ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/substack/dnode.git' },
+silly testEngine   directories: { lib: '.', examples: './examples' },
+silly testEngine   dependencies: 
+silly testEngine    { 'socket.io': '>=0.6.1',
+silly testEngine      lazy: '>=1.0.2',
+silly testEngine      traverse: '>=0.3.1',
+silly testEngine      browserify: '>=0.2.9',
+silly testEngine      'dnode-protocol': '>=0.0.7' },
+silly testEngine   bundleDependencies: [ 'dnode-protocol' ],
+silly testEngine   browserify: 
+silly testEngine    { name: 'dnode',
+silly testEngine      main: './browser/index.js',
+silly testEngine      base: './browser',
+silly testEngine      require: [ 'dnode-protocol' ] },
+silly testEngine   engine: { node: '>=0.4.0' },
+silly testEngine   author: 
+silly testEngine    { name: 'James Halliday',
+silly testEngine      email: 'mail@substack.net',
+silly testEngine      url: 'http://substack.net' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'dnode@0.6.9',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/dnode/package.json
+verbose loadDefaults dnode@0.6.9
+silly testEngine { name: 'dnode-protocol',
+silly testEngine   description: 'Implements the dnode protocol abstractly',
+silly testEngine   version: '0.0.8',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/substack/dnode-protocol.git' },
+silly testEngine   author: 
+silly testEngine    { name: 'James Halliday',
+silly testEngine      email: 'mail@substack.net',
+silly testEngine      url: 'http://substack.net' },
+silly testEngine   main: './index.js',
+silly testEngine   dependencies: { traverse: '>=0.3.1' },
+silly testEngine   scripts: { test: 'expresso' },
+silly testEngine   engines: { node: '>=0.2.0' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'dnode-protocol@0.0.8',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/dnode-protocol/package.json
+verbose loadDefaults dnode-protocol@0.0.8
+silly testEngine { name: 'ec2',
+silly testEngine   version: '0.0.8',
+silly testEngine   author: { name: 'Alan Gutierrez' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: './lib/amazon',
+silly testEngine   bin: { ec2: './bin/ec2' },
+silly testEngine   dependencies: { 'node-xml': '>=1.0.0' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'ec2@0.0.8',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/ec2/package.json
+verbose loadDefaults ec2@0.0.8
+silly testEngine { name: 'ec2',
+silly testEngine   version: '0.0.8',
+silly testEngine   author: { name: 'Alan Gutierrez' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: './lib/amazon',
+silly testEngine   bin: { ec2: './bin/ec2' },
+silly testEngine   dependencies: { 'node-xml': '>=1.0.0' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'ec2@0.0.8',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/ec2-monitoring/package.json
+verbose loadDefaults ec2@0.0.8
+silly testEngine { name: 'fermata',
+silly testEngine   version: '0.5.2',
+silly testEngine   homepage: 'https://github.com/andyet/fermata',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/andyet/fermata.git' },
+silly testEngine   author: { name: '&yet, LLC', url: 'http://andyet.net' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Nathan Vander Wilt',
+silly testEngine        email: 'nate@andyet.net',
+silly testEngine        url: 'http://cloudcartography.com' } ],
+silly testEngine   description: 'Succinct native REST client, for client-side web apps and node.js. Turns URLs into magic JavaScript objects.',
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'MIT',
+silly testEngine        url: 'https://github.com/andyet/fermata/raw/master/README.md' } ],
+silly testEngine   dependencies: { 'node-proxy': '0.3.2' },
+silly testEngine   main: 'fermata',
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'fermata@0.5.2',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/fermata/package.json
+verbose loadDefaults fermata@0.5.2
+silly testEngine { name: 'findit',
+silly testEngine   version: '0.0.3',
+silly testEngine   description: 'Walk a directory tree.',
+silly testEngine   main: './index.js',
+silly testEngine   dependencies: { seq: '>=0.1.7' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/substack/node-findit.git' },
+silly testEngine   keywords: [ 'find', 'walk', 'directory', 'recursive', 'tree' ],
+silly testEngine   author: 
+silly testEngine    { name: 'James Halliday',
+silly testEngine      email: 'mail@substack.net',
+silly testEngine      url: 'http://substack.net' },
+silly testEngine   license: 'MIT/X11',
+silly testEngine   engine: [ 'node >=0.2.0' ],
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'findit@0.0.3',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/findit/package.json
+verbose loadDefaults findit@0.0.3
+silly testEngine { name: 'forever',
+silly testEngine   preferGlobal: 'true',
+silly testEngine   description: 'A simple CLI tool for ensuring that a given node script runs continuously (i.e. forever)',
+silly testEngine   version: '0.5.5',
+silly testEngine   author: 
+silly testEngine    { name: 'Charlie Robbins',
+silly testEngine      email: 'charlie.robbins@gmail.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Fedor Indutny',
+silly testEngine        email: 'fedor.indutny@gmail.com' },
+silly testEngine      { name: 'James Halliday', email: 'mail@substack.net' } ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/indexzero/forever.git' },
+silly testEngine   keywords: [ 'cli', 'fault tolerant', 'sysadmin', 'tools' ],
+silly testEngine   dependencies: 
+silly testEngine    { async: '0.1.x',
+silly testEngine      colors: '0.x.x',
+silly testEngine      eyes: '0.1.x',
+silly testEngine      daemon: '0.3.x',
+silly testEngine      optimist: '0.2.x',
+silly testEngine      timespan: '2.0.x',
+silly testEngine      winston: '0.2.x',
+silly testEngine      nconf: '0.x.x' },
+silly testEngine   devDependencies: { vows: '0.5.x' },
+silly testEngine   bin: { forever: './bin/forever' },
+silly testEngine   main: './lib/forever',
+silly testEngine   scripts: { test: 'vows test/*-test.js --spec' },
+silly testEngine   engines: { node: '>= 0.4.0' },
+silly testEngine   _id: 'forever@0.5.5',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/forever/package.json
+verbose loadDefaults forever@0.5.5
+silly testEngine { name: 'lazy',
+silly testEngine   version: '1.0.4',
+silly testEngine   description: 'Lazy lists for node',
+silly testEngine   main: './lazy.js',
+silly testEngine   modules: { index: './lazy.js' },
+silly testEngine   keywords: [ 'lazy' ],
+silly testEngine   maintainers: 
+silly testEngine    [ { name: 'Peteris Krumins',
+silly testEngine        email: 'peteris.krumins@gmail.com',
+silly testEngine        url: 'http://www.catonmat.net' } ],
+silly testEngine   license: { type: 'MIT' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/pkrumins/node-lazy.git' },
+silly testEngine   engines: { node: '>=0.2.0' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'lazy@1.0.4',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/lazy/package.json
+verbose loadDefaults lazy@1.0.4
+silly testEngine { name: 'libxmljs',
+silly testEngine   author: { name: 'Marco Rogers - http://github.com/polotek' },
+silly testEngine   contributors: [ { name: 'Jeff Smick' } ],
+silly testEngine   description: 'libxml bindings for v8 javascript engine',
+silly testEngine   version: '0.4.1',
+silly testEngine   scripts: 
+silly testEngine    { preinstall: 'make node',
+silly testEngine      preuninstall: 'make clean',
+silly testEngine      test: 'make test' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/polotek/libxmljs.git' },
+silly testEngine   bugs: { url: 'http://github.com/polotek/libxmljs/issues' },
+silly testEngine   main: './libxmljs',
+silly testEngine   engines: { node: '>=0.1.90' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'libxmljs@0.4.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/libxmljs/package.json
+verbose loadDefaults libxmljs@0.4.1
+silly testEngine { name: 'logger',
+silly testEngine   version: '0.0.1',
+silly testEngine   description: 'A simple logging library that combines the simple APIs of Ruby\'s logger.rb and browser-js console.log()',
+silly testEngine   author: { name: 'Aaron Quint', email: 'aaron@quirkey.com' },
+silly testEngine   main: 'logger',
+silly testEngine   engines: { node: '>=0.1.90' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'logger@0.0.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/logger/package.json
+verbose loadDefaults logger@0.0.1
+silly testEngine { name: 'long-stack-traces',
+silly testEngine   description: 'Long stacktraces for V8 implemented in user-land JavaScript.',
+silly testEngine   version: '0.1.2',
+silly testEngine   author: 
+silly testEngine    { name: 'Tom Robinson',
+silly testEngine      email: 'tom@tlrobinson.net',
+silly testEngine      url: 'http://tlrobinson.net/' },
+silly testEngine   main: './lib/long-stack-traces',
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   engines: { node: '*' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'long-stack-traces@0.1.2',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/long-stack-traces/package.json
+verbose loadDefaults long-stack-traces@0.1.2
+silly testEngine { name: 'mailer',
+silly testEngine   description: 'send emails from node.js to a smtp server, simple as cake',
+silly testEngine   version: '0.4.52',
+silly testEngine   author: { name: 'Marak Squires' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Elijah Insua',
+silly testEngine        email: 'tmpvar@gmail.com',
+silly testEngine        url: 'http://tmvpar.com/' },
+silly testEngine      { name: 'Fedor Indutny',
+silly testEngine        email: 'fedor.indutny@gmail.com',
+silly testEngine        url: 'http://indutny.com/' } ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/Marak/node_mailer.git' },
+silly testEngine   dependencies: { carrier: '>= 0.0.4', colors: '>= 0.3.0' },
+silly testEngine   engine: [ 'node >=0.1.90' ],
+silly testEngine   main: 'lib/node_mailer',
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'mailer@0.4.52',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/mailer/package.json
+verbose loadDefaults mailer@0.4.52
+silly testEngine { name: 'node-proxy',
+silly testEngine   version: '0.4.0',
+silly testEngine   description: 'A module for node implementing __noSuchMethod__-type handlers, such as object overloading, as part of the Harmony Catch-All Proxies specification found at http://wiki.ecmascript.org/doku.php?id=harmony:proxies',
+silly testEngine   keywords: 
+silly testEngine    [ 'interceptor',
+silly testEngine      'proxy',
+silly testEngine      'overload',
+silly testEngine      '__noSuchMethod__' ],
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Sam Shull',
+silly testEngine        email: 'http://www.google.com/profiles/brickysam26' } ],
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'MIT',
+silly testEngine        url: 'http://www.opensource.org/licenses/mit-license.html' } ],
+silly testEngine   bugs: { url: 'http://github.com/samshull/node-proxy/issues' },
+silly testEngine   implements: [ 'http://wiki.ecmascript.org/doku.php?id=harmony:proxies' ],
+silly testEngine   engines: { node: '>=0.1.103' },
+silly testEngine   repositories: 
+silly testEngine    [ { type: 'git',
+silly testEngine        url: 'http://github.com/samshull/node-proxy' } ],
+silly testEngine   main: './lib/node-proxy.node',
+silly testEngine   scripts: { install: 'make' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'node-proxy@0.4.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/node-proxy/package.json
+verbose loadDefaults node-proxy@0.4.0
+silly testEngine { name: 'node-restclient',
+silly testEngine   version: '0.0.1',
+silly testEngine   description: 'node-restclient adds easy-to-use api for basic http methods',
+silly testEngine   keywords: [ 'rest', 'http' ],
+silly testEngine   engines: [ 'node', node: '*' ],
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: './lib/restclient.js',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'node-restclient@0.0.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/node-restclient/package.json
+verbose loadDefaults node-restclient@0.0.1
+silly testEngine { name: 'node-uuid',
+silly testEngine   description: 'Simple, fast generation of RFC4122(v4) UUIDs.',
+silly testEngine   url: 'http://github.com/broofa/node-uuid',
+silly testEngine   keywords: [ 'uuid', 'guid', 'rfc4122' ],
+silly testEngine   author: { name: 'Robert Kieffer', email: 'robert@broofa.com' },
+silly testEngine   contributors: [],
+silly testEngine   dependencies: {},
+silly testEngine   lib: '.',
+silly testEngine   main: './uuid.js',
+silly testEngine   version: '1.2.0',
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'node-uuid@1.2.0',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/node-uuid/package.json
+verbose loadDefaults node-uuid@1.2.0
+silly testEngine { name: 'nodemailer',
+silly testEngine   description: 'Easy to use module to send e-mails, supports unicode and SSL/TLS',
+silly testEngine   version: '0.1.11',
+silly testEngine   author: { name: 'Andris Reinman' },
+silly testEngine   maintainers: [ { name: 'andris', email: 'andris@node.ee' } ],
+silly testEngine   homepage: 'http://www.nodemailer.org',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/andris9/nodemailer.git' },
+silly testEngine   main: './lib/mail',
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'MIT',
+silly testEngine        url: 'http://github.com/andris9/nodemailer/blob/master/LICENSE' } ],
+silly testEngine   dependencies: { mimelib: '*' },
+silly testEngine   engine: [ 'node >=0.3.0' ],
+silly testEngine   keywords: [ 'e-mail', 'mime', 'email', 'sendmail' ],
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'nodemailer@0.1.11',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/nodemailer/package.json
+verbose loadDefaults nodemailer@0.1.11
+silly testEngine { name: 'nodemon',
+silly testEngine   homepage: 'http://github.com/remy/nodemon',
+silly testEngine   author: { name: 'Remy Sharp', url: 'http://github.com/remy' },
+silly testEngine   bin: { nodemon: './nodemon.js' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/remy/nodemon.git' },
+silly testEngine   description: 'Simple monitor script for use during development of a node.js app.',
+silly testEngine   keywords: 
+silly testEngine    [ 'monitor',
+silly testEngine      'development',
+silly testEngine      'restart',
+silly testEngine      'autoload',
+silly testEngine      'reload',
+silly testEngine      'terminal' ],
+silly testEngine   version: '0.4.1',
+silly testEngine   preferGlobal: 'true',
+silly testEngine   main: './nodemon',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'nodemon@0.4.1',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/nodemon/package.json
+verbose loadDefaults nodemon@0.4.1
+silly testEngine { name: 'NodeSSH',
+silly testEngine   description: 'SSH Client for NodeJS',
+silly testEngine   version: '0.5.0',
+silly testEngine   author: { name: 'tsmith' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/Trakkasure/NodeSSH.git' },
+silly testEngine   maintainers: 
+silly testEngine    [ { name: 'tsmith' },
+silly testEngine      { name: 'Brandon Myers',
+silly testEngine        email: 'trakkasure@gmail.com' } ],
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'tsmith' },
+silly testEngine      { name: 'Brandon Myers',
+silly testEngine        email: 'trakkasure@gmail.com' } ],
+silly testEngine   keywords: [ 'ssh', 'net', 'expect' ],
+silly testEngine   main: 'lib/index.js',
+silly testEngine   engines: { node: '>= 0.2.0' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'NodeSSH@0.5.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/NodeSSH/package.json
+verbose loadDefaults NodeSSH@0.5.0
+silly testEngine { name: 'nohm',
+silly testEngine   version: '0.4.0',
+silly testEngine   engines: { node: '>=0.4.0' },
+silly testEngine   author: { name: 'Moritz Peters' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   description: 'redis ORM (Object relational mapper)',
+silly testEngine   main: './lib/nohm',
+silly testEngine   dependencies: { async: '0.1.8', redis: '>=0.5.9' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'nohm@0.4.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/nohm/package.json
+verbose loadDefaults nohm@0.4.0
+silly testEngine { name: 'querystring',
+silly testEngine   version: '0.0.1',
+silly testEngine   description: 'Node\'s querystring module for all engines.',
+silly testEngine   keywords: [ 'query', 'querystring' ],
+silly testEngine   author: 
+silly testEngine    { name: 'Irakli Gozalishvili',
+silly testEngine      email: 'rfobic@gmail.com' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/Gozala/querystring.git',
+silly testEngine      web: 'https://github.com/Gozala/querystring' },
+silly testEngine   bugs: { url: 'http://github.com/Gozala/querystring/issues/' },
+silly testEngine   directories: { doc: './docs', lib: './lib', test: './test' },
+silly testEngine   devDependencies: { test: '>=0.0.10' },
+silly testEngine   main: './lib/querystring.js',
+silly testEngine   engines: { node: '0.4.x', teleport: '>=0.2.0' },
+silly testEngine   scripts: { test: 'node test/test-querystring.js' },
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'MPL 1.1/LGPL 2.1/GPL 2.0',
+silly testEngine        url: 'http://www.mozilla.org/MPL/' } ],
+silly testEngine   dependencies: {},
+silly testEngine   _id: 'querystring@0.0.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/querystring/package.json
+verbose loadDefaults querystring@0.0.1
+silly testEngine { name: 'redis',
+silly testEngine   version: '0.6.0',
+silly testEngine   description: 'Redis client library',
+silly testEngine   author: { name: 'Matt Ranney', email: 'mjr@ranney.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Rick Olson' },
+silly testEngine      { name: 'Tim-Smart' },
+silly testEngine      { name: 'TJ Holowaychuk' },
+silly testEngine      { name: 'Orion Henry' },
+silly testEngine      { name: 'Hank Sims' },
+silly testEngine      { name: 'Aivo Paas' },
+silly testEngine      { name: 'Paul Carey' },
+silly testEngine      { name: 'Pieter Noordhuis' },
+silly testEngine      { name: 'Andy Ray' },
+silly testEngine      { name: 'Vladimir Dronnikov' } ],
+silly testEngine   main: './index.js',
+silly testEngine   scripts: { test: 'node ./test.js' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/mranney/node_redis.git' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'redis@0.6.0',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/redis/package.json
+verbose loadDefaults redis@0.6.0
+silly testEngine { name: 'restler',
+silly testEngine   version: '0.2.1',
+silly testEngine   description: 'An HTTP client library for node.js',
+silly testEngine   contributors: [ { name: 'Dan Webb', email: 'dan@danwebb.net' } ],
+silly testEngine   homepage: 'https://github.com/danwrong/restler',
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: './lib/restler',
+silly testEngine   engines: { node: '>= 0.3.7' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'restler@0.2.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/restler/package.json
+verbose loadDefaults restler@0.2.1
+silly testEngine { name: 'Reston',
+silly testEngine   version: '0.2.0',
+silly testEngine   description: 'An improved HTTP client library for node.js',
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Zohaib Sibt-e-Hassan',
+silly testEngine        email: 'zohaib.hassan@gmail.com' } ],
+silly testEngine   homepage: 'https://github.com/maxpert/Reston',
+silly testEngine   engines: { node: '>=0.2.5' },
+silly testEngine   main: './lib/Reston',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/maxpert/Reston.git' },
+silly testEngine   author: 
+silly testEngine    { name: 'Zohaib Sibt-e-Hassan',
+silly testEngine      url: 'http://maxpert.net.tc/' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'Reston@0.2.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/Reston/package.json
+verbose loadDefaults Reston@0.2.0
+silly testEngine { name: 'socket.io',
+silly testEngine   description: 'The cross-browser WebSocket',
+silly testEngine   version: '0.6.17',
+silly testEngine   author: 
+silly testEngine    { name: 'Guillermo Rauch',
+silly testEngine      email: 'guillermo@learnboost.com' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Guillermo Rauch', email: 'rauchg@gmail.com' },
+silly testEngine      { name: 'Arnout Kazemier',
+silly testEngine        email: 'info@3rd-eden.com' } ],
+silly testEngine   licenses: 
+silly testEngine    [ { type: 'MIT',
+silly testEngine        url: 'http://github.com/learnboost/Socket.IO-node/raw/master/README.md' } ],
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/learnboost/Socket.IO-node.git' },
+silly testEngine   engine: [ 'node >=0.1.102' ],
+silly testEngine   main: './index',
+silly testEngine   scripts: { test: 'make test' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'socket.io@0.6.17',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/socket.io/package.json
+verbose loadDefaults socket.io@0.6.17
+silly testEngine { name: 'step',
+silly testEngine   version: '0.0.4',
+silly testEngine   description: 'A simple control-flow library for node.JS that makes parallel execution, serial execution, and error handling painless.',
+silly testEngine   engine: [ 'node >=0.2.0' ],
+silly testEngine   author: { name: 'Tim Caswell', email: 'tim@creationix.com' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/creationix/step.git' },
+silly testEngine   main: 'lib/step',
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'step@0.0.4',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/step/package.json
+verbose loadDefaults step@0.0.4
+silly testEngine { name: 'sync',
+silly testEngine   description: 'Library that makes simple to run asynchronous functions in synchronous manner, using node-fibers.',
+silly testEngine   version: '0.1.7',
+silly testEngine   url: 'http://github.com/0ctave/node-sync',
+silly testEngine   author: { name: 'Yuriy Bogdanov', email: 'chinsay@gmail.com' },
+silly testEngine   main: 'lib/sync',
+silly testEngine   engines: { node: '>=0.3.6' },
+silly testEngine   dependencies: { fibers: '>=0.2.6' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'sync@0.1.7',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/sync/package.json
+verbose loadDefaults sync@0.1.7
+silly testEngine { name: 'traverse',
+silly testEngine   version: '0.3.4',
+silly testEngine   description: 'Traverse and transform objects by visiting every node on a recursive walk',
+silly testEngine   author: { name: 'James Halliday' },
+silly testEngine   license: 'MIT/X11',
+silly testEngine   main: './index',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/substack/js-traverse.git' },
+silly testEngine   devDependencies: { seq: '>=0.1.7', expresso: '>=0.6.0' },
+silly testEngine   scripts: { test: 'expresso' },
+silly testEngine   dependencies: {},
+silly testEngine   _id: 'traverse@0.3.4',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/traverse/package.json
+verbose loadDefaults traverse@0.3.4
+silly testEngine { name: 'twilio',
+silly testEngine   description: 'A Twilio helper library',
+silly testEngine   version: '0.4.0',
+silly testEngine   author: 
+silly testEngine    { name: 'Stephen Walters',
+silly testEngine      url: 'http://github.com/sjwalter' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/sjwalter/node-twilio.git' },
+silly testEngine   modules: { client: './lib/twilio', twiml: './lib/twiml' },
+silly testEngine   main: './lib',
+silly testEngine   engines: { node: '>=0.4.0' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'twilio@0.4.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/twilio/package.json
+verbose loadDefaults twilio@0.4.0
+silly testEngine { name: 'walk',
+silly testEngine   description: 'A node port of python\'s os.walk',
+silly testEngine   url: 'github.com/coolaj86/node-walk',
+silly testEngine   keywords: [ 'util', 'os', 'sys', 'fs', 'walk', 'walkSync' ],
+silly testEngine   author: { name: 'AJ ONeal', email: 'coolaj86@gmail.com' },
+silly testEngine   contributors: [],
+silly testEngine   dependencies: { futures: '>= 1.9.2' },
+silly testEngine   lib: 'lib',
+silly testEngine   main: './lib/walk.js',
+silly testEngine   version: '2.0.0',
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'walk@2.0.0',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/walk/package.json
+verbose loadDefaults walk@2.0.0
+silly testEngine { version: '1.4.04',
+silly testEngine   description: 'A WebSocket Server for node.js, 90-100% spec compatible.',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/miksago/node-websocket-server.git' },
+silly testEngine   directories: { doc: './doc', lib: './lib/ws' },
+silly testEngine   main: './lib/ws/server',
+silly testEngine   bugs: { url: 'http://github.com/miksago/node-websocket-server/issues' },
+silly testEngine   author: 
+silly testEngine    { name: 'Micheil Smith',
+silly testEngine      email: 'micheil@brandedcode.com' },
+silly testEngine   licenses: [ { type: 'MIT', url: './LICENSE.md' } ],
+silly testEngine   name: 'websocket-server',
+silly testEngine   engines: { node: '>=0.2.0-0' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'websocket-server@1.4.04',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/websocket-server/package.json
+verbose loadDefaults websocket-server@1.4.04
+silly testEngine { name: 'xml2json',
+silly testEngine   version: '0.2.0',
+silly testEngine   author: { name: 'Andrew Turley' },
+silly testEngine   email: 'aturley@buglabs.net',
+silly testEngine   description: 'Converts xml to json using node-expat.',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/buglabs/node-xml2json.git' },
+silly testEngine   main: 'index',
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Camilo Aguilar',
+silly testEngine        email: 'camilo@buglabs.net' } ],
+silly testEngine   dependencies: { 'node-expat': '1.3.2' },
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'xml2json@0.2.0',
+silly testEngine   engines: { node: '*' },
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/xml2json/package.json
+verbose loadDefaults xml2json@0.2.0
+verbose has wscript [ undefined,
+verbose has wscript   { file: '/Users/franklovecchio/Desktop/development/node/node_modules/hiredis/package.json',
+verbose has wscript     wscript: 
+verbose has wscript      [ '\ndef configure',
+verbose has wscript        '\n',
+verbose has wscript        index: 102,
+verbose has wscript        input: 'import cc\n\ndef set_options(opt):\n  opt.tool_options("compiler_cc")\n  opt.tool_options("compiler_cxx")\n\ndef configure(conf):\n  # To build hiredis\n  conf.check_tool("compiler_cc")\n  conf.env.append_unique(\'CCFLAGS\', [\'-Wall\', \'-fPIC\', \'-O3\'])\n\n  # To build the ext\n  conf.check_tool("compiler_cxx")\n  conf.check_tool("node_addon")\n  conf.env.append_unique(\'CXXFLAGS\', [\'-Wall\', \'-O3\'])\n  conf.env[\'LIBPATH_HIREDIS\'] = \'default\'\n  conf.env[\'LIB_HIREDIS\'] = \'hiredis\'\n\n# Use build groups to make sure hiredis is linked before compiling the ext.\ndef build(bld):\n  bld.add_group("hiredis")\n  hiredis = bld.new_task_gen("cc", "staticlib")\n  hiredis.source = ["deps/hiredis/%s.c" % file for file in ["sds", "net", "hiredis"]]\n  hiredis.target = "hiredis"\n\n  bld.add_group("ext")\n  ext = bld.new_task_gen("cxx", "shlib", "node_addon", uselib="HIREDIS")\n  ext.cxxflags = ["-I../deps", "-g", "-Wall"]\n  ext.source = "hiredis.cc reader.cc"\n  ext.target = "hiredis"\n\n' ],
+verbose has wscript     serverjs: false } ]
+silly testEngine { name: 'hiredis',
+silly testEngine   description: 'Wrapper for reply processing code in hiredis',
+silly testEngine   version: '0.1.10',
+silly testEngine   homepage: 'http://github.com/pietern/hiredis-node',
+silly testEngine   author: 
+silly testEngine    { name: 'Pieter Noordhuis',
+silly testEngine      email: 'pcnoordhuis@gmail.com' },
+silly testEngine   main: 'hiredis',
+silly testEngine   directories: { lib: '.' },
+silly testEngine   scripts: 
+silly testEngine    { preinstall: 'node-waf configure build',
+silly testEngine      test: 'node test/reader.js' },
+silly testEngine   engines: { node: '*' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'hiredis@0.1.10',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/hiredis/package.json
+verbose loadDefaults hiredis@0.1.10
+verbose has wscript [ undefined,
+verbose has wscript   { file: '/Users/franklovecchio/Desktop/development/node/node_modules/iconv/package.json',
+verbose has wscript     wscript: 
+verbose has wscript      [ '\ndef configure',
+verbose has wscript        '\n',
+verbose has wscript        index: 140,
+verbose has wscript        input: 'import os\n\ndef make(ctx, rule):\n\tos.system(\'make %s NODE_INCLUDE_PATH="%s"\' % (rule, ctx.env[\'CPPPATH_NODE\']))\n\ndef set_options(ctx):\n\tpass\n\ndef configure(ctx):\n\tctx.check_tool(\'node_addon\')\n\ndef build(ctx):\n\tmake(ctx, \'all\')\n' ],
+verbose has wscript     serverjs: false } ]
+silly testEngine { name: 'iconv',
+silly testEngine   main: 'iconv',
+silly testEngine   version: '1.1.1',
+silly testEngine   description: 'Text recoding in JavaScript for fun and profit!',
+silly testEngine   homepage: 'https://github.com/bnoordhuis/node-iconv',
+silly testEngine   author: 
+silly testEngine    { name: 'Ben Noordhuis',
+silly testEngine      email: 'info@bnoordhuis.nl',
+silly testEngine      url: 'http://bnoordhuis.nl/' },
+silly testEngine   scripts: 
+silly testEngine    { preinstall: 'node-waf configure',
+silly testEngine      install: 'node-waf build install' },
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/bnoordhuis/node-iconv.git' },
+silly testEngine   engines: { node: '>=0.3.0' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'iconv@1.1.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/iconv/package.json
+verbose loadDefaults iconv@1.1.1
+verbose has wscript [ undefined,
+verbose has wscript   { file: '/Users/franklovecchio/Desktop/development/node/node_modules/zeromq/package.json',
+verbose has wscript     wscript: 
+verbose has wscript      [ '\ndef configure',
+verbose has wscript        '\n',
+verbose has wscript        index: 174,
+verbose has wscript        input: 'import Options\nfrom os import unlink, link\nfrom os.path import exists \n\nAPPNAME = \'zeromq.node\'\nVERSION = "0.4.0"\n\ndef set_options(opt):\n    opt.tool_options("compiler_cxx")\n\ndef configure(conf):\n    conf.check_tool("compiler_cxx")\n    conf.check_tool("node_addon")\n    conf.check_cfg(package=\'libzmq\', args=\'--cflags --libs "libzmq >= 2.1.0"\')\n\ndef build(bld):\n    obj = bld.new_task_gen("cxx", "shlib", "node_addon")\n    obj.cxxflags = ["-Wall", "-Werror"]\n    obj.target = "binding"\n    obj.source = "binding.cc"\n    obj.lib = ["zmq"]\n\ndef shutdown():\n  # HACK to get binding.node out of build directory.\n  # better way to do this?\n  if exists(\'./binding.node\'): unlink(\'./binding.node\')\n  if Options.commands[\'build\']:\n    link(\'./build/default/binding.node\', \'./binding.node\')\n' ],
+verbose has wscript     serverjs: false } ]
+silly testEngine { name: 'zeromq',
+silly testEngine   version: '0.4.1',
+silly testEngine   description: 'Bindings for node.js to zeromq',
+silly testEngine   main: 'zeromq',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/JustinTulloss/zeromq.node.git' },
+silly testEngine   engines: { node: '>=0.3.0' },
+silly testEngine   contributors: 
+silly testEngine    [ { name: 'Justin Tulloss',
+silly testEngine        email: 'justin.tulloss@gmail.com',
+silly testEngine        url: 'http://justin.harmonize.fm' },
+silly testEngine      { name: 'Stéphan Kochen',
+silly testEngine        email: 'stephan@kochen.nl',
+silly testEngine        url: 'http://stephan.kochen.nl/' },
+silly testEngine      { name: 'Mike Castleman',
+silly testEngine        email: 'm@mlcastle.net',
+silly testEngine        url: 'http://mlcastle.net/' },
+silly testEngine      { name: 'Matt Crocker' },
+silly testEngine      { name: 'Jeremy Barnes',
+silly testEngine        email: 'jeremy@barneso.com',
+silly testEngine        url: 'http://www.barneso.com/' } ],
+silly testEngine   scripts: { preinstall: 'node-waf clean || true; node-waf configure build' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: {},
+silly testEngine   _id: 'zeromq@0.4.1',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.1rc9',
+silly testEngine   _nodeVersion: 'v0.4.6',
+silly testEngine   _defaultsLoaded: true }
+verbose caching /Users/franklovecchio/Desktop/development/node/node_modules/zeromq/package.json
+verbose loadDefaults zeromq@0.4.1
+verbose into /Users/franklovecchio/Desktop/development/node [ 'socketio' ]
+verbose cache add [ 'socketio', null ]
+info addNamed [ 'socketio', '' ]
+verbose addNamed [ null, '' ]
+verbose GET socketio
+verbose raw, before any munging socketio
+verbose url resolving [ 'http://registry.npmjs.org/', './socketio' ]
+verbose url resolved http://registry.npmjs.org/socketio
+verbose url parsed { protocol: 'http:',
+verbose url parsed   slashes: true,
+verbose url parsed   host: 'registry.npmjs.org',
+verbose url parsed   hostname: 'registry.npmjs.org',
+verbose url parsed   pathname: '/socketio',
+verbose url parsed   href: 'http://registry.npmjs.org/socketio' }
+verbose response http://registry.npmjs.org/socketio
+silly chunk {"error":"not_found","reason":"document not found"}
+silly chunk 
+silly get cb [ 404,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B03)',
+silly get cb     date: 'Tue, 09 Aug 2011 15:36:22 GMT',
+silly get cb     'content-type': 'application/json',
+silly get cb     'content-length': '52',
+silly get cb     'cache-control': 'must-revalidate' } ]
+ERR! 404 'socketio' is not in the npm registry.
+ERR! 404 You should bug the author to publish it.
+ERR! 404 Note that you can also install from a tarball or folder.
+ERR! 
+ERR! System Darwin 11.0.0
+ERR! command "node" "/usr/local/bin/npm" "install" "socketio"
+verbose exit [ 1, true ]

@@ -31,7 +31,6 @@ CommandManagerModule = function (childDeps) {
 	
 	var utilities = new utilitiesManager.UtilitiesManagerModule(childDeps);
 	var constants = new constantsManager.ConstantsManagerModule();
-	var logger = new loggingManager.LoggingManagerModule(nodeMonitor, childDeps);
 
 	Module = this;
 	
@@ -42,21 +41,7 @@ CommandManagerModule.prototype.executeCommand = function (command) {
 	/**
 	* Parse command
 	*/
-	
-	/**
-	* Stop tailing a file
-	*/
-	this.stopTailing(logName, client) {
-	
-	}
-	
-	/**
-	* Tail a new file
-	*/
-	this.tailFile(logName, client) {
-	
-	}
-		
+			
 };	
 
 CommandManagerModule.prototype.stopTailing = function(logName, client) {
